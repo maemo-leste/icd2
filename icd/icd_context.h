@@ -3,31 +3,67 @@
 
 #include <glib.h>
 
+/** ICd Context */
 struct icd_context {
-  gboolean daemon;
-  guint shutting_down;
-  GMainLoop *main_loop;
 
-  GSList *policy_module_list;
+	/** run as daemon if TRUE, run in foreground if FALSE */
+	gboolean daemon;
 
-  GSList *request_list;
+	/** icd shutdown timeout id */
+	guint shutting_down;
 
-  GSList *nw_module_list;
-  GHashTable *type_to_module;
+	/** glib main loop */
+	GMainLoop *main_loop;
 
-  GSList *srv_module_list;
-  GHashTable *srv_type_to_srv_module;
-  GHashTable *nw_type_to_srv_module;
 
-  guint idle_timer_notify;
+	/** list of policy modules */
+	GSList *policy_module_list;
 
-  guint iap_deletion_notify;
+
+	/** list of outstanding network connection requests */
+	GSList *request_list;
+
+
+	/** list of network modules */
+	GSList *nw_module_list;
+
+	/** hash table mapping network types to the modules in the above list */
+	GHashTable *type_to_module;
+
+
+	/** list of service provider modules */
+	GSList *srv_module_list;
+
+	/** hash table mapping service provider types to service modules */
+	GHashTable *srv_type_to_srv_module;
+
+	/** hash table mapping network types to list of service modules */
+	GHashTable *nw_type_to_srv_module;
+
+
+	/** idle time gconf notification id */
+	guint idle_timer_notify;
+
+
+	/** IAP deletion gconf notification id */
+	guint iap_deletion_notify;
 };
 
+
+	/** Initialize context */
 gboolean icd_context_init (void);
+
+	/** return the global context*/
 struct icd_context *icd_context_get(void);
+
+	/** start the main loop */
 void icd_context_run(void);
+
+	/** stop running the main loop */
 void icd_context_stop(void);
+
+	/** destroy context */
 void icd_context_destroy (void);
+
 
 #endif
