@@ -1,0 +1,115 @@
+/* tabs styles, based on http://www.alistapart.com/articles/slidingdoors */
+
+DIV.tabs
+{
+   float            : left;
+   width            : 100%;
+   margin-bottom    : 4px;
+   font-size: 1.1em;
+   background-color: #EAEAEA;
+   height: 41px;
+   line-height: 40px;
+   white-space: nowrap;
+   margin: 0px;
+}
+
+DIV.tabs UL
+{
+   margin           : 0px;
+   list-style       : none;
+}
+
+DIV.tabs LI, DIV.tabs FORM
+{
+   display          : inline;
+   margin           : 0px;
+   padding          : 0px;
+}
+
+DIV.tabs FORM
+{
+/*   float            : right;*/
+}
+
+DIV.tabs A
+{
+   border: none;
+   color: #333;
+   height: 41px;
+   text-decoration: none;
+   font-size: 1.1em;
+}
+
+DIV.tabs A:hover
+{
+   /*background-position: 100% -150px;*/
+      background: #333 none repeat scroll 0px 0px;
+   border: ;
+   color: white;
+   font-weight: normal;
+   height: 41px;
+}
+
+DIV.tabs A:link, DIV.tabs A:visited,
+DIV.tabs A:active, DIV.tabs A:hover
+{
+       color: #1A419D;
+
+}
+
+DIV.tabs SPAN
+{
+   border: none;
+   color: #333;
+   height: 41px;
+   padding: 10px 10px;
+   text-decoration: none;
+}
+
+DIV.tabs INPUT
+{
+   float            : right;
+   display          : inline;
+   font-size        : 1em;
+}
+
+DIV.tabs TD
+{
+   font-size        : x-small;
+   font-weight      : bold;
+   text-decoration  : none;
+}
+
+
+
+/* Commented Backslash Hack hides rule from IE5-Mac \*/
+DIV.tabs SPAN {float : none;}
+/* End IE5-Mac hack */
+
+DIV.tabs A:hover SPAN
+{
+   background: #333 none repeat scroll 0px 0px;
+   border: ;
+   color: white;
+   font-weight: normal;
+   height: 41px;
+}
+
+DIV.tabs LI.current A
+{
+   border-width     : 0px;
+}
+
+DIV.tabs LI.current SPAN
+{
+   padding-bottom   : 10px;
+   background: #333;
+   color: white
+}
+
+DIV.navpath
+{
+   background       : none;
+   border           : none;
+   border-bottom    : px solid #84B0C7;
+}
