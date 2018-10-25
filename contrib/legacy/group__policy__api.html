@@ -506,7 +506,7 @@ Merge two request together and free the request_to_merge structure. <dl compact>
 <p>
 Result of the policy decision <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>status</em>&nbsp;</td><td>status of the operation, i.e. wheter to accept or deny the request </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>status</em>&nbsp;</td><td>status of the operation, i.e. whether to accept or deny the request </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>new_request</em>&nbsp;</td><td>the new connection request or NULL if the request has been merged with an existing one </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>policy_token</em>&nbsp;</td><td>the received policy_token </td></tr>
   </table>
@@ -531,10 +531,10 @@ New connection request policy function. Note that this function call is asynchro
     <tr><td valign="top"></td><td valign="top"><em>new_request</em>&nbsp;</td><td>the new connection request </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>existing_requests</em>&nbsp;</td><td>currently existing requests; valid only when this function is executing - DO NOT EVER USE later on in any callbacks </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>cb</em>&nbsp;</td><td>callback to call when policy has been decided </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>private</em>&nbsp;</td><td>the private memeber of the icd_request_api structure </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>private</em>&nbsp;</td><td>the private member of the icd_request_api structure </td></tr>
   </table>
 </dl>
-<dl class="note" compact><dt><b>Note:</b></dt><dd>Policy modules implementing this function should also check wheter they need to implement <a class="el" href="group__policy__api.html#g0c9ca2ea21c68e40a3f3b4b0e9a1c0f9">icd_policy_request_cancel_fn</a>. </dd></dl>
+<dl class="note" compact><dt><b>Note:</b></dt><dd>Policy modules implementing this function should also check whether they need to implement <a class="el" href="group__policy__api.html#g0c9ca2ea21c68e40a3f3b4b0e9a1c0f9">icd_policy_request_cancel_fn</a>. </dd></dl>
 
 </div>
 </div><p>

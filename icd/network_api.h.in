@@ -181,6 +181,7 @@ the IAP to be restarted.
  */
 typedef void (*icd_nw_layer_renew_cb_fn) (enum icd_nw_renew_status status,
 					  gpointer renew_cb_token);
+
 /** Function for renewing a network module layer
  * @param network_type network type
  * @param network_attrs network attributes
@@ -203,6 +204,7 @@ typedef void (*icd_nw_layer_renew_fn) (const gchar *network_type,
 typedef void
 (*icd_nw_ip_down_cb_fn) (const enum icd_nw_status status,
 			 const gpointer ip_down_cb_token);
+
 /** Function for deconfiguring the IP layer, e.g. relasing the IP address.
  * Normally this function need not to be provided as the libicd_network_ipv4
  * network module provides IP address deconfiguration in a generic fashion.
@@ -235,6 +237,7 @@ typedef void (*icd_nw_ip_up_cb_fn) (const enum icd_nw_status status,
 				    const gchar *err_str,
 				    const gpointer ip_up_cb_token,
 				    ...);
+
 /** Function for configuring an IP address. Normally this function need not be
  * provided as the libicd_network_ipv4 network module takes care of configuring
  * IP addresses in a generic fashion.
@@ -281,6 +284,7 @@ typedef void (*icd_nw_ip_addr_info_cb_fn) (const gpointer addr_info_cb_token,
 					   gchar *ip_dns1,
 					   gchar *ip_dns2,
 					   gchar *ip_dns3);
+
 /** Request IP address configuration information based on network type,
  * attributes and id.
  * @param network_type network type
@@ -338,6 +342,7 @@ typedef void (*icd_nw_ip_stats_fn) (const gchar *network_type,
 typedef void
 (*icd_nw_link_pre_down_cb_fn) (const enum icd_nw_status status,
 			       const gpointer link_pre_down_cb_token);
+
 /** Function to disconnect the link layer authentication
  * @param network_type network type
  * @param network_attrs attributes, such as type of network_id, security, etc.
@@ -369,6 +374,7 @@ typedef void
 			      const gchar *err_str,
 			      const gpointer link_post_up_cb_token,
 			      ...);
+
 /** Function for performing link layer authentication after the link has been
  * enabled
  * @param network_type network type
@@ -432,6 +438,7 @@ typedef void
 typedef void
 (*icd_nw_link_down_cb_fn) (const enum icd_nw_status status,
 			   const gpointer link_down_cb_token);
+
 /** Function to disconnect the link layer
  * @param network_type network type
  * @param network_attrs attributes, such as type of network_id, security, etc.
@@ -466,6 +473,7 @@ typedef void
 			 const gchar *interface_name,
 			 const gpointer link_up_cb_token,
 			 ...);
+
 /** Function to bring up the link layer
  * @param network_type network type
  * @param network_attrs attributes, such as type of network_id, security, etc.
@@ -543,6 +551,7 @@ typedef void
 			gchar *station_id,
 			gint dB,
 			const gpointer search_cb_token);
+
 /** Function for listing the available networks provided by the module
  * @param network_type network type to search for or NULL for all networks;
  *        currently this will always be NULL. If you happen to report all
@@ -560,6 +569,7 @@ typedef void
 			   icd_nw_search_cb_fn search_cb,
 			   const gpointer search_cb_token,
 			   gpointer *private);
+
 /** Function for stopping an ongoing search. The module must call the callback
  * given in #icd_nw_start_search_fn with status #ICD_NW_SEARCH_COMPLETE as soon
  * as search is stopped.

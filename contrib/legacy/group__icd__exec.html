@@ -49,7 +49,7 @@
  }</td></tr>
 
 <tr><td colspan="2"><br><h2>Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static gboolean&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__icd__exec.html#g28745f4a6aa2b1cf57910b07f61e6580">icd_exec_shutdown_check</a> (gpointer data)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static gboolean&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__icd__exec.html#g28745f4a6aa2b1cf57910b07f61e6580">icd_exec_shutdown_check</a> (struct <a class="el" href="structicd__context.html">icd_context</a> *<a class="el" href="group__icd__context.html#g0c195d4a10021d283f4ef145294544c6">icd_ctx</a>)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">static void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__icd__exec.html#g11e58f989dd094f50794d1345bb1ef2b">icd_exec_shutdown</a> (struct <a class="el" href="structicd__context.html">icd_context</a> *<a class="el" href="group__icd__context.html#g0c195d4a10021d283f4ef145294544c6">icd_ctx</a>)</td></tr>
 
@@ -139,15 +139,15 @@ Cancel all requests and shut down ICd <dl compact><dt><b>Parameters:</b></dt><dd
 
 </div>
 </div><p>
-<a class="anchor" name="g28745f4a6aa2b1cf57910b07f61e6580"></a><!-- doxytag: member="icd_exec.c::icd_exec_shutdown_check" ref="g28745f4a6aa2b1cf57910b07f61e6580" args="(gpointer data)" -->
+<a class="anchor" name="g28745f4a6aa2b1cf57910b07f61e6580"></a><!-- doxytag: member="icd_exec.c::icd_exec_shutdown_check" ref="g28745f4a6aa2b1cf57910b07f61e6580" args="(struct icd_context *icd_ctx)" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
           <td class="memname">static gboolean icd_exec_shutdown_check           </td>
           <td>(</td>
-          <td class="paramtype">gpointer&nbsp;</td>
-          <td class="paramname"> <em>data</em>          </td>
+          <td class="paramtype">struct <a class="el" href="structicd__context.html">icd_context</a> *&nbsp;</td>
+          <td class="paramname"> <em>icd_ctx</em>          </td>
           <td>&nbsp;)&nbsp;</td>
           <td><code> [static]</code></td>
         </tr>
@@ -158,10 +158,10 @@ Cancel all requests and shut down ICd <dl compact><dt><b>Parameters:</b></dt><dd
 <p>
 Wait until the last request has exited and quit ICd <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>data</em>&nbsp;</td><td>icd context </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>icd_ctx</em>&nbsp;</td><td>icd context </td></tr>
   </table>
 </dl>
-<dl class="return" compact><dt><b>Returns:</b></dt><dd>FALSE while waiting, TRUE when all requests have been removed </dd></dl>
+<dl class="return" compact><dt><b>Returns:</b></dt><dd>TRUE while waiting, FALSE when all requests have been removed </dd></dl>
 
 <p>References <a class="el" href="icd__context_8c-source.html#l00046">icd_context_stop()</a>, <a class="el" href="icd__context_8c-source.html#l00020">icd_ctx</a>, <a class="el" href="icd__log_8h-source.html#l00026">ILOG_DEBUG</a>, <a class="el" href="icd__log_8h-source.html#l00032">ILOG_INFO</a>, and <a class="el" href="icd__context_8h-source.html#l00032">icd_context::request_list</a>.</p>
 

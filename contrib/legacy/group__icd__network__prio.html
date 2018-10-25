@@ -119,7 +119,7 @@ GSM/CDMA packet data priority
 <div class="memdoc">
 
 <p>
-WiMax priority 
+GPRS priority
 </div>
 </div><p>
 <a class="anchor" name="gc629924bc09b0071b946d840f22dc677"></a><!-- doxytag: member="icd_network_priority.c::ICD_NW_PRIO_HIGHEST" ref="gc629924bc09b0071b946d840f22dc677" args="" -->
@@ -424,17 +424,7 @@ WLAN network prefix
 <div class="memdoc">
 
 <p>
-Check if there are more higher priority networks available. Return also the priority if the return pointer is set. This function can be called by policy module like policy_always_online.so <dl compact><dt><b>Parameters:</b></dt><dd>
-  <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>srv_type</em>&nbsp;</td><td>service type or NULL if none </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>srv_id</em>&nbsp;</td><td>service id or NULL if none </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>network_type</em>&nbsp;</td><td>network type </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>network_attrs</em>&nbsp;</td><td>network attrs </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>the</em>&nbsp;</td><td>network priority (returned to caller) </td></tr>
-  </table>
-</dl>
-<dl class="return" compact><dt><b>Returns:</b></dt><dd>TRUE if found higher priority network types, FALSE if not found</dd></dl>
-Check if there are more higher priority networks available. Return also the priority if the return pointer is set. This function can be called from policy modules (like policy_always_online.so calls this func) <dl compact><dt><b>Parameters:</b></dt><dd>
+Check if there are more higher priority networks available. Return also the priority if the return pointer is set. This function can be called from policy modules (policy_always_online.so calls this func) <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>srv_type</em>&nbsp;</td><td>service type or NULL if none </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>srv_id</em>&nbsp;</td><td>service id or NULL if none </td></tr>

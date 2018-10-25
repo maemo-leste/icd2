@@ -512,7 +512,7 @@ Forks and execs the network script <dl compact><dt><b>Parameters:</b></dt><dd>
     <tr><td valign="top"></td><td valign="top"><em>remove_proxies</em>&nbsp;</td><td>TRUE to set ICD_PROXY_UNSET=1 </td></tr>
   </table>
 </dl>
-<dl class="return" compact><dt><b>Returns:</b></dt><dd>pid of child process or &lt;1 on error </dd></dl>
+<dl class="return" compact><dt><b>Returns:</b></dt><dd>pid of child process or -1 on error </dd></dl>
 
 <p>References <a class="el" href="icd__iap_8h-source.html#l00097">icd_iap_env::addrfam</a>, <a class="el" href="icd__iap_8h-source.html#l00099">icd_iap_env::envlist</a>, <a class="el" href="icd__log_8h-source.html#l00026">ILOG_DEBUG</a>, <a class="el" href="icd__log_8h-source.html#l00044">ILOG_ERR</a>, <a class="el" href="icd__script_8c-source.html#l00084">icd_script_data::pid</a>, <a class="el" href="icd__script_8c-source.html#l00041">SCRIPT_ADDRFAM</a>, <a class="el" href="icd__script_8c-source.html#l00059">SCRIPT_IAP_ID</a>, <a class="el" href="icd__script_8c-source.html#l00061">SCRIPT_IAP_TYPE</a>, <a class="el" href="icd__script_8c-source.html#l00037">SCRIPT_IFACE</a>, <a class="el" href="icd__script_8c-source.html#l00039">SCRIPT_LOGICAL</a>, <a class="el" href="icd__script_8c-source.html#l00045">SCRIPT_MODE</a>, <a class="el" href="icd__script_8c-source.html#l00054">SCRIPT_PATH</a>, <a class="el" href="icd__script_8c-source.html#l00056">SCRIPT_PATH_VALUE</a>, <a class="el" href="icd__script_8c-source.html#l00048">SCRIPT_PHASE</a>, <a class="el" href="icd__script_8c-source.html#l00063">SCRIPT_PROXY_UNSET</a>, <a class="el" href="icd__script_8c-source.html#l00050">SCRIPT_VERBOSITY</a>, and <a class="el" href="icd__script_8c-source.html#l00052">SCRIPT_VERBOSITY_VALUE</a>.</p>
 
@@ -642,7 +642,7 @@ Run post-down scripts <dl compact><dt><b>Parameters:</b></dt><dd>
     <tr><td valign="top"></td><td valign="top"><em>user_data</em>&nbsp;</td><td>user data for the callback </td></tr>
   </table>
 </dl>
-<dl class="return" compact><dt><b>Returns:</b></dt><dd>the process id of the running script, &lt;1 on error whereby the callback will not be called </dd></dl>
+<dl class="return" compact><dt><b>Returns:</b></dt><dd>the process id of the running script, -1 on error whereby the callback will not be called </dd></dl>
 
 <p>References <a class="el" href="icd__script_8c-source.html#l00325">icd_script_run()</a>.</p>
 
@@ -708,7 +708,7 @@ Run post-up scripts <dl compact><dt><b>Parameters:</b></dt><dd>
     <tr><td valign="top"></td><td valign="top"><em>user_data</em>&nbsp;</td><td>user data for the callback </td></tr>
   </table>
 </dl>
-<dl class="return" compact><dt><b>Returns:</b></dt><dd>the process id of the running script, &lt;1 on error whereby the callback will not be called </dd></dl>
+<dl class="return" compact><dt><b>Returns:</b></dt><dd>the process id of the running script, -1 on error whereby the callback will not be called </dd></dl>
 
 <p>References <a class="el" href="icd__script_8c-source.html#l00325">icd_script_run()</a>.</p>
 
@@ -783,7 +783,7 @@ Run pre-down scripts <dl compact><dt><b>Parameters:</b></dt><dd>
     <tr><td valign="top"></td><td valign="top"><em>user_data</em>&nbsp;</td><td>user data for the callback </td></tr>
   </table>
 </dl>
-<dl class="return" compact><dt><b>Returns:</b></dt><dd>the process id of the running script, &lt;1 on error whereby the callback will not be called </dd></dl>
+<dl class="return" compact><dt><b>Returns:</b></dt><dd>the process id of the running script, -1 on error whereby the callback will not be called </dd></dl>
 
 <p>References <a class="el" href="icd__script_8c-source.html#l00325">icd_script_run()</a>.</p>
 
@@ -844,7 +844,7 @@ Run pre-up scripts <dl compact><dt><b>Parameters:</b></dt><dd>
     <tr><td valign="top"></td><td valign="top"><em>user_data</em>&nbsp;</td><td>user data for the callback </td></tr>
   </table>
 </dl>
-<dl class="return" compact><dt><b>Returns:</b></dt><dd>the process id of the running script, &lt;1 on error whereby the callback will not be called </dd></dl>
+<dl class="return" compact><dt><b>Returns:</b></dt><dd>the process id of the running script, -1 on error whereby the callback will not be called </dd></dl>
 
 <p>References <a class="el" href="icd__script_8c-source.html#l00325">icd_script_run()</a>.</p>
 
@@ -926,7 +926,7 @@ Run pre-up scripts <dl compact><dt><b>Parameters:</b></dt><dd>
 <div class="memdoc">
 
 <p>
-Run the script and start waiting for the result <dl compact><dt><b>Parameters:</b></dt><dd>
+Run network script and start waiting for the result <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>script</em>&nbsp;</td><td>the script </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>iface</em>&nbsp;</td><td>interface name </td></tr>
@@ -936,11 +936,11 @@ Run the script and start waiting for the result <dl compact><dt><b>Parameters:</
     <tr><td valign="top"></td><td valign="top"><em>user_data</em>&nbsp;</td><td>user data for callback function </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>iap_id</em>&nbsp;</td><td>Unique IAP identifier, currently the escaped iap name </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>iap_type</em>&nbsp;</td><td>IAP type </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>remove_proxies</em>&nbsp;</td><td>wheter to remove http, etc. proxies </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>remove_proxies</em>&nbsp;</td><td>whether to remove http, etc. proxies </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>env</em>&nbsp;</td><td>rest of the environment variables </td></tr>
   </table>
 </dl>
-<dl class="return" compact><dt><b>Returns:</b></dt><dd>pid of child process or &lt;1 on error </dd></dl>
+<dl class="return" compact><dt><b>Returns:</b></dt><dd>pid of child process or -1 on error </dd></dl>
 
 <p>References <a class="el" href="icd__script_8c-source.html#l00088">icd_script_data::cb</a>, <a class="el" href="icd__script_8c-source.html#l00182">icd_script_exec()</a>, <a class="el" href="icd__script_8c-source.html#l00108">icd_script_get()</a>, <a class="el" href="icd__script_8c-source.html#l00159">icd_script_timeout()</a>, <a class="el" href="icd__script_8c-source.html#l00277">icd_script_timeout_secs()</a>, <a class="el" href="icd__script_8c-source.html#l00084">icd_script_data::pid</a>, <a class="el" href="icd__script_8c-source.html#l00086">icd_script_data::timeout_id</a>, and <a class="el" href="icd__script_8c-source.html#l00090">icd_script_data::user_data</a>.</p>
 
@@ -967,7 +967,7 @@ Run the script and start waiting for the result <dl compact><dt><b>Parameters:</
 <p>
 Script timeout function <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>data</em>&nbsp;</td><td>the pid of the script that timed out </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>data</em>&nbsp;</td><td>pointer to pid of the script that timed out </td></tr>
   </table>
 </dl>
 <dl class="return" compact><dt><b>Returns:</b></dt><dd>FALSE in order not to run again </dd></dl>

@@ -25,9 +25,9 @@
 <tr><td colspan="2"><br><h2>Functions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">gboolean&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__icd__pid.html#g4d63dd93de7d7f15c2f8dcd7bf5ffa99">icd_pid_remove</a> (const char *pidfile)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">static gint&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__icd__pid.html#g76092c118766abebfc98598758bf3f96">icd_pid_read</a> (const char *pidfile)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">static pid_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__icd__pid.html#g76092c118766abebfc98598758bf3f96">icd_pid_read</a> (const char *pidfile)</td></tr>
 
-<tr><td class="memItemLeft" nowrap align="right" valign="top">gint&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__icd__pid.html#g4a8688b633f756881a18eec79b57f582">icd_pid_check</a> (const char *pidfile)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">pid_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__icd__pid.html#g4a8688b633f756881a18eec79b57f582">icd_pid_check</a> (const char *pidfile)</td></tr>
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">gboolean&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__icd__pid.html#g37693777f03d027f87797b894489d090">icd_pid_write</a> (const char *pidfile)</td></tr>
 
@@ -38,7 +38,7 @@
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">gint icd_pid_check           </td>
+          <td class="memname">pid_t icd_pid_check           </td>
           <td>(</td>
           <td class="paramtype">const char *&nbsp;</td>
           <td class="paramname"> <em>pidfile</em>          </td>
@@ -50,7 +50,7 @@
 <div class="memdoc">
 
 <p>
-Check wheter the process id stored in the pid file exists <dl compact><dt><b>Parameters:</b></dt><dd>
+Check whether the process id stored in the pid file exists. If pid file exists, but is empty or contains invalid process id, pid file is removed <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>pidfile</em>&nbsp;</td><td>the full pathname of the pid file </td></tr>
   </table>
@@ -68,7 +68,7 @@ Check wheter the process id stored in the pid file exists <dl compact><dt><b>Par
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">static gint icd_pid_read           </td>
+          <td class="memname">static pid_t icd_pid_read           </td>
           <td>(</td>
           <td class="paramtype">const char *&nbsp;</td>
           <td class="paramname"> <em>pidfile</em>          </td>

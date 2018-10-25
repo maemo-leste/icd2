@@ -442,7 +442,7 @@ Get the list of existing connections <dl class="return" compact><dt><b>Returns:<
 <div class="memdoc">
 
 <p>
-Create the list of existing requests  the current request not to add to the list <dl class="return" compact><dt><b>Returns:</b></dt><dd>list of requests; the caller needs to free only the GSList. </dd></dl>
+Create the list of existing requests, the new_request isn't added to the list <dl class="return" compact><dt><b>Returns:</b></dt><dd>list of requests; the caller needs to free only the GSList. </dd></dl>
 
 <p>References <a class="el" href="icd__iap_8h-source.html#l00122">icd_iap::connection</a>, <a class="el" href="icd__context_8c-source.html#l00034">icd_context_get()</a>, <a class="el" href="icd__context_8c-source.html#l00020">icd_ctx</a>, <a class="el" href="icd__request_8h-source.html#l00038">ICD_REQUEST_DENIED</a>, <a class="el" href="icd__request_8h-source.html#l00041">ICD_REQUEST_DISCONNECTED</a>, <a class="el" href="icd__request_8h-source.html#l00067">icd_request::req</a>, <a class="el" href="icd__context_8h-source.html#l00032">icd_context::request_list</a>, <a class="el" href="icd__request_8h-source.html#l00058">icd_request::state</a>, and <a class="el" href="icd__request_8h-source.html#l00065">icd_request::try_iaps</a>.</p>
 
@@ -557,6 +557,7 @@ Disconnect policy called when ICd attempts to disconnect from a network <dl comp
     <tr><td valign="top"></td><td valign="top"><em>refcount</em>&nbsp;</td><td>a reference count on the number of applications using this connection or -1 if disconnect forced by Connectivity UI </td></tr>
   </table>
 </dl>
+<dl class="return" compact><dt><b>Returns:</b></dt><dd>enum #icd_policy_status </dd></dl>
 
 <p>References <a class="el" href="icd__policy__api_8c-source.html#l00655">icd_policy_api_iap_disconnect_iter()</a>, and <a class="el" href="icd__policy__api_8c-source.html#l00442">icd_policy_api_run()</a>.</p>
 
@@ -603,6 +604,7 @@ Iterator for the disconnect policy <dl compact><dt><b>Parameters:</b></dt><dd>
     <tr><td valign="top"></td><td valign="top"><em>user_data</em>&nbsp;</td><td>reference count </td></tr>
   </table>
 </dl>
+<dl class="return" compact><dt><b>Returns:</b></dt><dd>enum #icd_policy_status </dd></dl>
 
 <p>References <a class="el" href="policy__api_8h-source.html#l00249">disconnect</a>, <a class="el" href="policy__api_8h-source.html#l00023">ICD_POLICY_ACCEPTED</a>, <a class="el" href="icd__policy__api_8c-source.html#l00532">icd_policy_api_existing_conn_get()</a>, <a class="el" href="icd__log_8h-source.html#l00032">ILOG_INFO</a>, <a class="el" href="icd__policy__api_8h-source.html#l00026">icd_policy_module::name</a>, <a class="el" href="icd__policy__api_8h-source.html#l00028">icd_policy_module::policy</a>, and <a class="el" href="policy__api_8h-source.html#l00236">private</a>.</p>
 
@@ -1212,7 +1214,7 @@ Cancel a request that is in ICD_POLICY_WAITING state by informing each policy mo
 <div class="memdoc">
 
 <p>
-Module iterator for the 'cancel_request' function. <dl compact><dt><b>Parameters:</b></dt><dd>
+Module iterator for the #cancel_request function. <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>module</em>&nbsp;</td><td>the policy module </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>request</em>&nbsp;</td><td>the request to cancel </td></tr>

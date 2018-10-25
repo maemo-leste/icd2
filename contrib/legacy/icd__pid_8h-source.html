@@ -20,9 +20,10 @@
 <a name="l00010"></a>00010 <span class="preprocessor"></span><span class="preprocessor">#define ICD_PID_H</span>
 <a name="l00011"></a>00011 <span class="preprocessor"></span>
 <a name="l00012"></a>00012 <span class="preprocessor">#include &lt;glib.h&gt;</span>
+<a name="l00012"></a>00012 <span class="preprocessor">#include &lt;sys/types.h&gt;</span>
 <a name="l00013"></a>00013 
 <a name="l00014"></a>00014 gboolean <a class="code" href="group__icd__pid.html#g4d63dd93de7d7f15c2f8dcd7bf5ffa99">icd_pid_remove</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *pidfile);
-<a name="l00015"></a>00015 gint <a class="code" href="group__icd__pid.html#g4a8688b633f756881a18eec79b57f582">icd_pid_check</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *pidfile);
+<a name="l00015"></a>00015 pid_t <a class="code" href="group__icd__pid.html#g4a8688b633f756881a18eec79b57f582">icd_pid_check</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *pidfile);
 <a name="l00016"></a>00016 gboolean <a class="code" href="group__icd__pid.html#g37693777f03d027f87797b894489d090">icd_pid_write</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> *pidfile);
 <a name="l00017"></a>00017 
 <a name="l00018"></a>00018 <span class="preprocessor">#endif</span>

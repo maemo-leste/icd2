@@ -40,9 +40,9 @@ extern "C" {
 /**
 @file network_api_defines.h
 
-@addtogroup network_module_api Network module API definitions
-
 This file contains general network API definitions.
+
+@addtogroup network_module_api Network module API definitions
 
  * @{ */
 

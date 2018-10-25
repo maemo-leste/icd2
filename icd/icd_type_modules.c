@@ -3,10 +3,6 @@
 #include "icd_type_modules.h"
 #include "icd_log.h"
 
-/** The network type to module name mapping is stored as a list of strings
- * in gconf at /system/osso/connectivity/IAP/network_type/<type  name>/network_modules
- */
-
 /** Policy module order in gconf */
 #define ICD_GCONF_POLICY_ORDER ICD_GCONF_SETTINGS "/policy/modules"
 

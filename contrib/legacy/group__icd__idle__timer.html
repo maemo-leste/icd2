@@ -159,7 +159,12 @@ Callback for GConf entry change <dl compact><dt><b>Parameters:</b></dt><dd>
 <div class="memdoc">
 
 <p>
-Clear all OUTPUT chain rules and add notification function for idle timer gconf values <dl class="return" compact><dt><b>Returns:</b></dt><dd>TRUE on success, FALSE on failure </dd></dl>
+Clear all OUTPUT chain rules and add notification function for idle timer gconf values <dl compact><dt><b>Parameters:</b></dt><dd>
+	<table border="0" cellspacing="2" cellpadding="0">
+		<tr><td valign="top"></td><td valign="top"><em>icd_ctx</em>&nbsp;</td><td>icd context </td></tr>
+	</table>
+</dl>
+<dl class="return" compact><dt><b>Returns:</b></dt><dd>TRUE on success, FALSE on failure </dd></dl>
 
 <p>References <a class="el" href="icd__idle__timer_8c-source.html#l00546">icd_idle_timer_gconf_changed()</a>, and <a class="el" href="icd__context_8h-source.html#l00047">icd_context::idle_timer_notify</a>.</p>
 
@@ -345,7 +350,7 @@ Idle timer callback function called when the idle timer has triggered <dl compac
     <tr><td valign="top"></td><td valign="top"><em>data</em>&nbsp;</td><td>user data set in g_io_add_watch() or g_io_add_watch_full() </td></tr>
   </table>
 </dl>
-<dl class="return" compact><dt><b>Returns:</b></dt><dd>FALSE; </dd></dl>
+<dl class="return" compact><dt><b>Returns:</b></dt><dd>TRUE to continue watching idle timer, FALSE to stop </dd></dl>
 
 <p>References <a class="el" href="icd__iap_8c-source.html#l01720">icd_iap_disconnect()</a>, <a class="el" href="icd__iap_8h-source.html#l00126">icd_iap::idletimer_id</a>, <a class="el" href="icd__log_8h-source.html#l00026">ILOG_DEBUG</a>, and <a class="el" href="icd__log_8h-source.html#l00032">ILOG_INFO</a>.</p>
 

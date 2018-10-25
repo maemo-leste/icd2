@@ -1,5 +1,5 @@
-#ifndef ICD_OSSO_ICD_H
-#define ICD_OSSO_ICD_H
+#ifndef ICD_OSSO_IC_H
+#define ICD_OSSO_IC_H
 
 #include <glib.h>
 #include "icd_context.h"
