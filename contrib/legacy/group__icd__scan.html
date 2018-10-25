@@ -355,15 +355,6 @@ Free an <a class="el" href="structicd__scan__cache.html">icd_scan_cache</a> stru
 <div class="memdoc">
 
 <p>
-Remove scan cache from scan list, the removed entry does not call listener. <dl compact><dt><b>Parameters:</b></dt><dd>
-  <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>cache_list</em>&nbsp;</td><td>the <a class="el" href="structicd__scan__cache__list.html">icd_scan_cache_list</a> struct </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>network_id</em>&nbsp;</td><td>network identifier </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>network_type</em>&nbsp;</td><td>the network type </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>network_attrs</em>&nbsp;</td><td>network attributes </td></tr>
-  </table>
-</dl>
-<dl class="return" compact><dt><b>Returns:</b></dt><dd>TRUE if scan entry was removed; FALSE otherwise</dd></dl>
 Remove scan cache from scan list, the removed entry does not call listeners. <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>cache_list</em>&nbsp;</td><td>the <a class="el" href="structicd__scan__cache__list.html">icd_scan_cache_list</a> struct </td></tr>
@@ -427,7 +418,7 @@ Cache expiry function <dl compact><dt><b>Parameters:</b></dt><dd>
 <div class="memdoc">
 
 <p>
-Check wheter a scan cache has any elements <dl compact><dt><b>Parameters:</b></dt><dd>
+Check whether a scan cache has any elements <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>module</em>&nbsp;</td><td>network module </td></tr>
   </table>
@@ -462,6 +453,7 @@ Set up the scan cache for a network module <dl compact><dt><b>Parameters:</b></d
     <tr><td valign="top"></td><td valign="top"><em>module</em>&nbsp;</td><td>network module </td></tr>
   </table>
 </dl>
+<dl class="return" compact><dt><b>Returns:</b></dt><dd>TRUE on success, FALSE if scan cache already exists </dd></dl>
 
 <p>References <a class="el" href="icd__log_8h-source.html#l00044">ILOG_ERR</a>, and <a class="el" href="icd__network__api_8h-source.html#l00043">icd_network_module::scan_cache_table</a>.</p>
 
@@ -1263,11 +1255,11 @@ Function requesting scan results; can be called many times to add more than one 
 <p>
 Unregister all matching callback - user data tuples from receiving scan results <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>cb</em>&nbsp;</td><td>the same callback as given in icd_scan_results_request </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>user_data</em>&nbsp;</td><td>the same user_data as given in icd_scan_results_request </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>cb</em>&nbsp;</td><td>the same callback as given in #icd_scan_results_request </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>user_data</em>&nbsp;</td><td>the same user_data as given in #icd_scan_results_request </td></tr>
   </table>
 </dl>
-<dl class="return" compact><dt><b>Returns:</b></dt><dd>TRUE if the callback - user_data tuple existed and was remvoed; FALSE otherwise </dd></dl>
+<dl class="return" compact><dt><b>Returns:</b></dt><dd>TRUE if the callback - user_data tuple existed and was removed; FALSE otherwise </dd></dl>
 
 <p>References <a class="el" href="icd__context_8c-source.html#l00034">icd_context_get()</a>, <a class="el" href="icd__context_8c-source.html#l00020">icd_ctx</a>, <a class="el" href="icd__scan_8c-source.html#l00490">icd_scan_listener_remove()</a>, <a class="el" href="icd__log_8h-source.html#l00044">ILOG_ERR</a>, and <a class="el" href="icd__context_8h-source.html#l00035">icd_context::nw_module_list</a>.</p>
 

@@ -345,7 +345,7 @@ Helper function for connecting D-Bus system bus paths to callbacks. Unregister w
 <div class="memdoc">
 
 <p>
-Function for disconnecting a broadcast signal callback function <dl class="note" compact><dt><b>Note:</b></dt><dd>In the D-Bus documentation it is noted that it is a programming error to try to remove a callback function and user data that has not been added previously, in this case with 'icd_dbus_connect_system_bcast_signal()' </dd></dl>
+Function for disconnecting a broadcast signal callback function <dl class="note" compact><dt><b>Note:</b></dt><dd>In the D-Bus documentation it is noted that it is a programming error to try to remove a callback function and user data that has not been added previously, in this case with #icd_dbus_connect_system_bcast_signal() </dd></dl>
 <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>interface</em>&nbsp;</td><td>the interface name of the broadcasted signal </td></tr>
@@ -448,14 +448,6 @@ Return the connection to the system D-Bus, initialize if necessary.<p>
 <div class="memdoc">
 
 <p>
-Get the unique D-Bus bus name for a service <dl compact><dt><b>Parameters:</b></dt><dd>
-  <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>name</em>&nbsp;</td><td>D-Bus service name </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>cb</em>&nbsp;</td><td>callback </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>user_data</em>&nbsp;</td><td>user data </td></tr>
-  </table>
-</dl>
-<dl class="return" compact><dt><b>Returns:</b></dt><dd>the D-Bus pending call for the request</dd></dl>
 Get the unique D-Bus bus name for a service <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>name</em>&nbsp;</td><td>D-Bus service name </td></tr>
@@ -575,7 +567,7 @@ Handle 'GetNameOwner' reply <dl compact><dt><b>Parameters:</b></dt><dd>
 <div class="memdoc">
 
 <p>
-Helper function for sending a D-Bus method call message used by the 'icd_dbus_send_message()' and 'icd_dbus_send_session_method_call()' functions. The auto activation flag will also be set in the D-Bus message. <dl compact><dt><b>Parameters:</b></dt><dd>
+Helper function for sending a D-Bus method call message used by the #icd_dbus_send_message() and #icd_dbus_send_session_method_call() functions. The auto activation flag will also be set in the D-Bus message. <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>connection</em>&nbsp;</td><td>the D-Bus session/system bus connection to use </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>mcall</em>&nbsp;</td><td>the D-Bus method call message to send </td></tr>

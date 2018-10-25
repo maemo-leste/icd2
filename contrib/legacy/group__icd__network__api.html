@@ -60,9 +60,6 @@
 
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__icd__network__api.html#g1e1f273e09fc0af6bc703beb8a6cb564">icd_network_api_unload_modules</a> (struct <a class="el" href="structicd__context.html">icd_context</a> *<a class="el" href="group__icd__context.html#g0c195d4a10021d283f4ef145294544c6">icd_ctx</a>)</td></tr>
 
-<tr><td colspan="2"><br><h2>Variables</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">const gchar *&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="group__icd__network__api.html#g91f71f413a14a051444283f782f1f4e9">icd_iap_state_names</a> [ICD_IAP_MAX_STATES]</td></tr>
-
 </table>
 <hr><h2>Define Documentation</h2>
 <a class="anchor" name="gab8a3d34a2ccc9a7c71c44f129ad0b28"></a><!-- doxytag: member="icd_network_api.c::ICD_NW_API_PREFIX" ref="gab8a3d34a2ccc9a7c71c44f129ad0b28" args="" -->
@@ -290,7 +287,7 @@ Iterate over all network modules <dl compact><dt><b>Parameters:</b></dt><dd>
 Find the network module that is watching a child process exit <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>module</em>&nbsp;</td><td>the network module to examine </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>user_data</em>&nbsp;</td><td>the pid notify structure </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>user_data</em>&nbsp;</td><td>the #pid_notify structure </td></tr>
   </table>
 </dl>
 <dl class="return" compact><dt><b>Returns:</b></dt><dd>TRUE to continue searching, FALSE to exit iteration and return a pointer to the module </dd></dl>
@@ -327,7 +324,7 @@ Find the network module that is watching a child process exit <dl compact><dt><b
 <div class="memdoc">
 
 <p>
-Function for checking wheter a modules supports a given type <dl compact><dt><b>Parameters:</b></dt><dd>
+Function for checking whether a modules supports a given type <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>module</em>&nbsp;</td><td>the module </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>type</em>&nbsp;</td><td>the type to check for </td></tr>
@@ -639,24 +636,6 @@ Set ICd to watch a child pid <dl compact><dt><b>Parameters:</b></dt><dd>
 <p>References <a class="el" href="icd__log_8h-source.html#l00050">ILOG_CRIT</a>, <a class="el" href="icd__log_8h-source.html#l00026">ILOG_DEBUG</a>, <a class="el" href="icd__network__api_8h-source.html#l00026">icd_network_module::name</a>, and <a class="el" href="icd__network__api_8h-source.html#l00030">icd_network_module::pid_list</a>.</p>
 
 <p>Referenced by <a class="el" href="icd__network__api_8c-source.html#l00460">icd_network_api_init_cb()</a>.</p>
-
-</div>
-</div><p>
-<hr><h2>Variable Documentation</h2>
-<a class="anchor" name="g91f71f413a14a051444283f782f1f4e9"></a><!-- doxytag: member="icd_network_api.c::icd_iap_state_names" ref="g91f71f413a14a051444283f782f1f4e9" args="[ICD_IAP_MAX_STATES]" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">const gchar* <a class="el" href="group__icd__network__api.html#g91f71f413a14a051444283f782f1f4e9">icd_iap_state_names</a>[ICD_IAP_MAX_STATES]          </td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-names for the different states 
-<p>Referenced by <a class="el" href="icd__iap_8c-source.html#l01536">icd_iap_connect()</a>, <a class="el" href="icd__iap_8c-source.html#l01720">icd_iap_disconnect()</a>, <a class="el" href="icd__iap_8c-source.html#l00382">icd_iap_disconnect_cb()</a>, <a class="el" href="icd__iap_8c-source.html#l00631">icd_iap_disconnect_module()</a>, <a class="el" href="icd__iap_8c-source.html#l02114">icd_iap_get_ip_stats()</a>, <a class="el" href="icd__iap_8c-source.html#l02059">icd_iap_get_ipinfo()</a>, <a class="el" href="icd__iap_8c-source.html#l02172">icd_iap_get_link_post_stats()</a>, <a class="el" href="icd__iap_8c-source.html#l02230">icd_iap_get_link_stats()</a>, <a class="el" href="icd__iap_8c-source.html#l01145">icd_iap_ip_up_cb()</a>, <a class="el" href="icd__iap_8c-source.html#l01083">icd_iap_link_post_up_cb()</a>, <a class="el" href="icd__iap_8c-source.html#l01003">icd_iap_link_up_cb()</a>, <a class="el" href="icd__iap_8c-source.html#l01311">icd_iap_module_next()</a>, <a class="el" href="icd__iap_8c-source.html#l00523">icd_iap_post_down_script_done()</a>, <a class="el" href="icd__iap_8c-source.html#l01477">icd_iap_pre_up_script_done()</a>, <a class="el" href="icd__iap_8c-source.html#l00413">icd_iap_run_restart()</a>, <a class="el" href="icd__iap_8c-source.html#l01205">icd_iap_srv_connect_cb()</a>, <a class="el" href="icd__iap_8c-source.html#l00800">icd_iap_up_callback()</a>, <a class="el" href="icd__network__api_8c-source.html#l00231">icd_network_api_close()</a>, and <a class="el" href="icd__network__api_8c-source.html#l00309">icd_network_api_renew()</a>.</p>
 
 </div>
 </div><p>

@@ -224,7 +224,7 @@ Receive IP address configuration information based on network type, attributes a
     <tr><td valign="top"></td><td valign="top"><em>network_type</em>&nbsp;</td><td>network type </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>network_attrs</em>&nbsp;</td><td>attributes, such as type of network_id, security, etc. </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>network_id</em>&nbsp;</td><td>IAP name or local id, e.g. SSID </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>private</em>&nbsp;</td><td>a reference to the <a class="el" href="structicd__nw__api.html">icd_nw_api</a> private memeber </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>private</em>&nbsp;</td><td>a reference to the <a class="el" href="structicd__nw__api.html">icd_nw_api</a> private member </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>ip_address</em>&nbsp;</td><td>IP address string or NULL if no such value </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>ip_netmask</em>&nbsp;</td><td>IP netmask string which or NULL if no such value </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>ip_gateway</em>&nbsp;</td><td>IP gateway string which or NULL if no such value </td></tr>
@@ -345,9 +345,10 @@ Function for sending address info data to listeners <dl compact><dt><b>Parameter
 Notify ICd2 D-Bus API when an app goes away <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>dbus_dest</em>&nbsp;</td><td>D-Bus sender id </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>TRUE</em>&nbsp;</td><td>if D-Bus sender was removed, FALSE otherwise </td></tr>
   </table>
 </dl>
+
+<dl class="return" compact><dt><b>Returns:</b></dt><dd>TRUE if D-Bus sender was removed, FALSE otherwise </dd></dl>
 
 <p>References <a class="el" href="icd__dbus__api_8c-source.html#l00231">icd_dbus_api_listeners_get()</a>, <a class="el" href="icd__dbus__api_8c-source.html#l00057">icd_dbus_api_scan_result()</a>, <a class="el" href="icd__name__owner_8c-source.html#l00111">icd_name_owner_remove_filter()</a>, <a class="el" href="icd__scan_8c-source.html#l01132">icd_scan_results_unregister()</a>, and <a class="el" href="icd__log_8h-source.html#l00032">ILOG_INFO</a>.</p>
 
@@ -578,9 +579,9 @@ Iterator function calling the given send function <dl compact><dt><b>Parameters:
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>iap</em>&nbsp;</td><td>the IAP </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>user_data</em>&nbsp;</td><td>foreach data </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>TRUE</em>&nbsp;</td><td>to go through all IAPs </td></tr>
   </table>
 </dl>
+<dl class="return" compact><dt><b>Returns:</b></dt><dd>TRUE to go through all IAPs </dd></dl>
 
 <p>References <a class="el" href="icd__dbus__api_8c-source.html#l00905">icd_dbus_api_foreach_data::connections</a>, and <a class="el" href="icd__dbus__api_8c-source.html#l00909">icd_dbus_api_foreach_data::send_fn</a>.</p>
 
@@ -929,7 +930,7 @@ Receive scan results and send them via D-Bus <dl compact><dt><b>Parameters:</b><
 <div class="memdoc">
 
 <p>
-Check wheter a sender already exists in the sender list <dl compact><dt><b>Parameters:</b></dt><dd>
+Check whether a sender already exists in the sender list <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>sender_list</em>&nbsp;</td><td>list to examine </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>sender</em>&nbsp;</td><td>sender to look for </td></tr>
@@ -1402,7 +1403,7 @@ Receive ip statistics based on network type, attributes and id. Values are set t
     <tr><td valign="top"></td><td valign="top"><em>dB</em>&nbsp;</td><td>raw signal strength; depends on the type of network </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>rx_bytes</em>&nbsp;</td><td>bytes received on the link, if applicable </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>tx_bytes</em>&nbsp;</td><td>bytes sent on the link, if applicable </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>private</em>&nbsp;</td><td>a reference to the <a class="el" href="structicd__nw__api.html">icd_nw_api</a> private memeber </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>private</em>&nbsp;</td><td>a reference to the <a class="el" href="structicd__nw__api.html">icd_nw_api</a> private member </td></tr>
   </table>
 </dl>
 
@@ -1498,7 +1499,7 @@ Receive link statistics based on network type, attributes and id. Values are set
     <tr><td valign="top"></td><td valign="top"><em>dB</em>&nbsp;</td><td>raw signal strength; depends on the type of network </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>rx_bytes</em>&nbsp;</td><td>bytes received on the link, if applicable </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>tx_bytes</em>&nbsp;</td><td>bytes sent on the link, if applicable </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>private</em>&nbsp;</td><td>a reference to the <a class="el" href="structicd__nw__api.html">icd_nw_api</a> private memeber </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>private</em>&nbsp;</td><td>a reference to the <a class="el" href="structicd__nw__api.html">icd_nw_api</a> private member </td></tr>
   </table>
 </dl>
 
@@ -1573,7 +1574,7 @@ Receive link post up statistics based on network type, attributes and id. Values
     <tr><td valign="top"></td><td valign="top"><em>time_active</em>&nbsp;</td><td>time active, if applicable </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>rx_bytes</em>&nbsp;</td><td>bytes received on the link, if applicable </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>tx_bytes</em>&nbsp;</td><td>bytes sent on the link, if applicable </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>private</em>&nbsp;</td><td>a reference to the <a class="el" href="structicd__nw__api.html">icd_nw_api</a> private memeber </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>private</em>&nbsp;</td><td>a reference to the <a class="el" href="structicd__nw__api.html">icd_nw_api</a> private member </td></tr>
   </table>
 </dl>
 

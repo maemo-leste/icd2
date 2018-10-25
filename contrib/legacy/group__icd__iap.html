@@ -321,7 +321,7 @@ the iap failed with some critical error while connecting </td></tr>
 <div class="memdoc">
 
 <p>
-Helper function for pre down script to check wheter there is another connected IAP <dl compact><dt><b>Parameters:</b></dt><dd>
+Helper function for pre down script to check whether there is another connected IAP <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>iap</em>&nbsp;</td><td>IAP to examine </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>user_data</em>&nbsp;</td><td>IAP that is going down </td></tr>
@@ -1406,7 +1406,7 @@ Pre-down script callback to remove script pid from list. <dl compact><dt><b>Para
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>pid</em>&nbsp;</td><td>the process id of the script that exited </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>exit_value</em>&nbsp;</td><td>exit value of the script or -1 on timeout </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>user_data</em>&nbsp;</td><td>user data </td></tr>
+    <tr><td valign="top"></td><td valign="top"><em>user_data</em>&nbsp;</td><td>user data (IAP) </td></tr>
   </table>
 </dl>
 
@@ -1488,7 +1488,7 @@ Callback function called when pre-up scripts have been run <dl compact><dt><b>Pa
 <div class="memdoc">
 
 <p>
-Rename an IAP and continue connecting it if it's in ICD_IAP_STATE_SAVING <dl compact><dt><b>Parameters:</b></dt><dd>
+Rename an IAP and continue connecting it if it's in #ICD_IAP_STATE_SAVING <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>iap</em>&nbsp;</td><td>the IAP </td></tr>
     <tr><td valign="top"></td><td valign="top"><em>name</em>&nbsp;</td><td>the new name of the IAP </td></tr>
@@ -1527,12 +1527,6 @@ Rename an IAP and continue connecting it if it's in ICD_IAP_STATE_SAVING <dl com
 <div class="memdoc">
 
 <p>
-Request a renew for the specified IAP and network layer <dl compact><dt><b>Parameters:</b></dt><dd>
-  <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>iap</em>&nbsp;</td><td>the IAP </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>renew_layer</em>&nbsp;</td><td>the network module layer to renew</td></tr>
-  </table>
-</dl>
 Renew a network module layer for an IAP <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>iap</em>&nbsp;</td><td>the IAP </td></tr>
@@ -1700,7 +1694,7 @@ Renew function callback <dl compact><dt><b>Parameters:</b></dt><dd>
 <div class="memdoc">
 
 <p>
-Check wheter the iap needs to be initiated. Called when the network module layer disconnect functions have been exhausted and when post down scripts have been run. <dl compact><dt><b>Parameters:</b></dt><dd>
+Check whether the iap needs to be initiated. Called when the network module layer disconnect functions have been exhausted and when post down scripts have been run. <dl compact><dt><b>Parameters:</b></dt><dd>
   <table border="0" cellspacing="2" cellpadding="0">
     <tr><td valign="top"></td><td valign="top"><em>iap</em>&nbsp;</td><td>the IAP </td></tr>
   </table>
