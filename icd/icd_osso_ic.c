@@ -19,7 +19,7 @@
 #include "icd_wlan_defs.h"
 
 /** milliseconds to wait for UI to respond to requests; used only for log
- * message printing for now
+ *  message printing for now
  */
 #define ICD_OSSO_UI_REQUEST_TIMEOUT   4 * 1000
 
@@ -81,21 +81,19 @@ struct icd_osso_ic_mcall_data {
 };
 
 /**
- * @brief Function that handles an incoming OSSO IC API request
+ * @brief  Function that handles an incoming OSSO IC API request
  *
- * @param request the D-Bus message
- * @param user_data user data
+ * @param  request    the D-Bus message
+ * @param  user_data  user data
  *
  * @return the D-Bus reply or NULL if a reply is sent later
- *
  */
 typedef DBusMessage*(* icd_osso_ic_message_handler)(DBusMessage *request, void *user_data);
 
 /** Structure containing information to match a D-Bus message with the correct
- * handler function
- */
+ *  handler function */
 struct icd_osso_ic_handler {
-  /**  D-Bus interface */
+  /** D-Bus interface */
   const char *interface;
 
   /** D-Bus method */

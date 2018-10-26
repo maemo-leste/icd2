@@ -61,8 +61,8 @@ enum icd_scan_request_flags {
   /** request ICd2 to actively scan saved networks */
   ICD_SCAN_REQUEST_ACTIVE_SAVED = 1,
   /** passively receive scan results when other apps are requesting them;
-   * don't start a network scan because of this application; not yet
-   * implemented */
+   *  don't start a network scan because of this application; not yet
+   *  implemented */
   ICD_SCAN_REQUEST_PASSIVE = 2
 };
 
@@ -75,7 +75,7 @@ enum icd_scan_request_flags {
  * array of DBUS_TYPE_STRING      network types to scan; no array or empty
  *                                array to scan all network types</pre>
  * Return arguments:
- * <pre>
+ *<pre>
  * array of DBUS_TYPE_STRING      network types which are going to be scanned</pre>
  */
 #define ICD_DBUS_API_SCAN_REQ     "scan_req"
@@ -83,7 +83,7 @@ enum icd_scan_request_flags {
 /** Cancel a scan.
  *
  * Arguments:
- * <pre>
+ *<pre>
  * none</pre>
  * Return arguments:
  *<pre>
@@ -96,15 +96,15 @@ enum icd_scan_status {
   /** the returned network was found */
   ICD_SCAN_NEW = 0,
   /** an existing network with better signal strength is found, applications
-   * may want to update any saved data concerning signal strength */
+   *  may want to update any saved data concerning signal strength */
   ICD_SCAN_UPDATE = 1,
   /** other network details have been updated but will not be stored by ICd2;
-   * normally networks with this status are best ignored */
+   *  normally networks with this status are best ignored */
   ICD_SCAN_NOTIFY = 2,
   /** the returned network has expired */
   ICD_SCAN_EXPIRE = 3,
   /** this round of scanning is complete and a new scan will be started after
-   * the module scan timeout */
+   *  the module scan timeout */
   ICD_SCAN_COMPLETE = 4
 };
 
@@ -146,6 +146,7 @@ enum icd_connection_flags {
 };
 
 /** Request a network connection
+ *
  * Make ICd2 select a suitable connection; normally this should be used.
  *
  * Arguments:
@@ -173,7 +174,7 @@ enum icd_connection_flags {
 #define ICD_DBUS_API_CONNECT_REQ "connect_req"
 
 /** Request the 'Select connection' dialog; only connectiviy UIs should be
- * using this function.
+ *  using this function.
  *
  * Arguments:
  *<pre>
@@ -186,7 +187,8 @@ enum icd_connection_flags {
 #define ICD_DBUS_API_SELECT_REQ "select_req"
 
 /** status of the #ICD_DBUS_API_CONNECT_REQ or #ICD_DBUS_API_SELECT_REQ
- * connection requests */
+ *  connection requests
+ */
 enum icd_connect_status {
   /** the network connection has connected successfully */
   ICD_CONNECTION_SUCCESSFUL = 0,
@@ -197,10 +199,10 @@ enum icd_connect_status {
 };
 
 /** Connection result signal for #ICD_DBUS_API_CONNECT_REQ and
- * #ICD_DBUS_API_SELECT_REQ requests.
+ *  #ICD_DBUS_API_SELECT_REQ requests.
  *
  * Arguments:
- * <pre>
+ *<pre>
  * DBUS_TYPE_STRING              service type or empty string
  * DBUS_TYPE_UINT32              service attributes, see @ref srv_provider_api
  * DBUS_TYPE_STRING              service id or empty string
@@ -289,7 +291,7 @@ enum icd_connection_state {
 };
 
 /** State signal, sent in response to #ICD_DBUS_API_STATE_REQ or broadcasted
- * whenever the state of a connection changes.
+ *  whenever the state of a connection changes.
  *
  * Arguments:
  *<pre>
@@ -330,13 +332,13 @@ enum icd_connection_state {
  * DBUS_TYPE_STRING              network type
  * DBUS_TYPE_UINT32              network attributes, see @ref network_module_api
  * DBUS_TYPE_ARRAY (BYTE)        network id</pre>
- * 
+ *
  * Request statistics for all connections.
  *
  * Arguments:
  *<pre>
  * none</pre>
- * 
+ *
  * Return arguments:
  *<pre>
  * DBUS_TYPE_UINT32              number of #ICD_DBUS_API_STATISTICS_SIG sent,
@@ -345,7 +347,7 @@ enum icd_connection_state {
 #define ICD_DBUS_API_STATISTICS_REQ "statistics_req"
 
 /** Statistics signal, sent in response to #ICD_DBUS_API_STATISTICS_REQ if
- * there are ongoing connections.
+ *  there are ongoing connections.
  *
  * Arguments:
  *<pre>
@@ -356,15 +358,15 @@ enum icd_connection_state {
  * DBUS_TYPE_UINT32              network attributes, see @ref network_module_api
  * DBUS_TYPE_ARRAY (BYTE)        network id or empty string
  * DBUS_TYPE_UINT32              time active, measured in seconds
- * DBUS_TYPE_INT32               signal strength/quality, see @ref icd_nw_levels
+ * DBUS_TYPE_INT32               signal strength/quality, see #icd_nw_levels
  * DBUS_TYPE_UINT32              bytes sent
  * DBUS_TYPE_UINT32              bytes received</pre>
  */
 #define ICD_DBUS_API_STATISTICS_SIG "statistics_sig"
 
-/** Request specific connection address info. Note that the address information
- * returned is what was assigned to the connection, any VPNs or tunnels set up
- * later will not get reported.
+/** Request specific connection address info. Note that the address
+ *  information returned is what was assigned to the connection, any VPNs or
+ *  tunnels set up later will not get reported.
  *
  * Arguments:
  *<pre>
@@ -374,25 +376,25 @@ enum icd_connection_state {
  * DBUS_TYPE_STRING              network type
  * DBUS_TYPE_UINT32              network attributes, see @ref network_module_api
  * DBUS_TYPE_ARRAY (BYTE)        network id</pre>
- * 
+ *
  * Request address info for all connections.
  *
  * Arguments:
  *<pre>
  * none</pre>
- * 
+ *
  * Return arguments:
  *<pre>
  * DBUS_TYPE_UINT32              number of #ICD_DBUS_API_ADDRINFO_SIG sent,
  *                               zero if no connections are ongoing</pre>
- * 
+ *
  * Note that the address information returned is what was assigned to the
  * connection, any VPNs or tunnels set up later will not get reported.
  */
 #define ICD_DBUS_API_ADDRINFO_REQ "addrinfo_req"
 
 /** Address info signal, sent in response to #ICD_DBUS_API_ADDRINFO_REQ if
- * there are ongoing connections.
+ *  there are ongoing connections.
  *
  * Arguments:
  *<pre>

@@ -27,8 +27,7 @@ enum icd_policy_status {
 #define ICD_POLICY_ATTRIBUTE_ALWAYS_ONLINE      0x40
 
 /** The requested (pseudo)network that is to be decided on by the policy
- * function.
- */
+ *  function. */
 struct icd_policy_request {
   /** internal information */
   gpointer request_token;
@@ -45,10 +44,10 @@ struct icd_policy_request {
   /** service provider id */
   gchar *service_id;
 
-  /** (pseudo)network type */
+  /** (pseudo)network attributes */
   gchar *network_type;
 
-  /** (pseudo)network attributes */
+  /** (pseudo)network type */
   guint network_attrs;
 
   /** (pseudo)network id */
@@ -128,10 +127,10 @@ typedef gboolean
 /**
  * @brief  Policy module service module check function.
  *
- * @param network_type network type
+ * @param  network_type  network type
  *
- * @returns TRUE if there is a suitable service module loaded, FALSE if not
-*/
+ * @return TRUE if there is a suitable service module loaded, FALSE if not
+ */
 typedef gboolean
 (*icd_policy_service_module_check_fn)(const gchar *network_type);
 

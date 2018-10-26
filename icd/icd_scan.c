@@ -17,14 +17,12 @@ struct icd_scan_listener {
   gchar *type;
   /** callback */
   icd_scan_cb_fn cb;
-  /** callback data */
+  /** callback user data */
   gpointer user_data;
 };
 
-/**
- * helper structure for communicating module and expiration to hash table
- * remove callback
- */
+/** helper structure for communicating module and expiration to hash table
+ *  remove callback */
 struct icd_scan_expire_network_data {
   /** module */
   struct icd_network_module *module;
@@ -43,14 +41,13 @@ static const gchar const *icd_scan_status_names[] =
 };
 
 /**
- * @brief Helper function for comparing two strings where a NULL string is equal
- * to another NULL string
+ * @brief  Helper function for comparing two strings where a NULL string is
+ *         equal to another NULL string
  *
- * @param a string A
- * @param b string B
+ * @param  a  string A
+ * @param  b  string B
  *
  * @return TRUE if equal, FALSE if unequal
- *
  */
 inline static gboolean
 string_equal(const char *a, const char *b)
@@ -99,15 +96,15 @@ icd_scan_listener_remove(struct icd_network_module *module, icd_scan_cb_fn cb,
 }
 
 /**
- * @brief Unregister all matching callback - user data tuples from receiving
- * scan results
+ * @brief  Unregister all matching callback - user data tuples from receiving
+ *         scan results
  *
- * @param cb the same callback as given in icd_scan_results_request
- * @param user_data the same user_data as given in #icd_scan_results_request
+ * @param  cb         the same callback as given in #icd_scan_results_request
+ * @param  user_data  the same user_data as given in
+ *                    #icd_scan_results_request
  *
  * @return TRUE if the callback - user_data tuple existed and was removed;
- * FALSE otherwise
- *
+ *         FALSE otherwise
  */
 gboolean
 icd_scan_results_unregister(icd_scan_cb_fn cb, gpointer user_data)
@@ -138,12 +135,11 @@ icd_scan_results_unregister(icd_scan_cb_fn cb, gpointer user_data)
 }
 
 /**
- * @brief Set up the scan cache for a network module
+ * @brief  Set up the scan cache for a network module
  *
- * @param module network module
+ * @param  module  network module
  *
  * @return TRUE on success, FALSE if scan cache already exists
- *
  */
 gboolean
 icd_scan_cache_init(struct icd_network_module *module)
@@ -163,8 +159,7 @@ icd_scan_cache_init(struct icd_network_module *module)
 /**
  * @brief  Free an #icd_scan_cache structure
  *
- * @param cache_entry cache entry to free
- *
+ * @param  cache_entry  cache entry to free
  */
 void
 icd_scan_cache_entry_free(struct icd_scan_cache *cache_entry)
@@ -194,16 +189,16 @@ icd_scan_cache_entry_free(struct icd_scan_cache *cache_entry)
 }
 
 /**
- * @brief Send the cache entry to the listener if the network type matches
+ * @brief  Send the cache entry to the listener if the network type matches
  *
- * @param srv_provider send only this service provider to the listener if set;
- * send all network and service provider entries if NULL
- * @param cache_entry the cache entry
- * @param listener the listener
- * @param status the status of the supplied cache entry
+ * @param  srv_provider  send only this service provider to the listener if
+ *                       set; send all network and service provider entries
+ *                       if NULL
+ * @param  cache_entry   the cache entry
+ * @param  listener      the listener
+ * @param  status        the status of the supplied cache entry
  *
  * @return TRUE if the type matched and listener was updated; FALSE otherwise
- *
  */
 static gboolean
 icd_scan_listener_send_entry(struct icd_scan_srv_provider *srv_provider,
@@ -276,14 +271,13 @@ icd_scan_listener_send_entry(struct icd_scan_srv_provider *srv_provider,
 }
 
 /**
- * @brief Check for elements, return immediately on first element found
+ * @brief  Check for elements, return immediately on first element found
  *
- * @param key the network_id, not used
- * @param value the #icd_scan_cache_list
- * @param user_data not used
+ * @param  key        the network_id, not used
+ * @param  value      the #icd_scan_cache_list
+ * @param  user_data  not used
  *
  * @return TRUE on first non-NULL element found
- *
  */
 static gboolean
 icd_scan_cache_element_check(gpointer key,
@@ -307,12 +301,11 @@ icd_scan_cache_element_check(gpointer key,
 }
 
 /**
- * @brief Check wheter a scan cache has any elements
+ * @brief  Check whether a scan cache has any elements
  *
- * @param module network module
+ * @param  module  network module
  *
  * @return TRUE if there are elements, FALSE otherwise
- *
  */
 static gboolean
 icd_scan_cache_has_elements(struct icd_network_module *module)
@@ -324,12 +317,11 @@ icd_scan_cache_has_elements(struct icd_network_module *module)
 }
 
 /**
- * @brief Check if there are any listeners that want scan results
+ * @brief  Check if there are any listeners that want scan results
  *
- * @param module the network module
+ * @param  module  the network module
  *
  * @return TRUE if there are listeners, FALSE otherwise
- *
  */
 static gboolean
 icd_scan_listener_exist(struct icd_network_module *module)
@@ -338,15 +330,15 @@ icd_scan_listener_exist(struct icd_network_module *module)
 }
 
 /**
- * @brief Notify each matching listener about the change in the cache entry
+ * @brief  Notify each matching listener about the change in the cache entry
  *
- * @param module the network module
- * @param srv_provider NULL or the specific service provider entry that got
- * updated; if non-NULL only this service provider associated with
- * the cache_entry will be sent to the listeners
- * @param cache_entry corresponding cache entry that got updated
- * @param status status of the notification
- *
+ * @param  module        the network module
+ * @param  srv_provider  NULL or the specific service provider entry that got
+ *                       updated; if non-NULL only this service provider
+ *                       associated with the cache_entry will be sent to the
+ *                       listeners
+ * @param  cache_entry   corresponding cache entry that got updated
+ * @param  status        status of the notification
  */
 void
 icd_scan_listener_notify(struct icd_network_module *module,
@@ -364,17 +356,17 @@ icd_scan_listener_notify(struct icd_network_module *module,
 }
 
 /**
- * @brief  Hash table callback for removing an entry. Note that this function is
- * also called outside of hash, so care should be taken when dealing with the
- * hash (that is why list_entry is not deleted inside this function).
+ * @brief  Hash table callback for removing an entry. Note that this function
+ *         is also called outside of hash, so care should be taken when
+ *         dealing with the hash (that is why list_entry is not deleted
+ *         inside this function).
  *
- * @param key the network_id
- * @param value the icd_scan_cache_list struct
- * @param user_data expiration time
+ * @param  key        the network_id
+ * @param  value      the #icd_scan_cache_list struct
+ * @param  user_data  expiration time
  *
- * @return TRUE when all networks for the network_id have been expired and the
- * hash table element can be removed; FALSE otherwise
- *
+ * @return TRUE when all networks for the network_id have been expired and
+ *         the hash table element can be removed; FALSE otherwise
  */
 static gboolean
 icd_scan_expire_network(gpointer key, gpointer value, gpointer user_data)
@@ -429,16 +421,15 @@ icd_scan_expire_network(gpointer key, gpointer value, gpointer user_data)
 
 
 /**
- * @brief Hash table callback for removing an entry, this version is only called
- * from hash remove func.
+ * @brief  Hash table callback for removing an entry, this version is only
+ *         called from hash remove func.
  *
- * @param key the network_id
- * @param value the icd_scan_cache_list struct
- * @param user_data expiration time
+ * @param  key        the network_id
+ * @param  value      the #icd_scan_cache_list struct
+ * @param  user_data  expiration time
  *
- * @return TRUE when all networks for the network_id have been expired and the
- * hash table element can be removed; FALSE otherwise
- *
+ * @return TRUE when all networks for the network_id have been expired and
+ *         the hash table element can be removed; FALSE otherwise
  */
 static gboolean
 icd_scan_expire_network_for_hash(gpointer key, gpointer value,
@@ -456,10 +447,9 @@ icd_scan_expire_network_for_hash(gpointer key, gpointer value,
 /**
  * @brief  Cache expiry function
  *
- * @param data cache timeout data
+ * @param  data  scan cache timeout data
  *
  * @return FALSE to remove the timeout
- *
  */
 static gboolean
 icd_scan_cache_expire(gpointer data)
@@ -559,16 +549,15 @@ icd_scan_cache_remove_iap(gchar *iap_name)
 }
 
 /**
- * @brief Remove scan cache from scan list, the removed entry does not call
- * listener.
+ * @brief  Remove scan cache from scan list, the removed entry does not call
+ *         listeners.
  *
- * @param scan_cache_list the icd_scan_cache_list struct
- * @param network_id network identifier
- * @param network_type the network type
- * @param network_attrs network attributes
+ * @param  cache_list     the #icd_scan_cache_list struct
+ * @param  network_id     network identifier
+ * @param  network_type   the network type
+ * @param  network_attrs  network attributes
  *
  * @return TRUE if scan entry was removed; FALSE otherwise
- *
  */
 gboolean
 icd_scan_cache_entry_remove(struct icd_scan_cache_list *scan_cache_list,

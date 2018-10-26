@@ -11,8 +11,7 @@ enum icd_tracking_info_api {
 };
 
 /** Tracking info for D-Bus users. Needed for creating a reply to
- *  ICD_CONNECT_REQ and possible future user reference counting
- */
+ *  ICD_CONNECT_REQ and possible future user reference counting */
 struct icd_tracking_info {
   enum icd_tracking_info_api interface;
 

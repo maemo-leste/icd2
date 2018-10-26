@@ -40,15 +40,15 @@ struct icd_policy_scan_data {
 
 struct icd_policy_api_async_data;
 /**
- * @brief Function prototype for calling the actual asynchronous policy function
+ * @brief  Function prototype for calling the actual asynchronous policy
+ *         function
  *
- * @param module the policy module
- * @param request the requested connection
- * @param async_data data for the asynchronous function call
+ * @param  module      the policy module
+ * @param  request     the requested connection
+ * @param  async_data  data for the asynchronous function call
  *
- * @return TRUE if the module has a policy function that will cause the callback
- * to be called; FALSE if no policy function is called
- *
+ * @return TRUE if the module has a policy function that will cause the
+ *         callback to be called; FALSE if no policy function is called
  */
 typedef gboolean(* icd_policy_api_async_call_fn)(
     struct icd_policy_module *module, struct icd_policy_request *request,
@@ -67,16 +67,15 @@ struct icd_policy_api_async_data {
 };
 
 /**
- * @brief Policy module function that will be called once for each policy
- * module until #ICD_POLICY_REJECTED is returned
+ * @brief  Policy module function that will be called once for each policy
+ *         module until #ICD_POLICY_REJECTED is returned
  *
- * @param module the policy module
- * @param request the request to apply policy to
- * @param user_data user data to pass to the module
+ * @param  module     the policy module
+ * @param  request    the request to apply policy to
+ * @param  user_data  user data to pass to the module
  *
  * @return #ICD_POLICY_REJECTED if the policy got rejected,
- * #ICD_POLICY_ACCEPTED otherwise
- *
+ *         #ICD_POLICY_ACCEPTED otherwise
  */
 typedef enum icd_policy_status(* icd_policy_api_run_module_fn)(
     struct icd_policy_module *module, struct icd_policy_request *request,
@@ -92,14 +91,13 @@ const gchar const* icd_policy_api_state[] = {
 static GSList *scan_list = NULL;
 
 /**
- * @brief Module iterator for the 'cancel_request' function.
+ * @brief  Module iterator for the #cancel_request function.
  *
- * @param module the policy module
- * @param request the request to cancel
- * @param user_data user data; not used
+ * @param  module     the policy module
+ * @param  request    the request to cancel
+ * @param  user_data  user data; not used
  *
  * @return #ICD_POLICY_ACCEPTED to iterate through all policy modules
- *
  */
 static enum icd_policy_status
 icd_policy_api_request_cancel_iter(struct icd_policy_module *module,
@@ -118,15 +116,14 @@ icd_policy_api_request_cancel_iter(struct icd_policy_module *module,
 }
 
 /**
- * @brief Iterate over all the modules and call the policy callback function for
- * each of them.
+ * @brief  Iterate over all the modules and call the policy callback function
+ *         for each of them.
  *
- * @param policy_fn the policy callback function call for each module
- * @param request the request to apply policy to
- * @param user_data user data to pass to the function
+ * @param  policy_fn  the policy callback function call for each module
+ * @param  request    the request to apply policy to
+ * @param  user_data  user data to pass to the function
  *
  * @return enum #icd_policy_status
- *
  */
 static enum icd_policy_status
 icd_policy_api_run(icd_policy_api_run_module_fn policy_fn,
@@ -159,11 +156,10 @@ icd_policy_api_run(icd_policy_api_run_module_fn policy_fn,
 }
 
 /**
- * @brief Cancel a request that is in ICD_POLICY_WAITING state by informing each
- * policy module.
+ * @brief  Cancel a request that is in ICD_POLICY_WAITING state by informing
+ *         each policy module.
  *
- * @param req the policy request structure
- *
+ * @param  req  the policy request structure
  */
 void
 icd_policy_api_request_cancel(struct icd_policy_request *req)
@@ -183,13 +179,13 @@ icd_policy_api_request_cancel(struct icd_policy_request *req)
 }
 
 /**
- * @brief Go through all connections and add them to the list in reverse order
+ * @brief  Go through all connections and add them to the list in reverse
+ *         order
  *
- * @param iap current iap
- * @param user_data connection list
+ * @param  iap        current iap
+ * @param  user_data  connection list
  *
  * @return TRUE to iterate over all connections
- *
  */
 static gboolean
 icd_policy_api_existing_conn_foreach(struct icd_iap *iap, gpointer user_data)
@@ -202,10 +198,9 @@ icd_policy_api_existing_conn_foreach(struct icd_iap *iap, gpointer user_data)
 }
 
 /**
- * @brief Get the list of existing connections
+ * @brief  Get the list of existing connections
  *
  * @return list of connections; the caller needs to free only the GSList.
- *
  */
 static GSList *
 icd_policy_api_existing_conn_get(void)
@@ -220,12 +215,11 @@ icd_policy_api_existing_conn_get(void)
 /**
  * @brief  Iterator for the disconnect policy
  *
- * @param module the policy module
- * @param request the request to apply policy to
- * @param user_data reference count
+ * @param  module     the policy module
+ * @param  request    the request to apply policy to
+ * @param  user_data  reference count
  *
  * @return enum #icd_policy_status
- *
  */
 static enum icd_policy_status
 icd_policy_api_iap_disconnect_iter(struct icd_policy_module *module,
@@ -249,15 +243,15 @@ icd_policy_api_iap_disconnect_iter(struct icd_policy_module *module,
 }
 
 /**
- * @brief Disconnect policy called when ICd attempts to disconnect from a
- * network
+ * @brief  Disconnect policy called when ICd attempts to disconnect from a
+ *         network
  *
- * @param connection the connection that is to be tried
- * @param refcount a reference count on the number of applications using this
- * connection or -1 if disconnect forced by Connectivity UI
+ * @param  connection  the connection that is to be tried
+ * @param  refcount    a reference count on the number of applications using
+ *                     this connection or -1 if disconnect forced by
+ *                     Connectivity UI
  *
  * @return enum #icd_policy_status
- *
  */
 enum icd_policy_status
 icd_policy_api_iap_disconnect(struct icd_policy_request *connection,

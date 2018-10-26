@@ -9,9 +9,9 @@
 #include "icd_pid.h"
 
 /**
- * @brief Write the process id to the pid file.
+ * @brief  Write the process id to the pid file
  *
- * @param pidfile the full pathname of the pid file
+ * @param  pidfile  the full pathname of the pid file
  *
  * @return TRUE on success, FALSE on failure
  */
@@ -34,9 +34,9 @@ icd_pid_write(const char *pidfile)
 }
 
 /**
- * @brief Remove process id file.
+ * @brief  Remove process id file
  *
- * @param pidfile the full pathname of the pid file
+ * @param  pidfile  the full pathname of the pid file
  *
  * @return TRUE on success, FALSE on failure
  */

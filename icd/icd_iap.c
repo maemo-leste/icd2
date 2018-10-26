@@ -70,14 +70,13 @@ static const gchar *icd_iap_layer_names[] = {
 };
 
 /**
- * @brief Helper function for comparing two strings where a NULL string is equal
- * to another NULL string
+ * @brief  Helper function for comparing two strings where a NULL string is
+ *         equal to another NULL string
  *
- * @param a string A
- * @param b string B
+ * @param  a  string A
+ * @param  b  string B
  *
  * @return TRUE if equal, FALSE if unequal
- *
  */
 inline static gboolean
 string_equal(const char *a, const char *b)
@@ -92,13 +91,12 @@ string_equal(const char *a, const char *b)
 }
 
 /**
- * @brief Iterate over all active IAPs
+ * @brief  Iterate over all active IAPs
  *
- * @param fn function to call for each IAP
- * @param user_data user data to pass to the iterator function
+ * @param  fn         function to call for each IAP
+ * @param  user_data  user data to pass to the iterator function
  *
  * @return the IAP struct where fn returns FALSE, NULL otherwise or on error
- *
  */
 struct icd_iap *
 icd_iap_foreach(icd_iap_foreach_fn fn, gpointer user_data)
@@ -152,13 +150,12 @@ icd_iap_foreach(icd_iap_foreach_fn fn, gpointer user_data)
 }
 
 /**
- * @brief Restart a network module by disconnecting network modules including
- * the requested layer. When the requested layer has been disconnected,
- * reconnect starting from the requested layer.
+ * @brief  Restart a network module by disconnecting network modules
+ *         including the requested layer. When the requested layer has been
+ *         disconnected, reconnect starting from the requested layer.
  *
- * @param iap the IAP
- * @param restart_layer the layer which is to be disconnected
- *
+ * @param  iap          the IAP
+ * @param  renew_layer  the layer which is to be disconnectd
  */
 void
 icd_iap_restart(struct icd_iap *iap, enum icd_nw_layer restart_layer)
@@ -349,11 +346,10 @@ icd_iap_disconnect_module(struct icd_iap *iap)
 }
 
 /**
- * @brief Disconnect callback function for all IAP network _down functions
+ * @brief  Disconnect callback function for all IAP network _down functions
  *
- * @param status the status of the _down function, ignored mostly for now
- * @param cb_token the IAP
- *
+ * @param  status    the status of the _down function, ignored mostly for now
+ * @param  cb_token  the IAP
  */
 static void
 icd_iap_disconnect_cb(const enum icd_nw_status status, const gpointer cb_token)
@@ -376,10 +372,9 @@ icd_iap_disconnect_cb(const enum icd_nw_status status, const gpointer cb_token)
 /**
  * @brief  Pre-down script callback to remove script pid from list.
  *
- * @param pid the process id of the script that exited
- * @param exit_value exit value of the script or -1 on timeout
- * @param user_data user data (IAP)
- *
+ * @param  pid         the process id of the script that exited
+ * @param  exit_value  exit value of the script or -1 on timeout
+ * @param  user_data   user data (IAP)
  */
 static void
 icd_iap_pre_down_script_done(pid_t pid, gint exit_value, gpointer user_data)
@@ -395,14 +390,13 @@ icd_iap_pre_down_script_done(pid_t pid, gint exit_value, gpointer user_data)
 }
 
 /**
- * @brief Helper function for pre down script to check wheter there is another
- * connected IAP
+ * @brief  Helper function for pre down script to check whether there is
+ *         another connected IAP
  *
- * @param iap IAP to examine
- * @param user_data IAP that is going down
+ * @param  iap        IAP to examine
+ * @param  user_data  IAP that is going down
  *
  * @return TRUE to continue iterating, FALSE to stop and return the IAP
- *
  */
 static gboolean
 icd_iap_check_connected(struct icd_iap *iap, gpointer user_data)
@@ -414,11 +408,10 @@ icd_iap_check_connected(struct icd_iap *iap, gpointer user_data)
 }
 
 /**
- * @brief Disconnect callback for the service provider module
+ * @brief  Disconnect callback for the service provider module
  *
- * @param status status of the disconnect, ignored for now
- * @param disconnect_cb_token token passed to the disconnect function
- *
+ * @param  status               status of the disconnect, ignored for now
+ * @param  disconnect_cb_token  token passed to the disconnect function
  */
 static void
 icd_iap_srv_disconnect_cb(enum icd_srv_status status,
@@ -428,14 +421,13 @@ icd_iap_srv_disconnect_cb(enum icd_srv_status status,
 }
 
 /**
- * @brief Start disconnecting the current connecting module if it has not yet
- * called it's callback. Set the state to _down so that the IAP cannot be
- * disconnected again.
+ * @brief  Start disconnecting the current connecting module if it has not
+ *         yet called it's callback. Set the state to _down so that the IAP
+ *         cannot be disconnected again.
  *
- * @param iap IAP
- * @param err_str NULL if the network was disconnected normally or any
- * ICD_DBUS_ERROR_* from osso-ic-dbus.h on error
- *
+ * @param  iap      IAP
+ * @param  err_str  NULL if the network was disconnected normally or any
+ *                  ICD_DBUS_ERROR_* from osso-ic-dbus.h on error
  */
 void
 icd_iap_disconnect(struct icd_iap *iap, const gchar *err_str)
@@ -636,14 +628,13 @@ icd_iap_disconnect(struct icd_iap *iap, const gchar *err_str)
 }
 
 /**
- * @brief Find an IAP according type, attributes and id
+ * @brief  Find an IAP according type, attributes and id
  *
- * @param network_type the type of the IAP
- * @param network_attrs attributes
- * @param network_id IAP id
+ * @param  network_type   the type of the IAP
+ * @param  network_attrs  attributes
+ * @param  network_id     IAP id
  *
  * @return a pointer to the IAP on success, NULL on failure
- *
  */
 struct icd_iap *
 icd_iap_find(const gchar *network_type, const guint network_attrs,
@@ -684,13 +675,12 @@ icd_iap_find(const gchar *network_type, const guint network_attrs,
 }
 
 /**
- * @brief Report the final status of the connection attempt to the caller. Do
- * notice that the IAP is freed by the caller, do not use it after calling this
- * function
+ * @brief  Report the final status of the connection attempt to the caller.
+ *         Do notice that the IAP is freed by the caller, do not use it after
+ *         calling this function
  *
- * @param status the status to report
- * @param iap the IAP
- *
+ * @param  status  the status to report
+ * @param  iap     the IAP
  */
 static void
 icd_iap_do_callback(enum icd_iap_status status, struct icd_iap *iap)
@@ -701,10 +691,9 @@ icd_iap_do_callback(enum icd_iap_status status, struct icd_iap *iap)
 }
 
 /**
- * @brief Reset the list of modules to try
+ * @brief  Reset the list of modules to try
  *
- * @param iap the IAP
- *
+ * @param  iap  the IAP
  */
 static void
 icd_iap_modules_reset(struct icd_iap *iap)
@@ -713,10 +702,9 @@ icd_iap_modules_reset(struct icd_iap *iap)
 }
 
 /**
- * @brief Notify the caller (request) that the IAP has connected
+ * @brief  Notify the caller (request) that the IAP has connected
  *
- * @param iap the IAP
- *
+ * @param  iap  the IAP
  */
 static void
 icd_iap_has_connected(struct icd_iap *iap)
@@ -728,12 +716,11 @@ icd_iap_has_connected(struct icd_iap *iap)
 }
 
 /**
- * @brief Rename an IAP and continue connecting it if it's in
- * #ICD_IAP_STATE_SAVING
+ * @brief  Rename an IAP and continue connecting it if it's in
+ *         #ICD_IAP_STATE_SAVING
  *
- * @param iap the IAP
- * @param name the new name of the IAP
- *
+ * @param  iap   the IAP
+ * @param  name  the new name of the IAP
  */
 gboolean
 icd_iap_rename(struct icd_iap *iap, const gchar *name)
@@ -756,10 +743,9 @@ icd_iap_rename(struct icd_iap *iap, const gchar *name)
 }
 
 /**
- * @brief Free up an iap structure
+ * @brief  Free up an iap structure
  *
- * @param iap the IAP to free
- *
+ * @param  iap  the IAP to free
  */
 void
 icd_iap_free(struct icd_iap *iap)

@@ -5,13 +5,13 @@
 #include "icd_log.h"
 
 /**
- * @brief Load the plugin shared object file
+ * @brief  Load the plugin shared object file
  *
- * @param filename full pathname to the shared object file
- * @param name name of the module
- * @param init_name the name of the plugin initialization function
- * @param cb function called when the plugin has been loaded
- * @param cb_data data to pass to the callback
+ * @param  filename   full pathname to the shared object file
+ * @param  name       name of the module
+ * @param  init_name  the name of the plugin initialization function
+ * @param  cb         function called when the plugin has been loaded
+ * @param  cb_data    data to pass to the callback
  *
  * @return TRUE on success, FALSE on failure
  */
@@ -56,10 +56,9 @@ icd_plugin_load(const char *filename, const char *name, const char *init_name,
 }
 
 /**
- * @brief Unload a module.
+ * @brief  Unload a module.
  *
- * @param handle module handle given to module initialization callback
- *
+ * @param  handle  module handle given to module initialization callback
  */
 void
 icd_plugin_unload_module(void *handle)
@@ -68,17 +67,16 @@ icd_plugin_unload_module(void *handle)
 }
 
 /**
- * @brief Load all plugins from a specified list of file names.
+ * @brief  Load all plugins from a specified list of file names.
  *
- * @param plugindir path for the plugins
- * @param plugin_list list of plugin file names
- * @param init_name the name of the plugin initialization function
- * @param cb function called when the plugin has been loaded
- * @param cb_data data to pass to the callback
+ * @param  plugindir    path for the plugins
+ * @param  plugin_list  list of plugin file names
+ * @param  init_name    the name of the plugin initialization function
+ * @param  cb           function called when the plugin has been loaded
+ * @param  cb_data      data to pass to the callback
  *
- * @return TRUE if loading of at least one plugin loading succeeded, FALSE if no
- * modules were loaded
- *
+ * @return TRUE if loading of at least one plugin loading succeeded, FALSE if
+ *         no modules were loaded
  */
 gboolean
 icd_plugin_load_list(const char *plugindir, GSList *plugin_list,
@@ -129,18 +127,17 @@ icd_plugin_load_list(const char *plugindir, GSList *plugin_list,
 }
 
 /**
- * @brief Load all plugins in specified directory. Enumerates all files in the
- * directory and tries to load all shared objects in there.
+ * @brief  Load all plugins in specified directory. Enumerates all files in
+ *         the directory and tries to load all shared objects in the there.
  *
- * @param plugindir path for the plugins
- * @param prefix prefix for the plugins to load
- * @param init_name the name of the plugin initialization function
- * @param cb function called when the plugin has been loaded
- * @param cb_data data to pass to the callback
+ * @param  plugindir  path for the plugins
+ * @param  prefix     prefix for the plugins to load
+ * @param  init_name  the name of the plugin initialization function
+ * @param  cb         function called when the plugin has been loaded
+ * @param  cb_data    data to pass to the callback
  *
- * @return TRUE if loading of at least one plugin loading succeeded, FALSE if no
- * modules were loaded
- *
+ * @return TRUE if loading of at least one plugin loading succeeded, FALSE if
+ *         no modules were loaded
  */
 gboolean
 icd_plugin_load_all(const char *plugindir, const char *prefix,

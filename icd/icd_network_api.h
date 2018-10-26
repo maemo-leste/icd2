@@ -23,14 +23,13 @@ struct icd_network_module {
 };
 
 /**
- * @brief Network api callback for going through every network module
+ * @brief  Network api callback for going through every network module
  *
- * @param module the network module
- * @param user_data user data passed to #icd_network_api_foreach_module
+ * @param  module     the network module
+ * @param  user_data  user data passed to icd_network_api_foreach_module
  *
  * @return if TRUE the callback will be called again with the next module; if
- * FALSE iteration is stopped
- *
+ *         FALSE iteration is stopped
  */
 typedef gboolean
 (*icd_network_api_foreach_module_fn) (struct icd_network_module* module,

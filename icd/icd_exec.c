@@ -33,10 +33,11 @@
 #define ICD_SHUTDOWN_TIMEOUT 100
 
 /**
- * @brief Wait until the last request has exited and quit ICd
+ * @brief  Wait until the last request has exited and quit ICd
  *
- * @param icd_ctx icd context
+ * @param  data  icd context
  *
+ * @return FALSE while waiting, TRUE when all requests have been removed
  */
 static gboolean
 icd_exec_shutdown_check(struct icd_context *icd_ctx)
@@ -59,10 +60,9 @@ icd_exec_shutdown_check(struct icd_context *icd_ctx)
 }
 
 /**
- * @brief Cancel all requests and shut down ICd
+ * @brief  Cancel all requests and shut down ICd
  *
- * @param icd_ctx icd context
- *
+ * @param  icd_ctx  icd context
  */
 static void
 icd_exec_shutdown (struct icd_context *icd_ctx)
@@ -98,10 +98,9 @@ icd_exec_shutdown (struct icd_context *icd_ctx)
 }
 
 /**
- * @brief Callback to handle posix signals
+ * @brief  Callback to handle posix signals
  *
- * @param sig signal received
- *
+ * @param  sig  signal received
  */
 static void
 icd_exec_signal_cb(int sig)

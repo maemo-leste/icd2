@@ -83,14 +83,14 @@ extern "C" {
 /** Service provider module version equal to the network module version */
 #define ICD_SRV_MODULE_VERSION ICD_NW_MODULE_VERSION
 
-/** status of the icd_srv_api function call returned in the callback */
+/** status of the #icd_srv_api function call returned in the callback */
 enum icd_srv_status {
   /** service provider (authentication) functionality succeeded; network
-   * connection is functioning */
+   *  connection is functioning */
   ICD_SRV_SUCCESS = 0,
-  /** restart this IAP; ICd will call all icd_nw_api '_down' functions for the
-   * associated network module and then restart from link_up all the way to
-   * the service API */
+  /** restart this IAP; ICd will call all #icd_nw_api '_down' functions for
+   *  the associated network module and then restart from link_up all the way
+   *  to the service API */
   ICD_SRV_RESTART = 1,
   /** error; the IAP will be disconnected */
   ICD_SRV_ERROR = 2
@@ -106,17 +106,20 @@ enum icd_srv_identify_status {
   ICD_SRV_CONTINUE = 8,
 };
 
-/** Service identification callback.
- * @param status status of the identification procedure
- * @param service_type service type
- * @param service_name name of the service provider displayable to the user/UI
- * @param service_attrs service attributes
- * @param service_id internal service id
- * @param service_priority priority within a service type
- * @param network_type network type that was identified
- * @param network_attrs network attributes that were identified
- * @param network_id network id that was identified
- * @param identify_cb_token the token passed to the identification function
+/**
+ * @brief  Service identification callback.
+ *
+ * @param  status             status of the identification procedure
+ * @param  service_type       service type
+ * @param  service_name       name of the service provider displayable to the
+ *                            user/UI
+ * @param  service_attrs      service attributes
+ * @param  service_id         internal service id
+ * @param  service_priority   priority within a service type
+ * @param  network_type       network type that was identified
+ * @param  network_attrs      network attributes that were identified
+ * @param  network_id         network id that was identified
+ * @param  identify_cb_token  the token passed to the identification function
  */
 typedef void
 (*icd_srv_identify_cb_fn) (const enum icd_srv_identify_status status,
@@ -129,21 +132,25 @@ typedef void
 			   const guint network_attrs,
 			   const gchar *network_id,
 			   gpointer identify_cb_token);
-/** Identify whether a given network is usable with this service provider. Even
- * though this function has a callback, it is important that the decision is
- * made as fast as possible in order not to slow down network scan processing.
- * The service provider and network modules have to have a common understanding
- * of both network_attrs and network_id parameters.
- * @param status status, see #icd_scan_status
- * @param network_type network type
- * @param network_name name of the network displayable to the user
- * @param network_attrs network attributes
- * @param network_id network identification
- * @param signal signal strength
- * @param station_id station id, e.g. MAC address or similar id
- * @param dB absolute signal strength value in dB
- * @param identify_cb callback to call when the identification has been done
- * @param identify_cb_token token to pass to the identification callback
+/**
+ * @brief  Identify whether a given network is usable with this service
+ *         provider. Even though this function has a callback, it is
+ *         important that the decision is made as fast as possible in order
+ *         not to slow down network scan processing. The service provider and
+ *         network modules have to have a common understanding of both
+ *         network_attrs and network_id parameters.
+ *
+ * @param  status             status, see #icd_scan_status
+ * @param  network_type       network type
+ * @param  network_name       name of the network displayable to the user
+ * @param  network_attrs      network attributes
+ * @param  network_id         network identification
+ * @param  signal             signal strength
+ * @param  station_id         station id, e.g. MAC address or similar id
+ * @param  dB                 absolute signal strength value in dB
+ * @param  identify_cb        callback to call when the identification has
+ *                            been done
+ * @param  identify_cb_token  token to pass to the identification callback
  */
 typedef void (*icd_srv_identify_fn) (enum icd_scan_status status,
 				     const gchar *network_type,
@@ -158,23 +165,28 @@ typedef void (*icd_srv_identify_fn) (enum icd_scan_status status,
 				     gpointer identify_cb_token,
 				     gpointer *private);
 
-/** Disconnect callback for the service provider module
- * @param status status of the disconnect, ignored for now
- * @param disconnect_cb_token token passed to the disconnect function
+/**
+ * @brief  Disconnect callback for the service provider module
+ *
+ * @param  status               status of the disconnect, ignored for now
+ * @param  disconnect_cb_token  token passed to the disconnect function
  */
 typedef void (*icd_srv_disconnect_cb_fn) (enum icd_srv_status status,
 					  gpointer disconnect_cb_token);
-/** Disconnect function for the service provider module
- * @param service_type service type
- * @param service_attrs service attributes
- * @param service_id internal id identifying the service
- * @param network_type type of network connected to
- * @param network_attrs network attributes
- * @param network_id network identification
- * @param interface_name network interface used
- * @param disconnect_cb callback to call when disconnection is completed
- * @param disconnect_cb_token token to pass to the callback
- * @param private reference to the private icd_srv_api member
+/**
+ * @brief  Disconnect function for the service provider module
+ *
+ * @param  service_type         service type
+ * @param  service_attrs        service attributes
+ * @param  service_id           internal id identifying the service
+ * @param  network_type         type of network connected to
+ * @param  network_attrs        network attributes
+ * @param  network_id           network identification
+ * @param  interface_name       network interface used
+ * @param  disconnect_cb        callback to call when disconnection is
+ *                              completed
+ * @param  disconnect_cb_token  token to pass to the callback
+ * @param  private              reference to the private #icd_srv_api member
  */
 typedef void (*icd_srv_disconnect_fn) (const gchar *service_type,
 				       const guint service_attrs,
@@ -187,26 +199,32 @@ typedef void (*icd_srv_disconnect_fn) (const gchar *service_type,
 				       gpointer disconnect_cb_token,
 				       gpointer *private);
 
-/** Connect callback for the service provider module
- * @param status status of the connect attempt; with ICD_SRV_RESTART the IAP
- *        will be disconnected and reconnected again
- * @param err_str error string or NULL on success
- * @param connect_cb_token token passed to the connect function
+/**
+ * @brief  Connect callback for the service provider module
+ *
+ * @param  status            status of the connect attempt; with
+ *                           ICD_SRV_RESTART the IAP will be disconnected and
+ *                           reconnected again
+ * @param  err_str           error string or NULL on success
+ * @param  connect_cb_token  token passed to the connect function
  */
 typedef void (*icd_srv_connect_cb_fn) (enum icd_srv_status status,
 				       const gchar *err_str,
 				       gpointer connect_cb_token);
-/** Connect (or authenticate) with a service provider.
- * @param service_type service type
- * @param service_attrs service attributes
- * @param service_id internal id identifying the service
- * @param network_type type of network connected to
- * @param network_attrs network attributes
- * @param network_id network identification
- * @param interface_name network interface used
- * @param connect_cb callback to call when connection attempt is completed
- * @param connect_cb_token token to pass to the callback
- * @param private reference to the private icd_srv_api member
+/**
+ * @brief  Connect (or authenticate) with a service provider.
+ *
+ * @param  service_type      service type
+ * @param  service_attrs     service attributes
+ * @param  service_id        internal id identifying the service
+ * @param  network_type      type of network connected to
+ * @param  network_attrs     network attributes
+ * @param  network_id        network identification
+ * @param  interface_name    network interface used
+ * @param  connect_cb        callback to call when connection attempt is
+ *                           completed
+ * @param  connect_cb_token  token to pass to the callback
+ * @param  private           reference to the private #icd_srv_api member
  */
 typedef void (*icd_srv_connect_fn) (const gchar *service_type,
 				    const guint service_attrs,
@@ -219,29 +237,33 @@ typedef void (*icd_srv_connect_fn) (const gchar *service_type,
 				    gpointer connect_cb_token,
 				    gpointer *private);
 
-/** Notification function for child process termination
- * @param pid the process id that exited
- * @param exit_value process exit value
- * @param private a reference to the icd_nw_api private member
+/**
+ * @brief  Notification function for child process termination
+ *
+ * @param  pid         the process id that exited
+ * @param  exit_value  process exit value
+ * @param  private     a reference to the #icd_nw_api private member
  */
 typedef void (*icd_srv_child_exit_fn) (const pid_t pid,
 				       const gint exit_status,
 				       gpointer *private);
 
-/** Destruction function that cleans up after the module. The list of network
- * and service types in the icd_srv_api structure is deleted by ICd. The
- * destruction function will not be called before all child processes have
- * exited.
- * @param private a reference to the icd_nw_api private member
+/**
+ * @brief  Destruction function that cleans up after the module. The list of
+ *         network and service types in the #icd_srv_api structure is deleted
+ *         by ICd. The destruction function will not be called before all
+ *         child processes have exited.
+ *
+ * @param  private  a reference to the #icd_nw_api private member
  */
 typedef void (*icd_srv_destruct_fn) (gpointer *private);
 
-/** icd_srv_api defines the service provider functions implemented by the
- * module*/
+/** #icd_srv_api defines the service provider functions implemented by the
+ *  module */
 struct icd_srv_api {
 
   /** ICd2 version this module is compiled against, set to
-   * #ICD_SRV_MODULE_VERSION */
+   *  #ICD_SRV_MODULE_VERSION */
   const gchar *version;
 
   /** private data usable by the module */
@@ -264,28 +286,33 @@ struct icd_srv_api {
 };
 
 
-/** Prototype function for notifying ICd that a child process has been started.
- * The network destruction function will not be called before all child
- * processes have exited.
- * @param pid process id
- * @param watch_cb_token the watch callback token given on initialization
+/**
+ * @brief  Prototype function for notifying ICd that a child process has been
+ *         started. The network destruction function will not be called
+ *         before all child processes have exited.
+ *
+ * @param  pid             process id
+ * @param  watch_cb_token  the watch callback token given on initialization
  */
 typedef void (*icd_srv_watch_pid_fn) (const pid_t pid,
 				      gpointer watch_cb_token);
 
-/** Prototype for the module to request closing down its connection due to
- * internal or external events.
- * @param status reason for closing; #ICD_SRV_RESTART if the connection needs
- *        to be restarted, success or error will both close the network
- *        connection
- * @param err_str NULL if the service provisioning was disconnected normally
- *        or any ICD_DBUS_ERROR_* from osso-ic-dbus.h on error
- * @param service_type the service type
- * @param service_attrs attributes
- * @param service_id internal service id
- * @param network_type the network type
- * @param network_attrs network attributes
- * @param network_id network id
+/**
+ * @brief  Prototype for the module to request closing down its connection
+ *         due to internal or external events.
+ *
+ * @param  status         reason for closing; #ICD_SRV_RESTART if the
+ *                        connection needs to be restarted, success or error
+ *                        will both close the network connection
+ * @param  err_str        NULL if the service provisioning was disconnected
+ *                        normally or any ICD_DBUS_ERROR_* from
+ *                        osso-ic-dbus.h on error
+ * @param  service_type   the service type
+ * @param  service_attrs  attributes
+ * @param  service_id     internal service id
+ * @param  network_type   the network type
+ * @param  network_attrs  network attributes
+ * @param  network_id     network id
  */
 typedef void (*icd_srv_close_fn) (enum icd_srv_status status,
 				  const gchar *err_str,
@@ -296,27 +323,28 @@ typedef void (*icd_srv_close_fn) (enum icd_srv_status status,
 				  const guint network_attrs,
 				  const gchar *network_id);
 
-/** Enabled/disabled limited connectivity status values
- */
+/** Enabled/disabled limited connectivity status values */
 enum icd_srv_limited_conn_status {
   /** Limited connectivity is disabled */
   ICD_SRV_LIMITED_CONN_DISABLED = 0,
   /** Limited connectivity is enabled */
   ICD_SRV_LIMITED_CONN_ENABLED = 1
 };
-/** Inform about enabled or disabled limited connectivity for service
- * providing purposes. An example of limited connectivity is a network that
- * allows IP connections only to certain authenticaion/log in server until
- * the service module has finished its task. It is fully optional to use this
- * function and full connectivity will be signalled when the network is
- * connected.
- * @param conn_status whether limited connectivity is enabled or disabled
- * @param service_type the service type
- * @param service_attrs attributes
- * @param service_id internal service id
- * @param network_type the network type
- * @param network_attrs network attributes
- * @param network_id network id
+/**
+ * @brief  Inform about enabled or disabled limited connectivity for service
+ *         providing purposes. An example of limited connectivity is a
+ *         network that allows IP connections only to certain
+ *         authenticaion/log in server until the service module has finished
+ *         its task. It is fully optional to use this function and full
+ *         connectivity will be signalled when the network is connected.
+ *
+ * @param  conn_status    whether limited connectivity is enabled or disabled
+ * @param  service_type   the service type
+ * @param  service_attrs  attributes
+ * @param  service_id     internal service id
+ * @param  network_type   the network type
+ * @param  network_attrs  network attributes
+ * @param  network_id     network id
  */
 typedef void
 (*icd_srv_limited_conn_fn) (const enum icd_srv_limited_conn_status conn_status,
@@ -327,14 +355,19 @@ typedef void
 			    const guint network_attrs,
 			    const gchar *network_id);
 
-/** Prototype for the service api initialization function. ICd searches each
- * library for an instance of this function prototype called 'icd_srv_init'.
- * @param srv_api icd_srv_api structure to be filled in by the module
- * @param watch_cb function to inform ICd that a child process is to be
- *        monitored for exit status
- * @param watch_cb_token token to pass to the pid watch function
- * @param close_cb function to inform ICd that the network connection is to be
- *        closed
+/**
+ * @brief  Prototype for the service api initialization function. ICd
+ *         searches each library for an instance of this function prototype
+ *         called 'icd_srv_init'.
+ *
+ * @param  srv_api         #icd_srv_api structure to be filled in by the
+ *                         module
+ * @param  watch_cb        function to inform ICd that a child process is to
+ *                         be monitored for exit status
+ * @param  watch_cb_token  token to pass to the pid watch function
+ * @param  close_cb        function to inform ICd that the network connection
+ *                         is to be closed
+ *
  * @return TRUE on success, FALSE on failure whereby the module will be
  *         immediately unloaded
  */
