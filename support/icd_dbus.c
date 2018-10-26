@@ -9,9 +9,15 @@ struct icd_dbus_unique_name_data
   gpointer user_data;
 };
 
+/** D-Bus connection */
 static DBusConnection* dbus_system_connection = NULL;
 static GSList *unique_name_list = NULL;
 
+/**
+ * @brief  Get the static unique name request list
+ *
+ * @return the list
+ */
 static GSList **
 icd_dbus_get_unique_name_list(void)
 {
@@ -32,6 +38,12 @@ icd_dbus_close()
   dbus_shutdown();
 }
 
+/**
+ * @brief  Return the connection to the system D-Bus, initialize if
+ *         necessary.
+ *
+ * @return the pointer to the current DBusConnection or NULL on error.
+ */
 static DBusConnection *
 icd_dbus_get_system_bus(void)
 {
@@ -56,6 +68,22 @@ icd_dbus_get_system_bus(void)
   return dbus_system_connection;
 }
 
+/**
+ * @brief  Helper function for sending a D-Bus method call message used by
+ *         the #icd_dbus_send_message() and
+ *         #icd_dbus_send_session_method_call() functions. The auto
+ *         activation flag will also be set in the D-Bus message.
+ *
+ * @param  connection  the D-Bus session/system bus connection to use
+ * @param  mcall       the D-Bus method call message to send
+ * @param  timeout     reply timeout in milliseconds or -1 for D-Bus default
+ *                     value
+ * @param  cb          callback function for the pending call, if NULL no
+ *                     callback will be set
+ * @param  user_data   user data to pass to the callback
+ *
+ * @return TRUE on success, FALSE on failure
+ */
 static DBusPendingCall *
 icd_dbus_mcall_send(DBusConnection *connection, DBusMessage *mcall,
                     gint timeout, DBusPendingCallNotifyFunction cb,
@@ -103,6 +131,20 @@ icd_dbus_mcall_send(DBusConnection *connection, DBusMessage *mcall,
   return NULL;
 }
 
+/**
+ * @brief  Function for sending a system D-Bus method call message
+ *
+ * @param  message    the D-Bus method call message to send
+ * @param  timeout    reply timeout in milliseconds or -1 for D-Bus default
+ *                    value
+ * @param  cb         callback function for the pending call, if NULL no
+ *                    callback will be set
+ * @param  user_data  user data to pass to the callback
+ *
+ * @return a D-Bus pending call if a callback function is given and the
+ *         method call is successfully sent, NULL otherwise; the pending call
+ *         returned is referenced, the caller must unreference it after use
+ */
 DBusPendingCall *
 icd_dbus_send_system_mcall(DBusMessage *message, gint timeout,
                            DBusPendingCallNotifyFunction cb, void *user_data)
@@ -114,6 +156,15 @@ icd_dbus_send_system_mcall(DBusMessage *message, gint timeout,
                              user_data);
 }
 
+/**
+ * @brief  Helper function to send the D-Bus message (signal, error, method
+ *         call reply) over the given bus. Does not unref() the message.
+ *
+ * @param  connection  the D-Bus system or session connection
+ * @param  message     the D-Bus signal to send
+ *
+ * @return TRUE if the message was queued for sending, FALSE otherwise
+ */
 static gboolean
 icd_dbus_send_msg(DBusConnection *connection, DBusMessage *message)
 {
@@ -138,12 +189,27 @@ icd_dbus_send_msg(DBusConnection *connection, DBusMessage *message)
   return FALSE;
 }
 
+/**
+ * @brief  Sends a D-Bus message to the system bus. Does not unref() the
+ *         message.
+ *
+ * @param  message  the D-Bus signal to send
+ *
+ * @return TRUE if the message was a signal, method call return or error;
+ *         FALSE otherwise
+ */
 gboolean
 icd_dbus_send_system_msg(DBusMessage *message)
 {
   return icd_dbus_send_msg(icd_dbus_get_system_bus(), message);
 }
 
+/**
+ * @brief  Helper function for unregistering a D-Bus system bus service
+ *
+ * @param  path     object path
+ * @param  service  registered service name
+ */
 void
 icd_dbus_unregister_system_service(const char *path, const char *service)
 {
@@ -163,6 +229,13 @@ icd_dbus_unregister_system_service(const char *path, const char *service)
     ILOG_ERR("Could not unregister object path '%s'", path);
 }
 
+/**
+ * @brief  Helper function for disconnecting a system D-Bus path
+ *
+ * @param  path  path
+ *
+ * @return TRUE on success, FALSE on failure
+ */
 gboolean
 icd_dbus_disconnect_system_path (const char* path)
 {
@@ -170,6 +243,17 @@ icd_dbus_disconnect_system_path (const char* path)
       dbus_connection_unregister_object_path(icd_dbus_get_system_bus(), path);
 }
 
+/**
+ * @brief  Helper function for connecting D-Bus paths to callbacks.
+ *
+ * @param  connection  the D-Bus bus to connect to
+ * @param  path        the D-Bus signal path to connect
+ * @param  cb          the callback function to call when any signal is
+ *                     received
+ * @param  user_data   user data passed to the callback function
+ *
+ * @return TRUE on success, FALSE on failure
+ */
 static gboolean
 icd_dbus_connect_path(DBusConnection *connection, const char *path,
                       DBusObjectPathMessageFunction cb, void *user_data)
@@ -189,6 +273,18 @@ icd_dbus_connect_path(DBusConnection *connection, const char *path,
   return FALSE;
 }
 
+/**
+ * @brief  Helper function for registering a D-Bus system bus service.
+ *
+ * @param  path           the D-Bus signal path to connect.
+ * @param  service        the service to provide
+ * @param  service_flags  D-Bus service flags
+ * @param  cb             the callback function to call when any signal is
+ *                        received
+ * @param  user_data      user data passed to the callback function
+ *
+ * @return TRUE on success, FALSE on failure
+ */
 gboolean
 icd_dbus_register_system_service(const char *path, const char *service,
                                  guint service_flags,
@@ -214,6 +310,18 @@ icd_dbus_register_system_service(const char *path, const char *service,
   return FALSE;
 }
 
+/**
+ * @brief  Helper function for connecting D-Bus system bus paths to
+ *         callbacks. Unregister with
+ *         dbus_connection_unregister_object_path().
+ *
+ * @param  path       the D-Bus signal path to connect
+ * @param  cb         the callback function to call when any signal is
+ *                    received
+ * @param  user_data  user data passed to the callback function
+ *
+ * @return TRUE on success, FALSE on failure
+ */
 gboolean
 icd_dbus_connect_system_path(const char *path, DBusObjectPathMessageFunction cb,
                              void *user_data)
@@ -226,6 +334,22 @@ icd_dbus_connect_system_path(const char *path, DBusObjectPathMessageFunction cb,
   return FALSE;
 }
 
+/**
+ * @brief  Function for disconnecting a broadcast signal callback function
+ *
+ * @param  interface      the interface name of the broadcasted signal
+ * @param  cb             the previously added DBusHandleMessageFunction
+ *                        callback
+ * @param  user_data      the previously supplied user data
+ * @param  extra_filters  other filters to be included in the match or NULL
+ *
+ * @return TRUE on successful diconnection, FALSE otherwise
+ *
+ * @note   In the D-Bus documentation it is noted that it is a programming
+ *         error to try to remove a callback function and user data that has
+ *         not been added previously, in this case with
+ *         #icd_dbus_connect_system_bcast_signal()
+ */
 gboolean
 icd_dbus_disconnect_system_bcast_signal(const char *interface,
                                         DBusHandleMessageFunction cb,
@@ -263,6 +387,23 @@ icd_dbus_disconnect_system_bcast_signal(const char *interface,
   return TRUE;
 }
 
+/**
+ * @brief  Function for connecting a callback to receive broadcast signals.
+ *
+ * @param  interface      the interface name of the broadcasted signal
+ * @param  cb             the DBusHandleMessageFunction callback for
+ *                        receiving messages
+ * @param  user_data      user data to be supplied to the callback function
+ * @param  extra_filters  other filters to be included in the match or NULL
+ *
+ * @return TRUE on success, FALSE on failure
+ *
+ * @note   Since the broadcast reception is implemented as a filter for the
+ *         specified interface, all sorts of D-Bus actions related to that
+ *         interface will be captured. It is safe to return
+ *         DBUS_HANDLER_RESULT_NOT_YET_HANDLED for unknown actions involving
+ *         the callback.
+ */
 gboolean
 icd_dbus_connect_system_bcast_signal(const char *interface,
                                      DBusHandleMessageFunction cb,
@@ -305,6 +446,12 @@ icd_dbus_connect_system_bcast_signal(const char *interface,
   return TRUE;
 }
 
+/**
+ * @brief  Handle 'GetNameOwner' reply
+ *
+ * @param  pending    the pending call
+ * @param  user_data  callback data
+ */
 static void
 icd_dbus_get_unique_reply(DBusPendingCall *pending, gpointer user_data)
 {
@@ -330,6 +477,15 @@ icd_dbus_get_unique_reply(DBusPendingCall *pending, gpointer user_data)
   icd_dbus_cancel_unique_name(pending);
 }
 
+/**
+ * @brief  Get the unique D-Bus bus name for a service
+ *
+ * @param  name       D-Bus service name
+ * @param  cb         callback
+ * @param  user_data  user data
+ *
+ * @return TRUE on success, FALSE on failure
+ */
 gboolean
 icd_dbus_get_unique_name(const gchar *name, icd_dbus_get_unique_name_cb_fn cb,
                          gpointer user_data)
@@ -370,6 +526,11 @@ icd_dbus_get_unique_name(const gchar *name, icd_dbus_get_unique_name_cb_fn cb,
   return FALSE;
 }
 
+/**
+ * @brief  Cancel the unique name pending call
+ *
+ * @param  pending  the pending call or NULL to cancel all
+ */
 void
 icd_dbus_cancel_unique_name(DBusPendingCall *pending)
 {

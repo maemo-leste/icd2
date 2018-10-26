@@ -81,6 +81,7 @@ typedef enum icd_policy_status(* icd_policy_api_run_module_fn)(
     struct icd_policy_module *module, struct icd_policy_request *request,
     gpointer user_data);
 
+/**  */
 const gchar const* icd_policy_api_state[] = {
   "ICD_POLICY_ACCEPTED",
   "ICD_POLICY_MERGED",
@@ -262,6 +263,12 @@ icd_policy_api_iap_disconnect(struct icd_policy_request *connection,
 }
 
 
+/**
+ * @brief  Create the list of existing requests, the new_request isn't added
+ *         to the list
+ *
+ * @return list of requests; the caller needs to free only the GSList.
+ */
 static GSList *
 icd_policy_api_existing_requests_get(struct icd_request *new_request)
 {
@@ -291,6 +298,18 @@ icd_policy_api_existing_requests_get(struct icd_request *new_request)
   return rv;
 }
 
+/**
+ * @brief  Initialize the asynchronous policy module function data and start
+ *         running the policy modules one by one
+ *
+ * @param  req          the request
+ * @param  call_policy  the function that calls the policy module function
+ *                      with correct parameters
+ * @param  user_data    user data for the function
+ *
+ * @return TRUE if an asynchronous policy module function got called, FALSE
+ *         if no policy module contained any suitable functions
+ */
 static gboolean
 icd_policy_api_run_async(struct icd_policy_request *req,
                          struct icd_policy_api_async_data *async_data)
@@ -312,12 +331,24 @@ icd_policy_api_run_async(struct icd_policy_request *req,
   return FALSE;
 }
 
+/**
+ * @brief  Free async policy api data
+ *
+ * @param  data  the data to free
+ */
 static void
 icd_policy_api_async_data_free(struct icd_policy_api_async_data *data)
 {
   g_free(data);
 }
 
+/**
+ * @brief  Status callback for the new request policy function
+ *
+ * @param  status        status of the new request function
+ * @param  req           the policy request
+ * @param  policy_token  data for the async policy function call
+ */
 static void
 icd_policy_api_request_cb(enum icd_policy_status status,
                           struct icd_policy_request *req,
@@ -358,6 +389,17 @@ icd_policy_api_request_cb(enum icd_policy_status status,
   }
 }
 
+/**
+ * @brief  Function that calls the new_request policy module function
+ *
+ * @param  module      the policy module
+ * @param  request     the requested network
+ * @param  async_data  policy structure to pass as the policy_token to the
+ *                     policy module funcion
+ *
+ * @return TRUE if the module has a policy function that will cause the
+ *         callback to be called; FALSE if no policy function is called
+ */
 static gboolean
 icd_policy_api_request_call(struct icd_policy_module *module,
                             struct icd_policy_request *request,
@@ -379,6 +421,13 @@ icd_policy_api_request_call(struct icd_policy_module *module,
   return FALSE;
 }
 
+/**
+ * @brief  New request policy
+ *
+ * @param  req        the new request
+ * @param  cb         the callback to call with the policy decision
+ * @param  user_data  user data to pass to the callback
+ */
 void
 icd_policy_api_new_request(struct icd_policy_request *req,
                            icd_policy_api_request_cb_fn cb, gpointer user_data)
@@ -413,6 +462,13 @@ icd_policy_api_new_request(struct icd_policy_request *req,
   }
 }
 
+/**
+ * @brief  Iterator for the connect policy
+ *
+ * @param  module     the policy module
+ * @param  request    the request to apply policy to
+ * @param  user_data  not used
+ */
 static enum icd_policy_status
 icd_policy_api_iap_connect_iter(struct icd_policy_module *module,
                                 struct icd_policy_request *request,
@@ -433,12 +489,32 @@ icd_policy_api_iap_connect_iter(struct icd_policy_module *module,
   return rv;
 }
 
+/**
+ * @brief  Connect policy called when ICd attempts to connect to a network
+ *
+ * @param  connection  the connection that is to be tried
+ */
 enum icd_policy_status
 icd_policy_api_iap_connect(struct icd_policy_request *connection)
 {
   return icd_policy_api_run(icd_policy_api_iap_connect_iter, connection, NULL);
 }
 
+/**
+ * @brief  Add a network connection to try in response to the policy
+ *         decision. Any policy module using this function must be compatible
+ *         with the corresponding network module in order to set correct
+ *         *_type and *_id.
+ *
+ * @param  req            the request to which the new network is added
+ * @param  service_type   service provider type, see #srv_provider_api.h
+ * @param  service_attrs  service provider attributes, see
+ *                        #srv_provider_api.h
+ * @param  service_id     service_provider id, see #srv_provider_api.h
+ * @param  network_type   network type, see #network_api.h
+ * @param  network_attrs  network attributes, see #network_api.h
+ * @param  network_id     network id, see #network_api.h
+ */
 static void
 icd_policy_api_add_iap(struct icd_policy_request *req, gchar *service_type,
                        guint service_attrs, gchar *service_id,
@@ -450,6 +526,15 @@ icd_policy_api_add_iap(struct icd_policy_request *req, gchar *service_type,
                       network_id, network_priority);
 }
 
+/**
+ * @brief  Iterator for the disconnected informational policy
+ *
+ * @param  module     the policy module
+ * @param  request    the request to apply policy to
+ * @param  user_data  reason for disconnect; NULL on success
+ *
+ * @return ICD_POLICY_ACCEPTED
+ */
 static enum icd_policy_status
 icd_policy_api_iap_disconnected_iter(struct icd_policy_module *module,
                                      struct icd_policy_request *request,
@@ -470,6 +555,13 @@ icd_policy_api_iap_disconnected_iter(struct icd_policy_module *module,
   return ICD_POLICY_ACCEPTED;
 }
 
+/**
+ * @brief  Informational policy to call when a network connection has been
+ *         disconnected
+ *
+ * @param  connection  the connection that was disconnected
+ * @param  err_str     reason for disconnect; NULL on success
+ */
 void
 icd_policy_api_iap_disconnected(struct icd_policy_request *connection,
                                 const gchar *err_str)
@@ -478,6 +570,15 @@ icd_policy_api_iap_disconnected(struct icd_policy_request *connection,
                      (gpointer)err_str);
 }
 
+/**
+ * @brief  Iterator for the connection succeeded informational policy
+ *
+ * @param  module     the policy module
+ * @param  request    the request to apply policy to
+ * @param  user_data  not used
+ *
+ * @return ICD_POLICY_ACCEPTED
+ */
 static enum icd_policy_status
 icd_policy_api_iap_succeeded_iter(struct icd_policy_module *module,
                                   struct icd_policy_request *request,
@@ -496,17 +597,35 @@ icd_policy_api_iap_succeeded_iter(struct icd_policy_module *module,
   return ICD_POLICY_ACCEPTED;
 }
 
+/**
+ * @brief  Informational policy to call when a network connection has been
+ *         established
+ *
+ * @param  connection  the connection that was connected
+ */
 void
 icd_policy_api_iap_succeeded(struct icd_policy_request *connection)
 {
   icd_policy_api_run(icd_policy_api_iap_succeeded_iter, connection, NULL);
 }
 
+/**
+ * @brief  Get the callback and user data list
+ *
+ * @return the list
+ */
 static GSList **icd_policy_api_scan_list_get(void)
 {
   return &scan_list;
 }
 
+/**
+ * @brief  Iterator for the restart policy
+ *
+ * @param  module     the policy module
+ * @param  request    the request to apply policy to
+ * @param  user_data  user data to pass to the module
+ */
 static enum icd_policy_status
 icd_policy_api_iap_restart_iter(struct icd_policy_module *module,
                                 struct icd_policy_request *request,
@@ -522,6 +641,15 @@ icd_policy_api_iap_restart_iter(struct icd_policy_module *module,
   return ICD_POLICY_ACCEPTED;
 }
 
+/**
+ * @brief  Restart policy
+ *
+ * @param  connection     the IAP network connection that is restarting
+ * @param  restart_count  restart count
+ *
+ * @return #ICD_POLICY_REJECTED if the limit has been exceded,
+ *         #ICD_POLICY_ACCEPTED otherwise
+ */
 enum icd_policy_status
 icd_policy_api_iap_restart(struct icd_policy_request *connection,
                            guint restart_count)
@@ -530,6 +658,16 @@ icd_policy_api_iap_restart(struct icd_policy_request *connection,
                             GUINT_TO_POINTER(restart_count));
 }
 
+/**
+ * @brief  Scan results
+ *
+ * @param  status        status of this network
+ * @param  srv_provider  service provider entry; guaranteed to exist only for
+ *                       the lifetime of this callback function
+ * @param  cache_entry   scan results; guaranteed to exist only for the
+ *                       lifetime of this callback function
+ * @param  user_data     used data given to the scan callback
+ */
 static void
 icd_policy_api_scan_result(enum icd_scan_status status,
                            const struct icd_scan_srv_provider *srv_provider,
@@ -579,6 +717,17 @@ icd_policy_api_scan_result(enum icd_scan_status status,
   }
 }
 
+/**
+ * @brief  Function for a module to request a network scan.
+ *         #icd_policy_api_scan_stop() has to be called as many times as this
+ *         function is called even if the same callback and user_data pair
+ *         are added.
+ *
+ * @param  type       network type
+ * @param  scope      scan scope
+ * @param  cb         callback function to call with scan results
+ * @param  user_data  user data to pass to the callback function
+ */
 static void
 icd_policy_api_scan_start(const gchar *type, const guint scope,
                           icd_policy_scan_cb_fn cb, gpointer user_data)
@@ -610,6 +759,12 @@ icd_policy_api_scan_start(const gchar *type, const guint scope,
 
 }
 
+/**
+ * @brief  Find callback and user data
+ *
+ * @param  cb         callback
+ * @param  user_data  user_data
+ */
 static struct icd_policy_scan_data *
 icd_policy_api_scan_find(icd_policy_scan_cb_fn cb, gpointer user_data)
 {
@@ -633,6 +788,12 @@ icd_policy_api_scan_find(icd_policy_scan_cb_fn cb, gpointer user_data)
   return NULL;
 }
 
+/**
+ * @brief  Stop returning scan results for the given callback and user data
+ *
+ * @param  cb         scan callback
+ * @param  user_data  user_data given in #icd_policy_api_scan_start()
+ */
 static void
 icd_policy_api_scan_stop(icd_policy_scan_cb_fn cb, gpointer user_data)
 {
@@ -649,6 +810,16 @@ icd_policy_api_scan_stop(icd_policy_scan_cb_fn cb, gpointer user_data)
   }
 }
 
+/**
+ * @brief  Merge two request together and free the request_to_merge
+ *         structure.
+ *
+ * @param  request_to_merge  the request that will be joined with the
+ *                           existing one. The structure will also be freed
+ *                           and may point to anything after that.
+ * @param  existing_request  the request that continues to exists after a
+ *                           merge
+ */
 static void
 icd_policy_api_merge_requests(struct icd_policy_request *request_to_merge,
                               struct icd_policy_request *existing_request)
@@ -677,6 +848,18 @@ icd_policy_api_merge_requests(struct icd_policy_request *request_to_merge,
     ILOG_CRIT("NULL pointer passed instead of request to merge");
 }
 
+/**
+ * @brief  Function to create a new request
+ *
+ * @param  policy_attrs   ICD_POLICY_ATTRIBUTE_* attributes
+ * @param  service_type   service provider type, see #srv_provider_api.h
+ * @param  service_attrs  service provider attributes, see
+ *                        #srv_provider_api.h
+ * @param  service_id     service_provider id, see #srv_provider_api.h
+ * @param  network_type   network type, see #network_api.h
+ * @param  network_attrs  network attributes, see #network_api.h
+ * @param  network_id     network id, see #network_api.h
+ */
 static void
 icd_policy_api_make_request(guint policy_attrs, gchar *service_type,
                             guint service_attrs, gchar *service_id,
@@ -688,6 +871,11 @@ icd_policy_api_make_request(guint policy_attrs, gchar *service_type,
                                    network_id));
 }
 
+/**
+ * @brief  Disconnect an active IAP
+ *
+ * @param  network  the network to disconnect
+ */
 static void
 icd_policy_api_disconnect_iap(struct icd_policy_request *network)
 {
@@ -707,6 +895,19 @@ icd_policy_api_disconnect_iap(struct icd_policy_request *network)
     ILOG_CRIT("iap to disconnect is NULL");
 }
 
+/**
+ * @brief  Initialize the loaded module
+ *
+ * @param  module_name    module filename without path
+ * @param  handle         module handle; used for unloading
+ * @param  init_function  module init function
+ * @param  data           icd context
+ *
+ * @return TRUE on success, FALSE on failure
+ *
+ * @todo   make init return TRUE on success and FALSE on failure whereby the
+ *         module is unloaded
+ */
 static gboolean
 icd_policy_api_init_cb(const gchar *module_name, void *handle,
                        gpointer init_function, gpointer data)
@@ -731,6 +932,13 @@ icd_policy_api_init_cb(const gchar *module_name, void *handle,
   return TRUE;
 }
 
+/**
+ * @brief  Load all policy API modules
+ *
+ * @param  icd_ctx  icd context
+ *
+ * @return the status from icd_plugin_load_all
+ */
 gboolean
 icd_policy_api_load_modules(struct icd_context *icd_ctx)
 {
@@ -747,6 +955,11 @@ icd_policy_api_load_modules(struct icd_context *icd_ctx)
   return rv;
 }
 
+/**
+ * @brief  Unload all policy modules
+ *
+ * @param  icd_ctx  icd context
+ */
 void
 icd_policy_api_unload_modules(struct icd_context *icd_ctx)
 {

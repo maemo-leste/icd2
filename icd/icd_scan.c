@@ -482,6 +482,14 @@ icd_scan_cache_expire(gpointer data)
   return FALSE;
 }
 
+/**
+ * @brief  Get the scan cache list associated with the network id
+ *
+ * @param  module      network module
+ * @param  network_id  network id
+ *
+ * @return the scan cache list or NULL if not found
+ */
 struct icd_scan_cache_list *
 icd_scan_cache_list_lookup(struct icd_network_module *module,
                            const gchar *network_id)
@@ -493,6 +501,15 @@ icd_scan_cache_list_lookup(struct icd_network_module *module,
       g_hash_table_lookup(module->scan_cache_table, network_id);
 }
 
+/**
+ * @brief  Function that removes all the IAPs for a given module from cache
+ *         that match name.
+ *
+ * @param  module  the network module
+ * @param  IAP     name
+ *
+ * @return TRUE so that foreach func will continue
+ */
 static gboolean
 icd_scan_cache_remove_iap_for_module(struct icd_network_module *module,
                                      gpointer user_data)
@@ -540,6 +557,11 @@ icd_scan_cache_remove_iap_for_module(struct icd_network_module *module,
   return TRUE;
 }
 
+/**
+ * @brief  Function that removes all the IAPs from cache that match name.
+ *
+ * @param  iap_name  IAP name
+ */
 void
 icd_scan_cache_remove_iap(gchar *iap_name)
 {
@@ -594,6 +616,11 @@ icd_scan_cache_entry_remove(struct icd_scan_cache_list *scan_cache_list,
   return !!entries;
 }
 
+/**
+ * @brief  Tear down the scan cache and its hash table
+ *
+ * @param  module  the netowork module
+ */
 void
 icd_scan_cache_remove(struct icd_network_module *module)
 {
@@ -640,6 +667,13 @@ icd_scan_cache_remove(struct icd_network_module *module)
   icd_scan_listener_remove(module, NULL, NULL);
 }
 
+/**
+ * @brief  Send all cache entries to the listener
+ *
+ * @param  key        the network_id
+ * @param  value      the #icd_scan_cache_list
+ * @param  user_data  the #icd_scan_listener
+ */
 static void
 icd_scan_listener_send_list(gpointer key, gpointer value, gpointer user_data)
 {
@@ -652,6 +686,13 @@ icd_scan_listener_send_list(gpointer key, gpointer value, gpointer user_data)
   }
 }
 
+/**
+ * @brief  Rescan timeout function
+ *
+ * @param  data  scan cache timeout data
+ *
+ * @return FALSE so that the timeout won't repeat
+ */
 static gboolean
 icd_scan_cache_rescan(gpointer data)
 {
@@ -667,6 +708,19 @@ icd_scan_cache_rescan(gpointer data)
   return FALSE;
 }
 
+/**
+ * @brief  Callback function for scan results
+ *
+ * @param  status           status of the operation
+ * @param  network_name     name of the network displayable to user
+ * @param  network_type     type of network
+ * @param  network_attrs    network attributes
+ * @param  network_id       network id
+ * @param  signal           signal level
+ * @param  station_id       base station id
+ * @param  dB               raw signal strength
+ * @param  search_cb_token  the network module structure
+ */
 static void
 icd_scan_cb(enum icd_network_search_status status, gchar *network_name,
             gchar *network_type, const guint network_attrs, gchar *network_id,
@@ -832,6 +886,14 @@ icd_scan_cb(enum icd_network_search_status status, gchar *network_name,
            network_type, network_id);
 }
 
+/**
+ * @brief  Request one network module to initiate scan with given scope
+ *
+ * @param  module        the network module
+ * @param  network_type  network type to scan for
+ *
+ * @return TRUE if scan was started or already ongoing, FALSE otherwise
+ */
 static gboolean
 icd_scan_network(struct icd_network_module *module, const gchar *network_type)
 {
@@ -863,6 +925,17 @@ icd_scan_network(struct icd_network_module *module, const gchar *network_type)
   return TRUE;
 }
 
+/**
+ * @brief  Function requesting scan results; can be called many times to add
+ *         more than one network type per callback
+ *
+ * @param  type       network type to scan or NULL for all networks
+ * @param  scope      scope of the scan, see #network_api.h
+ * @param  cb         callback function for the results
+ * @param  user_data  user data to pass to the callback
+ *
+ * @return TRUE if the callback is going to be called; FALSE on error
+ */
 gboolean
 icd_scan_results_request(const gchar *type, const guint scope,
                          icd_scan_cb_fn cb, gpointer user_data)
@@ -952,6 +1025,13 @@ icd_scan_results_request(const gchar *type, const guint scope,
   return rv;
 }
 
+/**
+ * @brief  Add an cache entry to the network module
+ *
+ * @param  module       network module
+ * @param  scan_cache   scan cache list or NULL
+ * @param  cache_entry  the entry to add
+ */
 void
 icd_scan_cache_entry_add(struct icd_network_module *module,
                          struct icd_scan_cache_list *scan_cache,
@@ -968,6 +1048,15 @@ icd_scan_cache_entry_add(struct icd_network_module *module,
     ILOG_ERR("module, cache list or cache not given when adding scan");
 }
 
+/**
+ * @brief  Find a network entry in the scan cache list
+ *
+ * @param  scan_cache_list  scan cache list
+ * @param  network_type     network type
+ * @param  network_attrs    network attrs
+ *
+ * @return the scan cache entry or NULL if not found
+ */
 struct icd_scan_cache *
 icd_scan_cache_entry_find(struct icd_scan_cache_list *scan_cache_list,
                           const gchar *network_type, const guint network_attrs)

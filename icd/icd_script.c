@@ -6,22 +6,41 @@
 #include "icd_log.h"
 #include "icd_script.h"
 
+/** min time in seconds that a script can be run */
 #define ICD_SCRIPT_MIN_TIMEOUT   1
+/** default time in seconds that a script can be run */
 #define ICD_SCRIPT_DEFAULT_TIMEOUT   15
+/** max time in seconds that a script can be run */
 #define ICD_SCRIPT_MAX_TIMEOUT   120
+/** gconf location for timeout value */
 #define ICD_SCRIPT_GCONF_PATH   ICD_GCONF_SETTINGS "/network_scripts/timeout"
+/** physical name of the interface being processed */
 #define SCRIPT_IFACE   "IFACE"
+/** logical name of the interface being processed */
 #define SCRIPT_LOGICAL   "LOGICAL"
+/** address family of the interface */
 #define SCRIPT_ADDRFAM   "ADDRFAM"
+/** method of the interface */
 #define SCRIPT_METHOD   "METHOD"
+/** 'start' if going up, 'stop' if going down */
 #define SCRIPT_MODE   "MODE"
+/** as per MODE, but with finer granularity, distinguishing the pre-up,
+ *  post-up, pre-down and post-down phases
+ */
 #define SCRIPT_PHASE   "PHASE"
+/** verbosity */
 #define SCRIPT_VERBOSITY   "VERBOSITY"
+/** script verbosity value */
 #define SCRIPT_VERBOSITY_VALUE   "0"
+/** the command search path */
 #define SCRIPT_PATH   "PATH"
+/** script search path value */
 #define SCRIPT_PATH_VALUE
+/** ICd IAP identifier; for now escaped gconf name */
 #define SCRIPT_IAP_ID   "ICD_CONNECTION_ID"
+/** ICd IAP type */
 #define SCRIPT_IAP_TYPE   "ICD_CONNECTION_TYPE"
+/** Unset proxies */
 #define SCRIPT_PROXY_UNSET   "ICD_PROXY_UNSET"
 
 const gchar const* reserved_env_vars[] = {
@@ -46,10 +65,15 @@ do {\
   ILOG_DEBUG(e"=%s", v); \
 } while (0)
 
+/** structure to keep track of running scripts */
 struct icd_script_data {
+  /** pid */
   pid_t pid;
+  /** timeout id */
   guint timeout_id;
+  /** callback */
   icd_script_cb_fn cb;
+  /** callback user data */
   gpointer user_data;
 };
 
@@ -380,6 +404,14 @@ icd_script_cancel(const pid_t pid)
   }
 }
 
+/**
+ * @brief  Notification of an exited script process
+ *
+ * @param  pid         the process id
+ * @param  exit_value  exit value
+ *
+ * @return TRUE if the pid was for a script, FALSE if the pid is unknown
+ */
 gboolean
 icd_script_notify_pid(const pid_t pid, const gint exit_value)
 {

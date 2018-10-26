@@ -37,6 +37,7 @@ enum icd_request_status {
 
 
   /* max number of request statuses */
+  /** max number of request statuses */
   ICD_REQUEST_MAX
 };
 

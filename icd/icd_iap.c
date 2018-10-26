@@ -177,6 +177,14 @@ icd_iap_restart(struct icd_iap *iap, enum icd_nw_layer restart_layer)
     ILOG_INFO("ignored restart for iap %p since already disconnecting", iap);
 }
 
+/**
+ * @brief  Call all network module _down functions added to the IAP. This
+ *         function does not handle cancelled IAPs which have not yet called
+ *         their respective _up functions and can't thus be merged with
+ *         #icd_iap_disconnect().
+ *
+ * @param  iap  IAP to disconnect
+ */
 static void
 icd_iap_disconnect_module(struct icd_iap *iap)
 {
@@ -826,6 +834,12 @@ icd_iap_free(struct icd_iap *iap)
   g_free(iap);
 }
 
+/**
+ * @brief  Renew function callback
+ *
+ * @param  status       renewal status
+ * @param  renew_token  the IAP that is being renewed
+ */
 static void
 icd_iap_run_renew_cb(enum icd_nw_renew_status status, gpointer renew_token)
 {
@@ -863,6 +877,14 @@ icd_iap_run_renew_cb(enum icd_nw_renew_status status, gpointer renew_token)
   }
 }
 
+/**
+ * @brief  Run the renew function for the specified IAP
+ *
+ * @param  iap  the IAP
+ *
+ * @return TRUE if a renew network module function is called; FALSE if no
+ *         further renew functions can be found
+ */
 static gboolean
 icd_iap_run_renew(struct icd_iap *iap)
 {
@@ -986,6 +1008,12 @@ icd_iap_run_renew(struct icd_iap *iap)
   return FALSE;
 }
 
+/**
+ * @brief  Renew a network module layer for an IAP
+ *
+ * @param  iap          the IAP
+ * @param  renew_layer  the network module layer to renew
+ */
 void
 icd_iap_renew(struct icd_iap *iap, enum icd_nw_layer renew_layer)
 {
@@ -1011,6 +1039,14 @@ icd_iap_renew(struct icd_iap *iap, enum icd_nw_layer renew_layer)
   }
 }
 
+/**
+ * @brief  Callback for _up functions; adds _down functions and calls the
+ *         next module on success, starts disconnecting on failure
+ *
+ * @param  status    status
+ * @param  err_str   error string or NULL if no error
+ * @param  cb_token  the IAP
+ */
 static void
 icd_iap_up_callback(const enum icd_nw_status status, const gchar *err_str,
                     const gpointer cb_token)
@@ -1211,6 +1247,19 @@ icd_iap_up_callback(const enum icd_nw_status status, const gchar *err_str,
   }
 }
 
+/**
+ * @brief  Callback for link_post_up; common _up callback handling in
+ *         #icd_iap_up_callback()
+ *
+ * @param  status            status of the operation
+ * @param  err_str           NULL if the network was disconnected normally or
+ *                           any ICD_DBUS_ERROR_* from osso-ic-dbus.h on
+ *                           error
+ * @param  link_up_cb_token  the IAP in question
+ * @param  ...               zero or more arrays of strings where each string
+ *                           in the array is an environment variable of the
+ *                           form name=value; end with NULL
+ */
 static void
 icd_iap_link_post_up_cb(const enum icd_nw_status status, const gchar *err_str,
                         gpointer link_post_up_cb_token, ...)
@@ -1252,6 +1301,12 @@ icd_iap_link_post_up_cb(const enum icd_nw_status status, const gchar *err_str,
   va_end(ap);
 }
 
+/**
+ * @brief  Service provider connect callback function
+ *
+ * @param  status     status of the connect
+ * @param  user_data  user data
+ */
 static void
 icd_iap_srv_connect_cb(enum icd_srv_status status, const gchar *err_str,
                        gpointer user_data)
@@ -1281,6 +1336,20 @@ icd_iap_srv_connect_cb(enum icd_srv_status status, const gchar *err_str,
     ILOG_CRIT("srv_connect callback returns NULL iap");
 }
 
+/**
+ * @brief  Callback for link_up; saves the interface name on success, common
+ *         _up callback handling in #icd_iap_up_callback()
+ *
+ * @param  status            status of the operation
+ * @param  err_str           NULL if the network was disconnected normally or
+ *                           any ICD_DBUS_ERROR_* from osso-ic-dbus.h on
+ *                           error
+ * @param  interface_name    the device interface name on ICD_NW_SUCCESS*
+ * @param  link_up_cb_token  the IAP in question
+ * @param  ...               zero or more arrays of strings where each string
+ *                           in the array is an environment variable of the
+ *                           form name=value; end with NULL
+ */
 static void
 icd_iap_link_up_cb(const enum icd_nw_status status, const gchar *err_str,
                    const gchar *interface_name, gpointer link_up_cb_token, ...)
@@ -1338,6 +1407,18 @@ icd_iap_link_up_cb(const enum icd_nw_status status, const gchar *err_str,
   va_end(ap);
 }
 
+/**
+ * @brief  Callback function called when IP address configuration has
+ *         completed
+ *
+ * @param  status          status of the operation
+ * @param  err_str         NULL if the network was disconnected normally or
+ *                         an error string
+ * @param  ip_up_cb_token  the callback token
+ * @param  ...             zero or more arrays of strings where each string
+ *                         in the array is an environment variable of the
+ *                         form name=value; end with NULL
+ */
 static void icd_iap_ip_up_cb(const enum icd_nw_status status,
                              const gchar *err_str, gpointer ip_up_cb_token, ...)
 {
@@ -1378,6 +1459,13 @@ static void icd_iap_ip_up_cb(const enum icd_nw_status status,
   va_end(ap);
 }
 
+/**
+ * @brief  Continue (or start) connecting an IAP by finding a suitable _up
+ *         function from the available modules. Calls
+ *         icd_iap_connect_module() to call the relevant _up function
+ *
+ * @param  iap  the IAP to connect
+ */
 static void
 icd_iap_module_next(struct icd_iap *iap)
 {
@@ -1566,6 +1654,13 @@ icd_iap_module_next(struct icd_iap *iap)
   }
 }
 
+/**
+ * @brief  Callback function called when pre-up scripts have been run
+ *
+ * @param  pid         the process id of the script that exited
+ * @param  exit_value  exit value of the script or -1 on timeout
+ * @param  user_data   user data
+ */
 static void
 icd_iap_pre_up_script_done(const pid_t pid, const gint exit_value,
                            gpointer user_data)
@@ -1596,6 +1691,11 @@ icd_iap_pre_up_script_done(const pid_t pid, const gint exit_value,
   icd_iap_module_next(iap);
 }
 
+/**
+ * @brief  Run pre up scripts
+ *
+ * @param  iap  the IAP
+ */
 static void
 icd_iap_run_pre_up_scripts(struct icd_iap *iap)
 {
@@ -1613,6 +1713,15 @@ icd_iap_run_pre_up_scripts(struct icd_iap *iap)
   iap->script_pids = g_slist_prepend(iap->script_pids, GINT_TO_POINTER(pid));
 }
 
+/**
+ * @brief  Request a network connection. The caller needs to free the given
+ *         #icd_iap data structure when the IAP is no longer in use.
+ *
+ * @param  iap         IAP to connect
+ * @param  request_cb  the callback to call when the outcome of the request
+ *                     is known
+ * @param  user_data   user data to pass to the callback
+ */
 void
 icd_iap_connect(struct icd_iap *iap, icd_iap_request_cb_fn request_cb,
                 gpointer user_data)
@@ -1665,12 +1774,27 @@ icd_iap_connect(struct icd_iap *iap, icd_iap_request_cb_fn request_cb,
   }
 }
 
+/**
+ * @brief  Allocate memory for a new IAP structure. Caller is responsible of
+ *         freeing the IAP structure with #icd_iap_free() after use
+ *
+ * @return the newly created IAP structure
+ */
 struct icd_iap *
     icd_iap_new(void)
 {
   return g_new0(struct icd_iap, 1);
 }
 
+/**
+ * @brief  Find an IAP according to id and locally generated flag
+ *
+ * @param  iap_id    IAP id
+ * @param  is_local  TRUE if a locally generated icd2 id is requested, FALSE
+ *                   otherwise
+ *
+ * @return a pointer to the IAP on success, NULL on failure
+ */
 struct icd_iap *
 icd_iap_find_by_id(const gchar *iap_id, const gboolean is_local)
 {
@@ -1708,6 +1832,12 @@ icd_iap_find_by_id(const gchar *iap_id, const gboolean is_local)
   return NULL;
 }
 
+/**
+ * @brief  Callback for save connection dialog request
+ *
+ * @param  success    TRUE on success, FALSE on failure
+ * @param  user_data  the IAP
+ */
 static void
 icd_iap_save_cb(gboolean success, gpointer user_data)
 {
@@ -1724,6 +1854,15 @@ icd_iap_save_cb(gboolean success, gpointer user_data)
   }
 }
 
+/**
+ * @brief  A post-up script has exited
+ *
+ * @param  pid         the process id of the script that exited
+ * @param  exit_value  exit value of the script or -1 on timeout
+ * @param  user_data   the current IAP
+ *
+ * @todo   what to do with this iap if UI goes down?
+ */
 static void
 icd_iap_post_up_script_done(const pid_t pid, const gint exit_value,
                             gpointer user_data)
@@ -1749,6 +1888,15 @@ icd_iap_post_up_script_done(const pid_t pid, const gint exit_value,
   }
 }
 
+/**
+ * @brief  Get IP address info from an IAP
+ *
+ * @param  iap        IAP
+ * @param  cb         callback function
+ * @param  user_data  user data
+ *
+ * @return the number of times the callback is going to be called
+ */
 guint
 icd_iap_get_ipinfo(struct icd_iap *iap, icd_nw_ip_addr_info_cb_fn cb,
                    gpointer user_data)
@@ -1795,6 +1943,15 @@ icd_iap_get_ipinfo(struct icd_iap *iap, icd_nw_ip_addr_info_cb_fn cb,
   return rv;
 }
 
+/**
+ * @brief  Get ip level statistics from an IAP.
+ *
+ * @param  iap        the IAP
+ * @param  cb         callback function
+ * @param  user_data  user data
+ *
+ * @return TRUE if callback will be called, FALSE otherwise
+ */
 gboolean
 icd_iap_get_ip_stats(struct icd_iap *iap, icd_nw_ip_stats_cb_fn cb,
                      gpointer user_data)
@@ -1839,6 +1996,15 @@ icd_iap_get_ip_stats(struct icd_iap *iap, icd_nw_ip_stats_cb_fn cb,
   return TRUE;
 }
 
+/**
+ * @brief  Get link level statistics from an IAP.
+ *
+ * @param  iap        the IAP
+ * @param  cb         callback function
+ * @param  user_data  user data
+ *
+ * @return TRUE if callback will be called, FALSE otherwise
+ */
 gboolean
 icd_iap_get_link_stats(struct icd_iap *iap, icd_nw_link_stats_cb_fn cb,
                        gpointer user_data)
@@ -1880,6 +2046,15 @@ icd_iap_get_link_stats(struct icd_iap *iap, icd_nw_link_stats_cb_fn cb,
   return TRUE;
 }
 
+/**
+ * @brief  Get link post level statistics from an IAP.
+ *
+ * @param  iap        the IAP
+ * @param  cb         callback function
+ * @param  user_data  user data
+ *
+ * @return TRUE if callback will be called, FALSE otherwise
+ */
 gboolean
 icd_iap_get_link_post_stats(struct icd_iap *iap,
                             icd_nw_link_post_stats_cb_fn cb, gpointer user_data)
@@ -1923,6 +2098,13 @@ icd_iap_get_link_post_stats(struct icd_iap *iap,
   return TRUE;
 }
 
+/**
+ * @brief  Post-down script has run, restart IAP or report final status.
+ *
+ * @param  pid         the process id of the script that exited
+ * @param  exit_value  exit value of the script or -1 on timeout
+ * @param  user_data   current IAP
+ */
 static void
 icd_iap_post_down_script_done(const pid_t pid, const gint exit_value,
                               gpointer user_data)
@@ -2022,6 +2204,15 @@ icd_iap_run_post_down_scripts(struct icd_iap *iap)
   g_free(id);
 }
 
+/**
+ * @brief  Check whether the iap needs to be initiated. Called when the
+ *         network module layer disconnect functions have been exhausted and
+ *         when post down scripts have been run.
+ *
+ * @param  iap  the IAP
+ *
+ * @return TRUE if a restart was initiated, FALSE if not
+ */
 static gboolean
 icd_iap_run_restart(struct icd_iap *iap)
 {
@@ -2116,6 +2307,15 @@ icd_iap_run_restart(struct icd_iap *iap)
   return TRUE;
 }
 
+/**
+ * @brief  Create a new unique id for the iap, settings are accessed using
+ *         this id
+ *
+ * @param  iap     the IAP
+ * @param  new_id  preferably NULL but can also be the new id
+ *
+ * @return TRUE on success, FALSE on failure
+ */
 gboolean
 icd_iap_id_create(struct icd_iap *iap, const gchar *new_name)
 {

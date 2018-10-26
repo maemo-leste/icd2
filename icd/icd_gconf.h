@@ -3,12 +3,16 @@
 
 #include <glib.h>
 
+/** The key holding the type of an IAP */
 #define ICD_GCONF_IAP_TYPE "type"
 
+/** The key holding IAP name */
 #define ICD_GCONF_IAP_NAME "name"
 
+/** The key holding temporary connection setting status */
 #define ICD_GCONF_IAP_IS_TEMPORARY "temporary"
 
+/** The key holding aggressive scanning setting status */
 #define ICD_GCONF_AGGRESSIVE_SCANNING "aggressive_scanning"
 
 gchar *icd_gconf_get_iap_string (const char *iap_name,

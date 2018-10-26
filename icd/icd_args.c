@@ -9,6 +9,7 @@
 
 #include "config.h"
 
+/** icd command line options */
 static struct option const long_options[] =
 {
   {"deamon",   no_argument,       0, 'd'},

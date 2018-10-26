@@ -3,6 +3,16 @@
 
 #include <glib.h>
 
+/**
+ * @brief  Plugin initialization callback function
+ *
+ * @param  module_name    the moduel filename
+ * @param  handle         module handle to pass unloading function
+ * @param  init_function  a pointer to the plugin init function
+ * @param  cb_data        user data passed to icd_plugin_load_all
+ *
+ * @return TRUE on success, FALSE on failure whereby the module is unloaded
+ */
 typedef gboolean (*icd_plugin_load_cb_fn) (const gchar* module_name,
                                            void *handle,
                                            gpointer init_function,

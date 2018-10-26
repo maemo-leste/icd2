@@ -68,6 +68,15 @@ string_equal(const char *a, const char *b)
   return FALSE;
 }
 
+/**
+ * @brief  Find the srv provider module that is watching a child process exit
+ *
+ * @param  module     the srv provider module to examine
+ * @param  user_data  the pid notify structure
+ *
+ * @return TRUE to continue searching, FALSE to exit iteration and return a
+ *         pointer to the module
+ */
 static gboolean
 icd_srv_provider_foreach_module_pid(struct icd_srv_module *srv_module,
                                     gpointer user_data)
@@ -104,6 +113,16 @@ icd_srv_provider_foreach_module_pid(struct icd_srv_module *srv_module,
   return TRUE;
 }
 
+/**
+ * @brief  Iterate over all service provider modules
+ *
+ * @param  icd_ctx     icd context
+ * @param  foreach_fn  the function to call for each module
+ * @param  user_data   user data to pass to the function
+ *
+ * @return a pointer to the module if the iteration function returns FALSE;
+ *         NULL otherwise
+ */
 struct icd_srv_module *
 icd_srv_provider_foreach_module(struct icd_context *icd_ctx,
                                 icd_srv_provider_foreach_module_fn foreach_fn,
@@ -133,6 +152,16 @@ icd_srv_provider_foreach_module(struct icd_context *icd_ctx,
   return NULL;
 }
 
+/**
+ * @brief  Notify a srv provider module that its child process has exited
+ *
+ * @param  icd_ctx     the context
+ * @param  pid         the process id
+ * @param  exit_value  exit value
+ *
+ * @return TRUE if the process id was in use by the srv provider api; FALSE
+ *         if not
+ */
 gboolean
 icd_srv_provider_notify_pid(struct icd_context *icd_ctx, const pid_t pid,
                             const gint exit_value)
@@ -147,6 +176,12 @@ icd_srv_provider_notify_pid(struct icd_context *icd_ctx, const pid_t pid,
                                          &notify) != NULL;
 }
 
+/**
+ * @brief  Disconnect callback for the service provider module
+ *
+ * @param  status               status of the disconnect, ignored for now
+ * @param  disconnect_cb_token  token passed to the disconnect function
+ */
 static void
 icd_srv_provider_disconnect_cb(enum icd_srv_status status,
                                gpointer disconnect_cb_token)
@@ -169,6 +204,15 @@ icd_srv_provider_disconnect_cb(enum icd_srv_status status,
     ILOG_ERR("srv provider disconnect cb returned NULL iap");
 }
 
+/**
+ * @brief  Disconnect the service module
+ *
+ * @param  iap        the IAP
+ * @param  cb         callback function
+ * @param  user_data  user data for the callback function
+ *
+ * @return TRUE if the service module got called, FALSE if not
+ */
 gboolean
 icd_srv_provider_disconnect(struct icd_iap *iap,
                             icd_srv_provider_disconnect_cb_fn cb,
@@ -225,6 +269,14 @@ icd_srv_provider_disconnect(struct icd_iap *iap,
   return TRUE;
 }
 
+/**
+ * @brief  Check if there is a service module for a given type. If type is
+ *         not given then return TRUE if there is any service module found.
+ *
+ * @param  network_type  network_type to search, can be NULL
+ *
+ * @return TRUE if the service module was found; FALSE if not
+ */
 gboolean
 icd_srv_provider_check(const gchar *network_type)
 {
@@ -239,6 +291,14 @@ icd_srv_provider_check(const gchar *network_type)
   return TRUE;
 }
 
+/**
+ * @brief  Function for notifying ICd that a child process has been started.
+ *         The srv provider destruction function will not be called before
+ *         all child processes have exited.
+ *
+ * @param  pid             process id
+ * @param  watch_cb_token  the watch callback token given on initialization
+ */
 static void
 icd_srv_provider_watch_pid(const pid_t pid, gpointer watch_cb_token)
 {
@@ -256,6 +316,23 @@ icd_srv_provider_watch_pid(const pid_t pid, gpointer watch_cb_token)
     ILOG_ERR("module NULL while submitting srv module child pid");
 }
 
+/**
+ * @brief  Function to request closing down a connection due to internal or
+ *         external events.
+ *
+ * @param  status         reason for closing; #ICD_SRV_RESTART if the
+ *                        connection needs to be restarted, success or error
+ *                        will both close the network connection
+ * @param  err_str        NULL if the service provisioning was disconnected
+ *                        normally or any ICD_DBUS_ERROR_* from
+ *                        osso-ic-dbus.h on error
+ * @param  service_type   the service type; currently ignored
+ * @param  service_attrs  attributes; currently ignored
+ * @param  service_id     internal service id; currently ignored
+ * @param  network_type   the network type
+ * @param  network_attrs  network attributes
+ * @param  network_id     network id
+ */
 static void
 icd_srv_provider_close(enum icd_srv_status status, const gchar *err_str,
                        const gchar *service_type, const guint service_attrs,
@@ -290,6 +367,16 @@ icd_srv_provider_close(enum icd_srv_status status, const gchar *err_str,
   }
 }
 
+/**
+ * @brief  Limited connectivity enabling and disabling.
+ *
+ * @param  service_type   the service type
+ * @param  service_attrs  attributes
+ * @param  service_id     internal service id
+ * @param  network_type   the network type
+ * @param  network_attrs  network attributes
+ * @param  network_id     network id
+ */
 static void
 icd_srv_provider_limited_conn(
     const enum icd_srv_limited_conn_status conn_status,
@@ -326,6 +413,16 @@ icd_srv_provider_limited_conn(
   }
 }
 
+/**
+ * @brief  Service provider plugin initialization callback function
+ *
+ * @param  module_name    the moduel filename
+ * @param  handle         module handle to pass unloading function
+ * @param  init_function  a pointer to the plugin init function
+ * @param  cb_data        user data passed to icd_plugin_load_all
+ *
+ * @return TRUE on success, FALSE on failure whereby the module is unloaded
+ */
 static gboolean
 icd_srv_provider_init(const gchar *module_name, void *handle,
                       gpointer init_function, gpointer cb_data)
@@ -434,6 +531,13 @@ icd_srv_provider_init(const gchar *module_name, void *handle,
   return rv;
 }
 
+/**
+ * @brief  Load service provider modueles
+ *
+ * @param  icd_ctx  icd context
+ *
+ * @return TRUE if at least one module got loaded, FALSE otherwise
+ */
 gboolean
 icd_srv_provider_load_modules(struct icd_context *icd_ctx)
 {
@@ -527,12 +631,25 @@ icd_srv_provider_load_modules(struct icd_context *icd_ctx)
   return rv;
 }
 
+/**
+ * @brief  Wrapper function for removing a list that is a hash table value
+ *         when stepping through a hash table
+ *
+ * @param  key        key; ignored
+ * @param  value      the list
+ * @param  user_data  user data; ignored
+ */
 static void
 icd_srv_provider_free_list(gpointer key, gpointer value, gpointer user_data)
 {
   g_slist_free((GSList *)value);
 }
 
+/**
+ * @brief  Unload all network modules
+ *
+ * @param  icd_ctx  icd context
+ */
 void
 icd_srv_provider_unload_modules(struct icd_context *icd_ctx)
 {
@@ -582,6 +699,26 @@ icd_srv_provider_unload_modules(struct icd_context *icd_ctx)
   icd_ctx->nw_type_to_srv_module = NULL;
 }
 
+/**
+ * @brief  Service identification callback.
+ *
+ * @param  status             status of the identification procedure
+ * @param  service_type       service type
+ * @param  service_name       name of the service provider displayable to the
+ *                            user/UI
+ * @param  service_attrs      service attributes
+ * @param  service_id         internal service id
+ * @param  service_priority   priority within a service type
+ * @param  network_type       network type
+ * @param  network_attrs      network attributes
+ * @param  network_id         network_id
+ * @param  identify_cb_token  the token passed to the identification function
+ *
+ * @todo   this sets the network priority for ALL entries, not just the
+ *         service entry; for now it works as the preferred is only WIMAX,
+ *         which does not have any networks without a service provider; the
+ *         network part is created right here
+ */
 static void
 icd_srv_provider_identify_cb(const enum icd_srv_identify_status status,
                              const gchar *service_type,
@@ -720,6 +857,14 @@ stop_identify:
     g_free(identify);
 }
 
+/**
+ * @brief  Send a network to be identified by possible service providers
+ *
+ * @param  cache_entry  scan cache entry containing the data so far
+ * @param  status       scan status
+ *
+ * @return TRUE if at least one service module was called, FALSE if not
+ */
 gboolean
 icd_srv_provider_identify(struct icd_network_module *nw_module,
                           struct icd_scan_cache *cache_entry,
@@ -765,6 +910,13 @@ icd_srv_provider_identify(struct icd_network_module *nw_module,
   return rv;
 }
 
+/**
+ * @brief  Check whether there is a service module to run
+ *
+ * @param  iap  the IAP
+ *
+ * @return TRUE if there is a service module to run, FALSE otherwise
+ */
 gboolean
 icd_srv_provider_has_next(struct icd_iap *iap)
 {
@@ -777,6 +929,14 @@ icd_srv_provider_has_next(struct icd_iap *iap)
   return FALSE;
 }
 
+/**
+ * @brief  Connect callback for the service provider module
+ *
+ * @param  status            status of the connect attempt; with
+ *                           ICD_SRV_RESTART the IAP will be disconnected and
+ *                           reconnected again
+ * @param  connect_cb_token  token passed to the connect function
+ */
 static void
 icd_srv_provider_connect_cb(enum icd_srv_status status, const gchar *err_str,
                             gpointer connect_cb_token)
@@ -799,6 +959,15 @@ icd_srv_provider_connect_cb(enum icd_srv_status status, const gchar *err_str,
     ILOG_ERR("srv provider connecte cb returned NULL iap");
 }
 
+/**
+ * @brief  Run the service module, if any
+ *
+ * @param  iap        the IAP
+ * @param  cb         callback function
+ * @param  user_data  user data for the callback function
+ *
+ * @return TRUE if the service module got called, FALSE if not
+ */
 gboolean
 icd_srv_provider_connect(struct icd_iap *iap, icd_srv_provider_connect_cb_fn cb,
                          gpointer user_data)

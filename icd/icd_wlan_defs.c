@@ -2,6 +2,13 @@
 #include "icd_wlan_defs.h"
 #include "icd_gconf.h"
 
+/**
+ * @brief  Get wlan security attributes for an IAP
+ *
+ * @param  iap_name  IAP name
+ *
+ * @return wlan security network attributes
+ */
 guint
 icd_wlan_defs_get_secmode(const gchar *iap_name)
 {
@@ -21,6 +28,13 @@ icd_wlan_defs_get_secmode(const gchar *iap_name)
   return rv;
 }
 
+/**
+ * @brief  Check whether the network type is wlan
+ *
+ * @param  network_type  network type
+ *
+ * @return TRUE if wlan, FALSE otherwise
+ */
 gboolean
 icd_wlan_defs_is_wlan(const gchar *network_type)
 {

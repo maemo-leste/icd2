@@ -2,6 +2,14 @@
 #include "icd_version.h"
 #include "icd_log.h"
 
+/**
+ * @brief  Compare two version strings
+ *
+ * @param  a  version string a
+ * @param  b  version string b
+ *
+ * @return <= -1 if a < b, 0 if a == b, >= 1 if a > b
+ */
 int
 icd_version_compare(const char *a, const char *b)
 {
