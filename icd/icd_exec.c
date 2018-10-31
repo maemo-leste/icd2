@@ -29,7 +29,9 @@
 #include "icd_network_priority.h"
 
 
+/** the pid file identical to previous version of icd */
 #define PIDFILE "/var/run/icd2.pid"
+/** shutdown timeout function interval in ms */
 #define ICD_SHUTDOWN_TIMEOUT 100
 
 /**
@@ -141,6 +143,14 @@ icd_exec_signal_cb(int sig)
   }
 }
 
+/**
+ * Main function
+ *
+ * @param  argc  argc
+ * @param  argv  argv
+ *
+ * @return 0 normal termination, >0 on error
+ */
 int
 main(int argc, char **argv)
 {

@@ -6,9 +6,13 @@
 #include "icd_context.h"
 #include "policy_api.h"
 
+/** Internal representation of a policy module */
 struct icd_policy_module {
+  /** module handle */
   gpointer handle;
+  /** module name */
   gchar *name;
+  /** the policy api */
   struct icd_policy_api policy;
 };
 

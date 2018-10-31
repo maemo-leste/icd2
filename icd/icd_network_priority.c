@@ -82,6 +82,16 @@ icd_network_priority_pref_init (void)
              preferred_id);
 }
 
+/**
+ * Set static network priority for the cahce entry
+ *
+ * @param  srv_type       service type or NULL if none
+ * @param  srv_id         service id or NULL if none
+ * @param  network_type   network type
+ * @param  network_attrs  network attrs
+ *
+ * @return the network priority
+ */
 gint
 icd_network_priority_get(const gchar *srv_type, const gchar *srv_id,
                          const gchar *network_type, const guint network_attrs)
@@ -117,6 +127,19 @@ icd_network_priority_get(const gchar *srv_type, const gchar *srv_id,
   return priority;
 }
 
+/**
+ * Check if there are more higher priority networks available. Return also
+ * the priority if the return pointer is set. This function can be called
+ * from policy modules (policy_always_online.so calls this func)
+ *
+ * @param  srv_type       service type or NULL if none
+ * @param  srv_id         service id or NULL if none
+ * @param  network_type   network type
+ * @param  network_attrs  network attrs
+ * @param  the            network priority (returned to caller)
+ *
+ * @return TRUE if found higher priority network types, FALSE if not found
+ */
 gboolean
 icd_network_priority(const gchar *srv_type, const gchar *srv_id,
                      const gchar *network_type, const guint network_attrs,

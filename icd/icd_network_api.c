@@ -261,6 +261,17 @@ icd_network_api_close(enum icd_nw_status status, const gchar *err_str,
   }
 }
 
+/**
+ * Request a network module layer to be renewed
+ *
+ * @param renew_layer    the network module layer to renew
+ * @param network_type   network type
+ * @param network_attrs  network_attrs
+ * @param network_id     network_id
+ *
+ * @todo  when saving, the dialog might try to save a name for a failed
+ *        iap...
+ */
 static void
 icd_network_api_renew(enum icd_nw_layer renew_layer, const gchar *network_type,
                       const guint network_attrs, const gchar *network_id)
@@ -336,6 +347,14 @@ icd_network_api_renew(enum icd_nw_layer renew_layer, const gchar *network_type,
              icd_iap_state_names[iap->state]);
 }
 
+/**
+ * Function for checking whether a modules supports a given type
+ *
+ * @param  module  the module
+ * @param  type    the type to check for
+ *
+ * @return TRUE if the module supports the given type, FALSE otherwise
+ */
 gboolean
 icd_network_api_has_type(struct icd_network_module *module, const gchar *type)
 {
@@ -362,6 +381,16 @@ icd_network_api_has_type(struct icd_network_module *module, const gchar *type)
   return FALSE;
 }
 
+/**
+ * Initialize the loaded module
+ *
+ * @param  module_name    module filename without path
+ * @param  handle         module handle; used for unloading
+ * @param  init_function  module init function
+ * @param  data           icd context
+ *
+ * @return TRUE on success, FALSE on failure
+ */
 static gboolean
 icd_network_api_init_cb(const gchar *module_name, void *handle,
                         gpointer init_function, gpointer data)
@@ -453,6 +482,11 @@ err_init:
   return FALSE;
 }
 
+/**
+ * Load all network API modules
+ * @param  icd_ctx  icd context
+ * @return the status from icd_plugin_load_all
+ */
 gboolean
 icd_network_api_load_modules(struct icd_context *icd_ctx)
 {
@@ -581,6 +615,10 @@ err_out:
   return FALSE;
 }
 
+/**
+ * Unload all network modules
+ * @param icd_ctx  icd context
+ */
 void
 icd_network_api_unload_modules(struct icd_context *icd_ctx)
 {

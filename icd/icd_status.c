@@ -6,6 +6,15 @@
 
 #define ICD_STATUS_DISCONNECTING "DISCONNECTING"
 
+/**
+ * Send the actual status changed signal
+ *
+ * @param network_type  network type
+ * @param network_id    network id
+ * @param state_name    name of the state
+ * @param dbus_dest     D-Bus destination identifier, NULL for broadcast
+ * @param uierr         error string
+ */
 static void
 icd_status_send_signal(const char *network_type, const char *id,
                        const char *state_name, const char *dbus_dest,
@@ -52,6 +61,13 @@ icd_status_send_signal(const char *network_type, const char *id,
   }
 }
 
+/**
+ * Send a network disconnect signal
+ *
+ * @param network           the network to disconnect
+ * @param dbus_destination  D-Bus destination or NULL for broadcast
+ * @param err_str           error string or NULL if no error
+ */
 void
 icd_status_disconnect(struct icd_iap *iap, const gchar *dbus_destination,
                       const gchar *err_str)
@@ -67,6 +83,13 @@ icd_status_disconnect(struct icd_iap *iap, const gchar *dbus_destination,
   icd_dbus_api_update_state(iap, dbus_destination, ICD_STATE_DISCONNECTING);
 }
 
+/**
+ * Send a service provider limited network connection enabled/disabled signal
+ *
+ * @param network           the network to connect
+ * @param dbus_destination  D-Bus destination or NULL for broadcast
+ * @param err_str           error string or NULL if no error
+ */
 void
 icd_status_limited_conn(struct icd_iap *iap, const gchar *dbus_destination,
                         const gchar *err_str)
@@ -94,6 +117,13 @@ icd_status_limited_conn(struct icd_iap *iap, const gchar *dbus_destination,
   icd_dbus_api_update_state(iap, dbus_destination, state);
 }
 
+/**
+ * Send a connecting signal
+ *
+ * @param network           the network to connect
+ * @param dbus_destination  D-Bus destination or NULL for broadcast
+ * @param err_str           error string or NULL if no error
+ */
 void
 icd_status_connect(struct icd_iap *iap, const gchar *dbus_destination,
                    const gchar *err_str)
@@ -110,6 +140,13 @@ icd_status_connect(struct icd_iap *iap, const gchar *dbus_destination,
   icd_dbus_api_update_state(iap, dbus_destination, ICD_STATE_CONNECTING);
 }
 
+/**
+ * Send a connected signal
+ *
+ * @param network           the network to connect
+ * @param dbus_destination  D-Bus destination or NULL for broadcast
+ * @param err_str           error string or NULL if no error
+ */
 void
 icd_status_connected(struct icd_iap *iap, const gchar *dbus_destination,
                      const gchar *err_str)
@@ -126,6 +163,13 @@ icd_status_connected(struct icd_iap *iap, const gchar *dbus_destination,
   icd_dbus_api_update_state(iap, dbus_destination, ICD_STATE_CONNECTED);
 }
 
+/**
+ * Send a network disconnected signal
+ *
+ * @param network           the network to connect
+ * @param dbus_destination  D-Bus destination or NULL for broadcast
+ * @param err_str           error string or NULL if no error
+ */
 void
 icd_status_disconnected(struct icd_iap *iap, const gchar *dbus_destination,
                         const gchar *err_str)
@@ -142,6 +186,10 @@ icd_status_disconnected(struct icd_iap *iap, const gchar *dbus_destination,
   icd_dbus_api_update_state(iap, dbus_destination, ICD_STATE_DISCONNECTED);
 }
 
+/**
+ * Send a scanning stop signal
+ * @param network_type  network type
+ */
 void
 icd_status_scan_stop(const gchar *network_type)
 {
@@ -149,6 +197,10 @@ icd_status_scan_stop(const gchar *network_type)
   icd_dbus_api_update_search(network_type, NULL, ICD_STATE_SEARCH_STOP);
 }
 
+/**
+ * Send a scanning start signal
+ * @param network_type  network type
+ */
 void
 icd_status_scan_start(const gchar *network_type)
 {

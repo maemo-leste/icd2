@@ -7,6 +7,11 @@
 
 #include "icd_iap.h"
 
+/** Callback function called when script has exited
+ * @param pid         the process id of the script that exited
+ * @param exit_value  exit value of the script or -1 on timeout
+ * @param user_data   user data
+ */
 typedef void (*icd_script_cb_fn) (const pid_t pid, const gint exit_value,
                                   gpointer user_data);
 

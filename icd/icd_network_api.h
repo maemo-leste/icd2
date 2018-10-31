@@ -6,19 +6,33 @@
 #include "network_api.h"
 #include "icd_context.h"
 
+/** A represenatation of a network plugin module */
 struct icd_network_module {
+  /** module handle */
   void *handle;
+  /** name of this module */
   gchar *name;
+  /** network types associated with this module */
   GSList *network_types;
+  /** list of pids this module wants to track */
   GSList *pid_list;
 
+  /** search scope
+   * @todo move scan parameters into another struct
+   */
   guint scope;
+  /** scan in progress */
   gboolean scan_progress;
+  /** rescan timeout */
   gint scan_timeout_rescan;
+  /** list of #icd_scan_cache_timeout data structures */
   GSList *scan_timeout_list;
+  /** network scan cache hash table containing #icd_scan_cache_list elements */
   GHashTable *scan_cache_table;
+  /** entities that wish to receive scan results from this module */
   GSList *scan_listener_list;
 
+  /** functions provided by this module */
   struct icd_nw_api nw;
 };
 

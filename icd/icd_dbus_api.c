@@ -125,6 +125,31 @@ icd_dbus_api_scan_cancel(DBusConnection *conn, DBusMessage *msg,
   return DBUS_HANDLER_RESULT_HANDLED;
 }
 
+/**
+ * Receive IP address configuration information based on network type,
+ * attributes and id.
+ *
+ * @param  addr_info_cb_token  token passed to the request function
+ * @param  network_type        network type
+ * @param  network_attrs       attributes, such as type of network_id,
+ *                             security, etc.
+ * @param  network_id          IAP name or local id, e.g. SSID
+ * @param  private             a reference to the #icd_nw_api private member
+ * @param  ip_address          IP address string or NULL if no such value
+ * @param  ip_netmask          IP netmask string which or NULL if no such
+ *                             value
+ * @param  ip_gateway          IP gateway string which or NULL if no such
+ *                             value
+ * @param  ip_dns1             DNS server IP address string or NULL if no
+ *                             such value
+ * @param  ip_dns2             DNS server IP address string or NULL if no
+ *                             such value
+ * @param  ip_dns3             DNS server IP address string or NULL if no
+ *                             such value
+ *
+ * @return TRUE if some of the values are returned, FALSE if no values
+ *         assigned
+ */
 static void
 icd_dbus_api_addrinfo_cb(gpointer addr_info_cb_token, const gchar *network_type,
                          const guint network_attrs, const gchar *network_id,
@@ -200,6 +225,14 @@ icd_dbus_api_addrinfo_cb(gpointer addr_info_cb_token, const gchar *network_type,
   g_free(addrinfo_data);
 }
 
+/**
+ * Function for sending address info data to listeners
+ *
+ * @param  iap           the IAP
+ * @param  foreach_data  foreach data structure
+ *
+ * @return TRUE on successful signal sending, FALSE on error
+ */
 static gboolean
 icd_dbus_api_addrinfo_send(struct icd_iap *iap,
                            struct icd_dbus_api_foreach_data *foreach_data)
@@ -309,6 +342,13 @@ icd_dbus_api_addrinfo_send(struct icd_iap *iap,
   return FALSE;
 }
 
+/**
+ * Handle addrinfo requests
+ *
+ * @param conn       D-Bus connection
+ * @param msg        D-Bus message
+ * @param user_data  dbus client data
+ */
 static DBusHandlerResult
 icd_dbus_api_addrinfo_req(DBusConnection *conn, DBusMessage *msg,
                           void *user_data)
@@ -343,6 +383,10 @@ icd_dbus_api_addrinfo_req(DBusConnection *conn, DBusMessage *msg,
   return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 }
 
+/**
+ * Free a statistics data structure
+ * @param stats  the statistics data structure
+ */
 static void
 icd_dbus_api_statistics_data_free(struct icd_dbus_api_statistics_data *stats)
 {
@@ -351,6 +395,25 @@ icd_dbus_api_statistics_data_free(struct icd_dbus_api_statistics_data *stats)
   g_free(stats);
 }
 
+/**
+ * Receive ip statistics based on network type, attributes and id. Values are
+ * set to zero or NULL if statistics are not available or applicable
+ *
+ * @param ip_stats_cb_token  token passed to the request function
+ * @param network_type       network type
+ * @param network_attrs      attributes, such as type of network_id,
+ *                           security, etc.
+ * @param network_id         network id
+ * @param time_active        time active, if applicable
+ * @param signal             signal level
+ * @param station_id         base station id, e.g. WLAN access point MAC
+ *                           address
+ * @param dB                 raw signal strength; depends on the type of
+ *                           network
+ * @param rx_bytes           bytes received on the link, if applicable
+ * @param tx_bytes           bytes sent on the link, if applicable
+ * @param private            a reference to the #icd_nw_api private member
+ */
 static void
 icd_dbus_api_statistics_ip_cb(const gpointer ip_stats_cb_token,
                               const gchar *network_type,
@@ -434,6 +497,22 @@ icd_dbus_api_statistics_ip_cb(const gpointer ip_stats_cb_token,
 #undef PVAL
 }
 
+/**
+ * Receive link post up statistics based on network type, attributes and id.
+ * Values are set to zero or NULL if statistics are not available or
+ * applicable
+ *
+ * @param link_post_stats_cb_token  token passed to the request function
+ * @param network_type              network type
+ * @param network_attrs             attributes, such as type of network_id,
+ *                                  security, etc.
+ * @param network_id                network id
+ * @param time_active               time active, if applicable
+ * @param rx_bytes                  bytes received on the link, if applicable
+ * @param tx_bytes                  bytes sent on the link, if applicable
+ * @param private                   a reference to the #icd_nw_api private
+ *                                  member
+ */
 static void
 icd_dbus_api_statistics_link_post_cb(const gpointer link_post_stats_cb_token,
                                      const gchar *network_type,
@@ -474,6 +553,25 @@ icd_dbus_api_statistics_link_post_cb(const gpointer link_post_stats_cb_token,
     ILOG_ERR("dbus api got NULL statistics struct in link post cb");
 }
 
+/**
+ * Receive link statistics based on network type, attributes and id. Values
+ * are set to zero or NULL if statistics are not available or applicable
+ *
+ * @param link_stats_cb_token  token passed to the request function
+ * @param network_type         network type
+ * @param network_attrs        attributes, such as type of network_id,
+ *                             security, etc.
+ * @param network_id           network id
+ * @param time_active          time active, if applicable
+ * @param signal               signal level
+ * @param station_id           base station id, e.g. WLAN access point MAC
+ *                             address
+ * @param dB                   raw signal strength; depends on the type of
+ *                             network
+ * @param rx_bytes             bytes received on the link, if applicable
+ * @param tx_bytes             bytes sent on the link, if applicable
+ * @param private              a reference to the #icd_nw_api private member
+ */
 static void
 icd_dbus_api_statistics_link_cb(const gpointer link_stats_cb_token,
                                 const gchar *network_type,
@@ -528,6 +626,14 @@ icd_dbus_api_statistics_link_cb(const gpointer link_stats_cb_token,
     ILOG_ERR("dbus api got NULL statistics struct in link cb");
 }
 
+/**
+ * Function for sending statistics data to listeners
+ *
+ * @param  iap           the IAP
+ * @param  foreach_data  foreach data structure
+ *
+ * @return TRUE on successful signal sending, FALSE on error
+ */
 static gboolean
 icd_dbus_api_statistics_send(struct icd_iap *iap,
                              struct icd_dbus_api_foreach_data *foreach_data)
@@ -547,6 +653,13 @@ icd_dbus_api_statistics_send(struct icd_iap *iap,
   return TRUE;
 }
 
+/**
+ * Handle statistics requests
+ *
+ * @param conn       D-Bus connection
+ * @param msg        D-Bus message
+ * @param user_data  dbus client data
+ */
 static DBusHandlerResult
 icd_dbus_api_statistics_req(DBusConnection *conn, DBusMessage *msg,
                             void *user_data)
@@ -582,12 +695,27 @@ icd_dbus_api_statistics_req(DBusConnection *conn, DBusMessage *msg,
   return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 }
 
+/**
+ * Stop iterating at the first IAP
+ *
+ * @param  iap        the IAP struct
+ * @param  user_data  user data
+ *
+ * @return FALSE
+ */
 static gboolean
 icd_dbus_api_disconnect_last(struct icd_iap *iap, gpointer user_data)
 {
   return FALSE;
 }
 
+/**
+ * Handle disconnect requests
+ *
+ * @param conn       D-Bus connection
+ * @param msg        D-Bus message
+ * @param user_data  dbus client data
+ */
 static DBusHandlerResult
 icd_dbus_api_disconnect_req(DBusConnection *conn, DBusMessage *msg,
                             void *user_data)
@@ -698,6 +826,13 @@ icd_dbus_api_disconnect_req(DBusConnection *conn, DBusMessage *msg,
   return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 }
 
+/**
+ * Handle select connection requests
+ *
+ * @param conn       D-Bus connection
+ * @param msg        D-Bus message
+ * @param user_data  dbus client data
+ */
 static DBusHandlerResult
 icd_dbus_api_select_req(DBusConnection *conn, DBusMessage *msg, void *user_data)
 {
@@ -890,6 +1025,12 @@ icd_dbus_api_scan_append(gchar *network_type,
   return rv;
 }
 
+/**
+ * Start scan for each each given network module
+ *
+ * @param module     network module
+ * @param user_data  scan helper structure
+ */
 static gboolean
 icd_dbus_api_scan_all_types(struct icd_network_module *module,
                             gpointer user_data)
@@ -910,6 +1051,13 @@ icd_dbus_api_scan_all_types(struct icd_network_module *module,
   return TRUE;
 }
 
+/**
+ * Handle scan requests
+ *
+ * @param conn       D-Bus connection
+ * @param msg        D-Bus message
+ * @param user_data  dbus client data
+ */
 static DBusHandlerResult
 icd_dbus_api_scan_req(DBusConnection *conn, DBusMessage *msg, void *user_data)
 {
@@ -1018,6 +1166,15 @@ send_error:
 
 }
 
+/**
+ * Handle connect requests
+ *
+ * @param conn       D-Bus connection
+ * @param msg        D-Bus message
+ * @param user_data  dbus client data
+ *
+ * @todo  OSSO_IAP_ASK merging should be done somewhere else
+ */
 static DBusHandlerResult
 icd_dbus_api_connect_req(DBusConnection *conn, DBusMessage *msg,
                          void *user_data)
@@ -1607,6 +1764,15 @@ icd_dbus_api_state_req(DBusConnection *conn, DBusMessage *msg, void *user_data)
   return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 }
 
+/**
+ * Create and send an (N)ACK to a listener
+ *
+ * @param  status  status
+ * @param  sender  D-Bus sender id
+ * @param  iap     IAP in question or NULL if none
+ *
+ * @return TRUE if signal is sent, FALSE otherwise
+ */
 static
 gboolean
 icd_dbus_api_send_connect_sig(enum icd_connect_status status,
@@ -1672,6 +1838,14 @@ icd_dbus_api_send_connect_sig(enum icd_connect_status status,
   return TRUE;
 }
 
+/**
+ * Send a NACK on disconnect or unsuccessful connection creation to D-Bus
+ * applications; free tracking info
+ *
+ * @param tracklist  the list of tracked applications
+ * @param iap        if non-NULL send #ICD_CONNECTION_DISCONNECTED; if NULL
+ *                   send #ICD_CONNECTION_NOT_CONNECTED
+ */
 void
 icd_dbus_api_send_nack(GSList *tracklist, struct icd_iap *iap)
 {
@@ -1701,6 +1875,12 @@ icd_dbus_api_send_nack(GSList *tracklist, struct icd_iap *iap)
   }
 }
 
+/**
+ * Send an ACK on successful connection creation to D-Bus applications
+ *
+ * @param tracklist  the list of tracked applications
+ * @param iap        IAP that got connected
+ */
 void
 icd_dbus_api_send_ack(GSList *tracklist, struct icd_iap *iap)
 {
@@ -1718,6 +1898,15 @@ icd_dbus_api_send_ack(GSList *tracklist, struct icd_iap *iap)
   }
 }
 
+/**
+ * Send network type search start/stop
+ *
+ * @param  iap          the network type
+ * @param  destination  D-Bus destination or NULL if broadcasted to all
+ * @param  state        the state to send
+ *
+ * @return TRUE on success, FALSE on error
+ */
 gboolean
 icd_dbus_api_update_search(const gchar *network_type, const gchar *destination,
                            const enum icd_connection_state state)

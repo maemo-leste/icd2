@@ -9,6 +9,8 @@
 #include "icd_exec.h"
 #include "icd_log.h"
 
+/** pipe used in communication between the posix signal handler and the glib
+ * main loop */
 static int signal_pipe [2];
 
 /**

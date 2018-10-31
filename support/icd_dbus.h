@@ -7,19 +7,29 @@
 /* while dbus is under construction, do this */
 #include <dbus/dbus-glib-lowlevel.h>
 
+/** Method call handler data */
 struct icd_dbus_mcall_table {
+  /** method call name */
   const gchar *name;
+  /** method call signature */
   const gchar *mcall_sig;
+  /** method call reply signature */
   const gchar *reply_sig;
+  /** handler function */
   DBusObjectPathMessageFunction handler_fn;
 };
 
+/** Signals sent from the interface */
 struct icd_dbus_sig_table {
+  /** signal name */
   const gchar *name;
+  /** signal signature */
   const gchar *mcall_sig;
 };
 
+/** Property data */
 struct icd_dbus_prop_table {
+  /** property name */
   const gchar *name;
 };
 
@@ -55,6 +65,11 @@ DBusPendingCall *icd_dbus_send_system_mcall (DBusMessage *message,
 gboolean icd_dbus_send_system_msg (DBusMessage *message);
 
 
+/** Callback function for receiving the unique D-Bus id
+ * @param name       D-Bus service name
+ * @param id         D-Bus id
+ * @param user_data  user data
+ */
 typedef void
 (*icd_dbus_get_unique_name_cb_fn) (const gchar *name,
                                    const gchar *id,

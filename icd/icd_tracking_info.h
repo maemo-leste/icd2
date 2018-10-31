@@ -6,7 +6,9 @@
 
 /** which D-Bus interface the tracking info is for */
 enum icd_tracking_info_api {
+  /** old icd API */
   ICD_TRACKING_INFO_ICD,
+  /** new icd2 API */
   ICD_TRACKING_INFO_ICD2
 };
 

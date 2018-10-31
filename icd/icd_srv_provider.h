@@ -9,15 +9,28 @@
 #include "icd_iap.h"
 #include "srv_provider_api.h"
 
+/** Service provider module */
 struct icd_srv_module {
+  /** module handle */
   void *handle;
+  /** name of this module */
   gchar *name;
 
+  /** list of pids this module wants to track */
   GSList *pid_list;
+  /** service api functions */
   struct icd_srv_api srv;
 
 };
 
+/** Service provider api callback for going through every service provider
+ * module
+ *
+ * @param  module     the service provider module
+ * @param  user_data  user data passed to icd_srv_provider_foreach_module
+ * @return if TRUE the callback will be called again with the next module; if
+ *         FALSE iteration is stopped
+ */
 typedef gboolean
 (*icd_srv_provider_foreach_module_fn) (struct icd_srv_module* module,
                                        gpointer user_data);
@@ -27,10 +40,19 @@ icd_srv_provider_foreach_module (struct icd_context *icd_ctx,
                                  icd_srv_provider_foreach_module_fn foreach_fn,
                                  gpointer user_data);
 
+/** Service provider connect callback function
+ * @param status     status of the connect
+ * @param err_str    error string or NULL on success
+ * @param user_data  user data
+ */
 typedef void (*icd_srv_provider_connect_cb_fn) (enum icd_srv_status status,
                                                 const gchar *err_str,
                                                 gpointer user_data);
 
+/** Service provider disconnect callback function
+ * @param status     status of the connect
+ * @param user_data  user data
+ */
 typedef void (*icd_srv_provider_disconnect_cb_fn) (enum icd_srv_status status,
                                                    gpointer user_data);
 

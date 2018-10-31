@@ -1,6 +1,7 @@
 #ifndef ICD_EXEC_H
 #define ICD_EXEC_H
 
+/** exit status */
 enum icd_exit_status {
         EXIT_FORK_FAILED = 2,
         EXIT_SETSID_FAILED,
