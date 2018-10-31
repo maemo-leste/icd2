@@ -424,7 +424,7 @@ icd_osso_ic_connstats_error(DBusMessage *method_call)
  * @param  network_attrs       attributes, such as type of network_id,
  *                             security, etc.
  * @param  network_id          IAP name or local id, e.g. SSID
- * @param  private             a reference to the #icd_nw_api private member
+ * @param  private             a reference to the icd_nw_api private member
  * @param  ip_address          IP address string or NULL if no such value
  * @param  ip_netmask          IP netmask string which or NULL if no such
  *                             value
@@ -871,7 +871,7 @@ icd_osso_ic_connstats_get_first(struct icd_request *request, gpointer user_data)
  *                           network
  * @param rx_bytes           bytes received on the link, if applicable
  * @param tx_bytes           bytes sent on the link, if applicable
- * @param private            a reference to the #icd_nw_api private member
+ * @param private            a reference to the icd_nw_api private member
  */
 static void
 icd_osso_ic_connstats_ip_cb(const gpointer ip_stats_cb_token,
@@ -971,7 +971,7 @@ icd_osso_ic_connstats_ip_cb(const gpointer ip_stats_cb_token,
  *                                  of network
  * @param rx_bytes                  bytes received on the link, if applicable
  * @param tx_bytes                  bytes sent on the link, if applicable
- * @param private                   a reference to the #icd_nw_api private
+ * @param private                   a reference to the icd_nw_api private
  *                                  member
  */
 static void
@@ -1035,7 +1035,7 @@ icd_osso_ic_connstats_link_post_cb(const gpointer link_post_stats_cb_token,
  *                             network
  * @param rx_bytes             bytes received on the link, if applicable
  * @param tx_bytes             bytes sent on the link, if applicable
- * @param private              a reference to the #icd_nw_api private member
+ * @param private              a reference to the icd_nw_api private member
  */
 static void
 icd_osso_ic_connstats_link_cb(gpointer link_stats_cb_token,
@@ -1525,7 +1525,7 @@ icd_osso_ic_deinit(void)
 /**
  * Cancel save dialog pending call
  * @param send_save_token  the opaque token returned from
- *                         #icd_osso_ui_send_save()
+ *                         icd_osso_ui_send_save()
  */
 void
 icd_osso_ui_send_save_cancel(gpointer send_save_token)

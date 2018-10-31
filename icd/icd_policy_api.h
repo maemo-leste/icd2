@@ -10,7 +10,7 @@
 
 @addtogroup icd_policy_api ICd policy API implementation
 
-The data structure of the list of requests in #icd_context and the existing
+The data structure of the list of requests in icd_context and the existing
 request list passed to #icd_policy_request_new_fn usable with e.g.
 icd_policy_merge_requests_fn looks like the following:
 <pre>

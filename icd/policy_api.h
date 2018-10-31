@@ -35,7 +35,7 @@ enum icd_policy_status {
 #define ICD_POLICY_ATTRIBUTE_BACKGROUND         0x02
 
 /** set if a previous attempt for a request to connect networks failed; used
- * by #policy_iap_ask_request() */
+ * by policy_iap_ask_request() */
 #define ICD_POLICY_ATTRIBUTE_CONNECTIONS_FAILED 0x04
 
 /** set whenever any IAPs are added to the request */

@@ -58,8 +58,8 @@ icd_args_usage(const char *program_name, int status)
 /**
  * Process commandline options.
  *
- * @param  argc     Parameter given to #main()
- * @param  argv     Parameter given to #main()
+ * @param  argc     Parameter given to main()
+ * @param  argv     Parameter given to main()
  * @param  context  ICd context
  *
  * @return Index of first non-option argument

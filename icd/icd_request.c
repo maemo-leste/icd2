@@ -161,8 +161,7 @@ icd_request_find(const gchar *network_type, const guint network_attrs,
  * Iterator function for removal by D-Bus sender id
  *
  * @param  request    the request
- * @param  user_data  user data passed to
- *                    #icd_request_tracking_info_delete().
+ * @param  user_data  user data passed to icd_request_tracking_info_delete().
  *
  * @return the request in which the sender id was found or NULL
  */
@@ -228,7 +227,7 @@ icd_request_send_nack(struct icd_request *request)
 }
 
 /**
- * Free an #icd_request structure
+ * Free an icd_request structure
  * @param request  the request
  */
 static void
@@ -296,7 +295,7 @@ icd_request_free_iaps(struct icd_request *request)
 
 /**
  * Cancel a request. The request will be freed when the
- * #icd_request_try_iap_cb() callback is called at the time of IAP
+ * icd_request_try_iap_cb() callback is called at the time of IAP
  * disconnection
  *
  * @param request       the request
@@ -708,10 +707,10 @@ icd_request_find_iap_by_module(struct icd_iap *iap, gpointer user_data)
  * Find a request to change to
  *
  * @param  request    the request
- * @param  user_data  user data passed to #icd_request_foreach()
+ * @param  user_data  user data passed to icd_request_foreach()
  *
  * @return NULL to continue iteration, non-NULL to stop the iteration and
- *         return this pointer in #icd_request_foreach().
+ *         return this pointer in icd_request_foreach().
  */
 static gpointer
 icd_request_find_changeto(struct icd_request *request, gpointer user_data)

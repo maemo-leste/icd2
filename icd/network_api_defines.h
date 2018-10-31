@@ -46,17 +46,17 @@ This file contains general network API definitions.
 
  * @{ */
 
-/** status of the #icd_nw_api function call returned in respective callbacks */
+/** status of the icd_nw_api function call returned in respective callbacks */
 enum icd_nw_status {
-  /** function call succeeded; ICd will now call the next non-NULL
-   * #icd_nw_api '_up' function on the same layer from any other module that
-   * has the same type but greater priority number */
+  /** function call succeeded; ICd will now call the next non-NULL icd_nw_api
+   * '_up' function on the same layer from any other module that has the same
+   * type but greater priority number */
   ICD_NW_SUCCESS = 0,
-  /** function call succeeded; ICd will now call the next non-NULL
-   * #icd_nw_api '_up' function from the layer above. This status code is
-   * ignored on disconnect. */
+  /** function call succeeded; ICd will now call the next non-NULL icd_nw_api
+   * '_up' function from the layer above. This status code is ignored on
+   * disconnect. */
   ICD_NW_SUCCESS_NEXT_LAYER = 1,
-  /** restart this IAP; ICd will first call the all #icd_nw_api '_down'
+  /** restart this IAP; ICd will first call the all icd_nw_api '_down'
    * functions starting with the one for this level and then restart from
    * link_up. This status code is ignored on disconnect. */
   ICD_NW_RESTART = 2,

@@ -169,7 +169,7 @@ icd_scan_cache_init(struct icd_network_module *module)
 }
 
 /**
- * Free an #icd_scan_cache structure
+ * Free an icd_scan_cache structure
  * @param cache_entry  cache entry to free
  */
 void
@@ -285,7 +285,7 @@ icd_scan_listener_send_entry(struct icd_scan_srv_provider *srv_provider,
  * Check for elements, return immediately on first element found
  *
  * @param  key        the network_id, not used
- * @param  value      the #icd_scan_cache_list
+ * @param  value      the icd_scan_cache_list
  * @param  user_data  not used
  *
  * @return TRUE on first non-NULL element found
@@ -368,7 +368,7 @@ icd_scan_listener_notify(struct icd_network_module *module,
  * (that is why list_entry is not deleted inside this function).
  *
  * @param  key        the network_id
- * @param  value      the #icd_scan_cache_list struct
+ * @param  value      the icd_scan_cache_list struct
  * @param  user_data  expiration time
  *
  * @return TRUE when all networks for the network_id have been expired and
@@ -431,7 +431,7 @@ icd_scan_expire_network(gpointer key, gpointer value, gpointer user_data)
  * from hash remove func.
  *
  * @param  key        the network_id
- * @param  value      the #icd_scan_cache_list struct
+ * @param  value      the icd_scan_cache_list struct
  * @param  user_data  expiration time
  *
  * @return TRUE when all networks for the network_id have been expired and
@@ -577,7 +577,7 @@ icd_scan_cache_remove_iap(gchar *iap_name)
  * Remove scan cache from scan list, the removed entry does not call
  * listeners.
  *
- * @param  cache_list     the #icd_scan_cache_list struct
+ * @param  cache_list     the icd_scan_cache_list struct
  * @param  network_id     network identifier
  * @param  network_type   the network type
  * @param  network_attrs  network attributes
@@ -673,8 +673,8 @@ icd_scan_cache_remove(struct icd_network_module *module)
  * Send all cache entries to the listener
  *
  * @param key        the network_id
- * @param value      the #icd_scan_cache_list
- * @param user_data  the #icd_scan_listener
+ * @param value      the icd_scan_cache_list
+ * @param user_data  the icd_scan_listener
  */
 static void
 icd_scan_listener_send_list(gpointer key, gpointer value, gpointer user_data)

@@ -61,7 +61,7 @@ enum icd_request_status {
 typedef void (*icd_request_cb_fn) (enum icd_request_status status,
                                    gpointer user_data);
 
-/** ICd connection request. An #icd_request exists while the IAP is being
+/** ICd connection request. An icd_request exists while the IAP is being
  * created and is deleted when the IAP has successfully connected. */
 struct icd_request {
 
@@ -84,9 +84,9 @@ struct icd_request {
 
 /** Function called for each request structure
  * @param  request    the request
- * @param  user_data  user data passed to #icd_request_foreach()
+ * @param  user_data  user data passed to icd_request_foreach()
  * @return NULL to continue iteration, non-NULL to stop the iteration and
- *         return this pointer in #icd_request_foreach().
+ *         return this pointer in icd_request_foreach().
  */
 typedef gpointer (*icd_request_foreach_fn) (struct icd_request *request,
                                             gpointer user_data);

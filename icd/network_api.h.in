@@ -189,7 +189,7 @@ typedef void (*icd_nw_layer_renew_cb_fn) (enum icd_nw_renew_status status,
  * @param renew_cb        callback function for notifying ICd when the
  *                        renewal is done
  * @param renew_cb_token  token to pass to the callback function
- * @param private         a reference to the #icd_nw_api private member
+ * @param private         a reference to the icd_nw_api private member
  */
 typedef void (*icd_nw_layer_renew_fn) (const gchar *network_type,
 				       const guint network_attrs,
@@ -218,7 +218,7 @@ typedef void
  * @param ip_down_cb        callback function for notifying ICd when the IP
  *                          address is deconfigured
  * @param ip_down_cb_token  token to pass to the callback function
- * @param private           a reference to the #icd_nw_api private member
+ * @param private           a reference to the icd_nw_api private member
  */
 typedef void
 (*icd_nw_ip_down_fn) (const gchar *network_type,
@@ -255,7 +255,7 @@ typedef void (*icd_nw_ip_up_cb_fn) (const enum icd_nw_status status,
  * @param link_up_cb        callback function for notifying ICd when the IP
  *                          address is configured
  * @param link_up_cb_token  token to pass to the callback function
- * @param private           a reference to the #icd_nw_api private member
+ * @param private           a reference to the icd_nw_api private member
  */
 typedef void
 (*icd_nw_ip_up_fn) (const gchar *network_type,
@@ -274,7 +274,7 @@ typedef void
  * @param  network_attrs       attributes, such as type of network_id,
  *                             security, etc.
  * @param  network_id          IAP name or local id, e.g. SSID
- * @param  private             a reference to the #icd_nw_api private member
+ * @param  private             a reference to the icd_nw_api private member
  * @param  ip_address          IP address string or NULL if no such value
  * @param  ip_netmask          IP netmask string which or NULL if no such
  *                             value
@@ -307,7 +307,7 @@ typedef void (*icd_nw_ip_addr_info_cb_fn) (const gpointer addr_info_cb_token,
  * @param network_attrs       attributes, such as type of network_id,
  *                            security, etc.
  * @param network_id          network id
- * @param private             a reference to the #icd_nw_api private member
+ * @param private             a reference to the icd_nw_api private member
  * @param cb                  callback function when delivering the data
  * @param addr_info_cb_token  token to pass to the callback function
  */
@@ -329,7 +329,7 @@ typedef void (*icd_nw_ip_addr_info_fn) (const gchar *network_type,
  * @param time_active        time active, if applicable
  * @param rx_bytes           bytes received on the link, if applicable
  * @param tx_bytes           bytes sent on the link, if applicable
- * @param private            a reference to the #icd_nw_api private member
+ * @param private            a reference to the icd_nw_api private member
  */
 typedef void (*icd_nw_ip_stats_cb_fn) (const gpointer ip_stats_cb_token,
 				       const gchar *network_type,
@@ -344,7 +344,7 @@ typedef void (*icd_nw_ip_stats_cb_fn) (const gpointer ip_stats_cb_token,
  * @param network_attrs      attributes, such as type of network_id,
  *                           security, etc.
  * @param network_id         network id
- * @param private            a reference to the #icd_nw_api private member
+ * @param private            a reference to the icd_nw_api private member
  * @param cb                 callback function when delivering the data
  * @param ip_stats_cb_token  token to pass to the callback function
  */
@@ -372,7 +372,7 @@ typedef void
  * @param link_pre_down_cb        callback function for notifying ICd when
  *                                the link is deauthenticate
  * @param link_pre_down_cb_token  token to pass to the callback function
- * @param private                 a reference to the #icd_nw_api private
+ * @param private                 a reference to the icd_nw_api private
  *                                member
  */
 typedef void
@@ -411,8 +411,7 @@ typedef void
  * @param link_post_up_cb        callback function for notifying ICd when the
  *                               link post up function has completed
  * @param link_post_up_cb_token  token to pass to the callback function
- * @param private                a reference to the #icd_nw_api private
- *                               member
+ * @param private                a reference to the icd_nw_api private member
  */
 typedef void
 (*icd_nw_link_post_up_fn) (const gchar *network_type,
@@ -435,7 +434,7 @@ typedef void
  * @param time_active               time active, if applicable
  * @param rx_bytes                  bytes received on the link, if applicable
  * @param tx_bytes                  bytes sent on the link, if applicable
- * @param private                   a reference to the #icd_nw_api private
+ * @param private                   a reference to the icd_nw_api private
  *                                  member
  */
 typedef void
@@ -452,7 +451,7 @@ typedef void
  * @param network_attrs             attributes, such as type of network_id,
  *                                  security, etc.
  * @param network_id                network id
- * @param private                   a reference to the #icd_nw_api private
+ * @param private                   a reference to the icd_nw_api private
  *                                  member
  * @param cb                        callback function when delivering the
  *                                  data
@@ -483,7 +482,7 @@ typedef void
  * @param link_down_cb        callback function for notifying ICd when the
  *                            link is down
  * @param link_down_cb_token  token to pass to the callback function
- * @param private             a reference to the #icd_nw_api private member
+ * @param private             a reference to the icd_nw_api private member
  */
 typedef void
 (*icd_nw_link_down_fn) (const gchar *network_type,
@@ -520,7 +519,7 @@ typedef void
  * @param network_id        IAP name or local id, e.g. SSID
  * @param link_up_cb        the callback function to call when the link is up
  * @param link_up_cb_token  token to pass to the callback function
- * @param private           a reference to the #icd_nw_api private member
+ * @param private           a reference to the icd_nw_api private member
  */
 typedef void
 (*icd_nw_link_up_fn) (const gchar *network_type,
@@ -546,7 +545,7 @@ typedef void
  *                             network
  * @param rx_bytes             bytes received on the link, if applicable
  * @param tx_bytes             bytes sent on the link, if applicable
- * @param private              a reference to the #icd_nw_api private member
+ * @param private              a reference to the icd_nw_api private member
  */
 typedef void (*icd_nw_link_stats_cb_fn) (const gpointer link_stats_cb_token,
 					 const gchar *network_type,
@@ -564,7 +563,7 @@ typedef void (*icd_nw_link_stats_cb_fn) (const gpointer link_stats_cb_token,
  * @param network_attrs        attributes, such as type of network_id,
  *                             security, etc.
  * @param network_id           network id
- * @param private              a reference to the #icd_nw_api private member
+ * @param private              a reference to the icd_nw_api private member
  * @param cb                   callback function when delivering the data
  * @param link_stats_cb_token  token to pass to the callback function
  */
@@ -610,7 +609,7 @@ typedef void
  *                         #ICD_NW_SEARCH_SCOPE_SAVED
  * @param search_cb        the search callback
  * @param search_cb_token  token from the ICd to pass to the callback a
- *                         reference to the #icd_nw_api private member
+ *                         reference to the icd_nw_api private member
  */
 typedef void
 (*icd_nw_start_search_fn) (const gchar *network_type,
@@ -623,7 +622,7 @@ typedef void
  * callback given in #icd_nw_start_search_fn with status
  * #ICD_NW_SEARCH_COMPLETE as soon as search is stopped.
  *
- * @param private  a reference to the #icd_nw_api private member
+ * @param private  a reference to the icd_nw_api private member
  */
 typedef void
 (*icd_nw_stop_search_fn) (gpointer *private);
@@ -631,7 +630,7 @@ typedef void
 /** Notification function for child process termination
  * @param pid         the process id that exited
  * @param exit_value  process exit value
- * @param private     a reference to the #icd_nw_api private member
+ * @param private     a reference to the icd_nw_api private member
  */
 typedef void
 (*icd_nw_child_exit_fn) (const pid_t pid,
@@ -640,10 +639,10 @@ typedef void
 
 
 /** Destruction function that cleans up after the module. The list of network
- * types in the #icd_nw_api structure is deleted by ICd. The destruction
+ * types in the icd_nw_api structure is deleted by ICd. The destruction
  * function will not be called before all child processes have exited.
  *
- * @param private  reference to the 'private' member in the #icd_nw_api
+ * @param private  reference to the 'private' member in the icd_nw_api
  *                 structure
  */
 typedef void
@@ -733,7 +732,7 @@ typedef void (*icd_nw_watch_pid_fn) (const pid_t pid,
 				     gpointer watch_cb_token);
 
 /** Prototype for the module to request closing of its connection due to
- * internal or external events. #icd_nw_api '_down' functions will be called
+ * internal or external events. icd_nw_api '_down' functions will be called
  * in order starting from top.
  *
  * @param status         reason for closing; #ICD_NW_RESTART if the IAP needs
@@ -776,8 +775,7 @@ typedef void (*icd_nw_renew_fn) (enum icd_nw_layer renew_layer,
 /** Prototype for the network api initialization function. ICd searches each
  * library for an instance of this function prototype called 'icd_nw_init'
  *
- * @param  network_api     #icd_nw_api structure to be filled in by the
- *                         module
+ * @param  network_api     icd_nw_api structure to be filled in by the module
  * @param  watch_cb        function to inform ICd that a child process is to
  *                         be monitored for exit status
  * @param  watch_cb_token  token to pass to the watch pid function

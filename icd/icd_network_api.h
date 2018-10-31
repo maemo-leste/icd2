@@ -38,9 +38,9 @@ struct icd_network_module {
   gboolean scan_progress;
   /** rescan timeout */
   gint scan_timeout_rescan;
-  /** list of #icd_scan_cache_timeout data structures */
+  /** list of icd_scan_cache_timeout data structures */
   GSList *scan_timeout_list;
-  /** network scan cache hash table containing #icd_scan_cache_list elements */
+  /** network scan cache hash table containing icd_scan_cache_list elements */
   GHashTable *scan_cache_table;
   /** entities that wish to receive scan results from this module */
   GSList *scan_listener_list;

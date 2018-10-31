@@ -83,12 +83,12 @@ extern "C" {
 /** Service provider module version equal to the network module version */
 #define ICD_SRV_MODULE_VERSION ICD_NW_MODULE_VERSION
 
-/** status of the #icd_srv_api function call returned in the callback */
+/** status of the icd_srv_api function call returned in the callback */
 enum icd_srv_status {
   /** service provider (authentication) functionality succeeded; network
    * connection is functioning */
   ICD_SRV_SUCCESS = 0,
-  /** restart this IAP; ICd will call all #icd_nw_api '_down' functions for
+  /** restart this IAP; ICd will call all icd_nw_api '_down' functions for
    * the associated network module and then restart from link_up all the way
    * to the service API */
   ICD_SRV_RESTART = 1,
@@ -178,7 +178,7 @@ typedef void (*icd_srv_disconnect_cb_fn) (enum icd_srv_status status,
  * @param disconnect_cb        callback to call when disconnection is
  *                             completed
  * @param disconnect_cb_token  token to pass to the callback
- * @param private              reference to the private #icd_srv_api member
+ * @param private              reference to the private icd_srv_api member
  */
 typedef void (*icd_srv_disconnect_fn) (const gchar *service_type,
 				       const guint service_attrs,
@@ -212,7 +212,7 @@ typedef void (*icd_srv_connect_cb_fn) (enum icd_srv_status status,
  * @param connect_cb        callback to call when connection attempt is
  *                          completed
  * @param connect_cb_token  token to pass to the callback
- * @param private           reference to the private #icd_srv_api member
+ * @param private           reference to the private icd_srv_api member
  */
 typedef void (*icd_srv_connect_fn) (const gchar *service_type,
 				    const guint service_attrs,
@@ -228,22 +228,22 @@ typedef void (*icd_srv_connect_fn) (const gchar *service_type,
 /** Notification function for child process termination
  * @param pid         the process id that exited
  * @param exit_value  process exit value
- * @param private     a reference to the #icd_nw_api private member
+ * @param private     a reference to the icd_nw_api private member
  */
 typedef void (*icd_srv_child_exit_fn) (const pid_t pid,
 				       const gint exit_status,
 				       gpointer *private);
 
 /** Destruction function that cleans up after the module. The list of network
- * and service types in the #icd_srv_api structure is deleted by ICd. The
+ * and service types in the icd_srv_api structure is deleted by ICd. The
  * destruction function will not be called before all child processes have
  * exited.
  *
- * @param private  a reference to the #icd_nw_api private member
+ * @param private  a reference to the icd_nw_api private member
  */
 typedef void (*icd_srv_destruct_fn) (gpointer *private);
 
-/** #icd_srv_api defines the service provider functions implemented by the
+/** icd_srv_api defines the service provider functions implemented by the
  * module */
 struct icd_srv_api {
 
@@ -340,7 +340,7 @@ typedef void
 /** Prototype for the service api initialization function. ICd searches each
  * library for an instance of this function prototype called 'icd_srv_init'.
  *
- * @param  srv_api         #icd_srv_api structure to be filled in by the
+ * @param  srv_api         icd_srv_api structure to be filled in by the
  *                         module
  * @param  watch_cb        function to inform ICd that a child process is to
  *                         be monitored for exit status

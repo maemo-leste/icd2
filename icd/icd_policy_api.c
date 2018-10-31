@@ -717,8 +717,8 @@ icd_policy_api_scan_result(enum icd_scan_status status,
 
 /**
  * Function for a module to request a network scan.
- * #icd_policy_api_scan_stop() has to be called as many times as this
- * function is called even if the same callback and user_data pair are added.
+ * icd_policy_api_scan_stop() has to be called as many times as this function
+ * is called even if the same callback and user_data pair are added.
  *
  * @param type       network type
  * @param scope      scan scope
@@ -789,7 +789,7 @@ icd_policy_api_scan_find(icd_policy_scan_cb_fn cb, gpointer user_data)
  * Stop returning scan results for the given callback and user data
  *
  * @param cb         scan callback
- * @param user_data  user_data given in #icd_policy_api_scan_start()
+ * @param user_data  user_data given in icd_policy_api_scan_start()
  */
 static void
 icd_policy_api_scan_stop(icd_policy_scan_cb_fn cb, gpointer user_data)

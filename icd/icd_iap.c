@@ -193,7 +193,7 @@ icd_iap_restart(struct icd_iap *iap, enum icd_nw_layer restart_layer)
 /**
  * Call all network module _down functions added to the IAP. This function
  * does not handle cancelled IAPs which have not yet called their respective
- * _up functions and can't thus be merged with #icd_iap_disconnect().
+ * _up functions and can't thus be merged with icd_iap_disconnect().
  *
  * @param iap  IAP to disconnect
  */
@@ -1255,7 +1255,7 @@ icd_iap_up_callback(const enum icd_nw_status status, const gchar *err_str,
 
 /**
  * Callback for link_post_up; common _up callback handling in
- * #icd_iap_up_callback()
+ * icd_iap_up_callback()
  *
  * @param status            status of the operation
  * @param err_str           NULL if the network was disconnected normally or
@@ -1343,7 +1343,7 @@ icd_iap_srv_connect_cb(enum icd_srv_status status, const gchar *err_str,
 
 /**
  * Callback for link_up; saves the interface name on success, common _up
- * callback handling in #icd_iap_up_callback()
+ * callback handling in icd_iap_up_callback()
  *
  * @param status            status of the operation
  * @param err_str           NULL if the network was disconnected normally or
@@ -1716,7 +1716,7 @@ icd_iap_run_pre_up_scripts(struct icd_iap *iap)
 }
 
 /**
- * Request a network connection. The caller needs to free the given #icd_iap
+ * Request a network connection. The caller needs to free the given icd_iap
  * data structure when the IAP is no longer in use.
  *
  * @param iap         IAP to connect
@@ -1778,7 +1778,7 @@ icd_iap_connect(struct icd_iap *iap, icd_iap_request_cb_fn request_cb,
 
 /**
  * Allocate memory for a new IAP structure. Caller is responsible of freeing
- * the IAP structure with #icd_iap_free() after use
+ * the IAP structure with icd_iap_free() after use
  *
  * @return the newly created IAP structure
  */

@@ -229,7 +229,7 @@ struct icd_iap {
   /** user data to pass to the callback */
   gpointer request_cb_user_data;
 
-  /** list of struct #icd_iap_env environment variables */
+  /** list of struct icd_iap_env environment variables */
   GSList *script_env;
 
   /** list of script pids being waited for */

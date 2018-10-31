@@ -147,7 +147,7 @@ icd_dbus_api_scan_cancel(DBusConnection *conn, DBusMessage *msg,
  * @param  network_attrs       attributes, such as type of network_id,
  *                             security, etc.
  * @param  network_id          IAP name or local id, e.g. SSID
- * @param  private             a reference to the #icd_nw_api private member
+ * @param  private             a reference to the icd_nw_api private member
  * @param  ip_address          IP address string or NULL if no such value
  * @param  ip_netmask          IP netmask string which or NULL if no such
  *                             value
@@ -425,7 +425,7 @@ icd_dbus_api_statistics_data_free(struct icd_dbus_api_statistics_data *stats)
  *                           network
  * @param rx_bytes           bytes received on the link, if applicable
  * @param tx_bytes           bytes sent on the link, if applicable
- * @param private            a reference to the #icd_nw_api private member
+ * @param private            a reference to the icd_nw_api private member
  */
 static void
 icd_dbus_api_statistics_ip_cb(const gpointer ip_stats_cb_token,
@@ -523,7 +523,7 @@ icd_dbus_api_statistics_ip_cb(const gpointer ip_stats_cb_token,
  * @param time_active               time active, if applicable
  * @param rx_bytes                  bytes received on the link, if applicable
  * @param tx_bytes                  bytes sent on the link, if applicable
- * @param private                   a reference to the #icd_nw_api private
+ * @param private                   a reference to the icd_nw_api private
  *                                  member
  */
 static void
@@ -583,7 +583,7 @@ icd_dbus_api_statistics_link_post_cb(const gpointer link_post_stats_cb_token,
  *                             network
  * @param rx_bytes             bytes received on the link, if applicable
  * @param tx_bytes             bytes sent on the link, if applicable
- * @param private              a reference to the #icd_nw_api private member
+ * @param private              a reference to the icd_nw_api private member
  */
 static void
 icd_dbus_api_statistics_link_cb(const gpointer link_stats_cb_token,

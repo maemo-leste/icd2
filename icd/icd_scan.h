@@ -12,23 +12,23 @@
 
 Internally each module has a hash table of cached scan results. The hash
 table is accessed using the module internal network_id. Each hash table entry
-contains an #icd_scan_cache_list structure with a singly linked list of
-networks. The #icd_scan_cache_list structure is used because the pointer to
+contains an icd_scan_cache_list structure with a singly linked list of
+networks. The icd_scan_cache_list structure is used because the pointer to
 the singly linked list must be updated whenever a network is removed.
 <pre>
  +---+
  | n |   +GHashTable(network_idX)-+
  | w |--&gt;|scan_cache_table        |
  |   |   +------------------------+
- | m |                     |  |  +-&gt;#icd_scan_cache_list
+ | m |                     |  |  +-&gt;icd_scan_cache_list
  | o |                     |  |       +-&gt;GSlist for network_idN
  | d |                     |  |
- | u |                     |  +-&gt;#icd_scan_cache_list
+ | u |                     |  +-&gt;icd_scan_cache_list
  | l |                     |       +-&gt;GSList for network_id2
  | e |                     |
  +---+                     |   ...
                            |
-                           +-&gt;#icd_scan_cache_list
+                           +-&gt;icd_scan_cache_list
                                 +-&gt;GSList for network_idN
  </pre>
 
@@ -44,7 +44,7 @@ the singly linked list must be updated whenever a network is removed.
 /** scan cache hash table elements defined like this because we need to
  * update the GSList pointer when elements are removed */
 struct icd_scan_cache_list {
-  /** list of #icd_scan_cache elements */
+  /** list of icd_scan_cache elements */
   GSList *cache_list;
 };
 
@@ -99,7 +99,7 @@ struct icd_scan_cache {
   GSList *srv_provider_list;
 };
 
-/** #icd_network_module scan_timeout_list data. Cache expiry callbacks and
+/** icd_network_module scan_timeout_list data. Cache expiry callbacks and
  * rescan callbacks will be queued with a pointer to this element with id
  * field containing the glib timeout id */
 struct icd_scan_cache_timeout {
