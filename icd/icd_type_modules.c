@@ -7,14 +7,10 @@
 #define ICD_GCONF_POLICY_ORDER ICD_GCONF_SETTINGS "/policy/modules"
 
 /**
- * @brief Get the names of the network modules used for a particular network
- *        type
- *
- * @param network_type type of network
- *
- * @return a list of network module names that the caller has to free or NULL if
- *         the network type is not recognised
- *
+ * Get the names of the network modules used for a particular network type
+ * @param  network_type  type of network
+ * @return a list of network module names that the caller has to free or NULL
+ *         if the network type is not recognised
  */
 GSList *
 icd_network_modules_get(const gchar *network_type)
@@ -41,11 +37,9 @@ icd_network_modules_get(const gchar *network_type)
 }
 
 /**
- * @brief Get the policy module order
- *
+ * Get the policy module order
  * @return a list of network module names that the caller has to free or NULL
- * on error
- *
+ *         on error
  */
 GSList *
 icd_policy_modules_get(void)

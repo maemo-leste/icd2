@@ -20,15 +20,15 @@
 #define ICD_NW_INIT   "icd_nw_init"
 
 /**
- * @brief make icd_scan use the module iteration function
+ * Iterate over all network modules
  *
- * @param icd_ctx icd context
- * @param foreach_fn the function to call for each module
- * @param user_data user data to pass to the function
+ * @param  icd_ctx     icd context
+ * @param  foreach_fn  the function to call for each module
+ * @param  user_data   user data to pass to the function
  *
- * @return a pointer to the module if the iteration function returns FALSE; NULL
- * otherwise
- *
+ * @return a pointer to the module if the iteration function returns FALSE;
+ *         NULL otherwise
+ * @todo   make icd_scan use the module iteration function
  */
 struct icd_network_module *
 icd_network_api_foreach_module(struct icd_context *icd_ctx,
@@ -68,14 +68,13 @@ struct pid_notify {
 };
 
 /**
- * @brief Find the network module that is watching a child process exit
+ * Find the network module that is watching a child process exit
  *
- * @param module the network module to examine
- * @param user_data the #pid_notify structure
+ * @param  module     the network module to examine
+ * @param  user_data  the #pid_notify structure
  *
  * @return TRUE to continue searching, FALSE to exit iteration and return a
- * pointer to the module
- *
+ *         pointer to the module
  */
 static gboolean
 icd_network_api_foreach_module_pid(struct icd_network_module *module,
@@ -114,14 +113,13 @@ icd_network_api_foreach_module_pid(struct icd_network_module *module,
 }
 
 /**
- * @brief Notify a network module that its child process has exited
+ * Notify a network module that its child process has exited
  *
- * @param icd_ctx the context
- * @param pid the process id
- * @param exit_value exit value
+ * @param  icd_ctx     the context
+ * @param  pid         the process id
+ * @param  exit_value  exit value
  *
  * @return TRUE if the process id was in use by the network api; FALSE if not
- *
  */
 gboolean
 icd_network_api_notify_pid(struct icd_context *icd_ctx, const pid_t pid,
@@ -137,11 +135,10 @@ icd_network_api_notify_pid(struct icd_context *icd_ctx, const pid_t pid,
 }
 
 /**
- * @brief Set ICd to watch a child pid
+ * Set ICd to watch a child pid
  *
- * @param pid process id
- * @param watch_cb_token the watch callback token given on initialization
- *
+ * @param pid             process id
+ * @param watch_cb_token  the watch callback token given on initialization
  */
 static void
 icd_network_api_watch_pid(const pid_t pid, gpointer watch_cb_token)
@@ -164,13 +161,12 @@ icd_network_api_watch_pid(const pid_t pid, gpointer watch_cb_token)
 }
 
 /**
- * @brief  Status of the network has changed while the network has been
- * connected
+ * Status of the network has changed while the network has been connected
  *
- * @param network_type the type of the IAP returned
- * @param network_attrs attributes, such as type of network_id, security, etc.
- * @param network_id IAP name or local id, e.g. SSID
- *
+ * @param network_type   the type of the IAP returned
+ * @param network_attrs  attributes, such as type of network_id, security,
+ *                       etc.
+ * @param network_id     IAP name or local id, e.g. SSID
  */
 static void
 icd_network_api_status_update(gchar *network_type, guint network_attrs,

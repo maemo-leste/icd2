@@ -12,12 +12,10 @@
 static int signal_pipe [2];
 
 /**
- * @brief Signal handler.
- *
- * @param sig Received signal number.
- *
- * @note Only queues received signals on pipe which is polled by main thread.
- * Thus signals are handler synchronously on specific point.
+ * Signal handler.
+ * @param sig  Received signal number.
+ * @note  Only queues received signals on pipe which is polled by main
+ *        thread. Thus signals are handler synchronously on specific point.
  */
 static void
 icd_signal_handler(int sig)
@@ -26,16 +24,15 @@ icd_signal_handler(int sig)
 }
 
 /**
- * @brief GLib callback called from main loop when the signal pipe receives
- * data. This function only polls the signal pipe and calls signal_handler to do
+ * GLib callback called from main loop when the signal pipe receives data.
+ * This function only polls the signal pipe and calls signal_handler to do
  * the actual work.
  *
- * @param chan IO Channel associated with file descriptor.
- * @param cond Condition which triggered callback.
- * @param data the signal handler function to call
+ * @param  chan  IO Channel associated with file descriptor.
+ * @param  cond  Condition which triggered callback.
+ * @param  data  the signal handler function to call
  *
  * @return always TRUE
- *
  */
 static gboolean
 icd_signal_cb(GIOChannel *chan, GIOCondition cond, gpointer data)
@@ -59,15 +56,14 @@ icd_signal_cb(GIOChannel *chan, GIOCondition cond, gpointer data)
 }
 
 /**
- * @brief Initialize signal handling. Create pipe for queueing signals from
- * signal handler to main thread. Hook all processed signals and create a Glib
- * io watch for the pipe.
+ * Initialize signal handling. Create pipe for queueing signals from signal
+ * handler to main thread. Hook all processed signals and create a Glib io
+ * watch for the pipe.
  *
- * @param signal_handler function handling the signal
- * @param ... signals to watch, end with -1
+ * @param  signal_handler  function handling the signal
+ * @param  ...             signals to watch, end with -1
  *
  * @return 0 on success, #icd_exit_status on failure
- *
  */
 int
 icd_signal_init(icd_signal_handler_fn signal_handler, ...)

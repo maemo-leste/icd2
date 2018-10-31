@@ -42,12 +42,9 @@
 })
 
 /**
- * @brief Unset idletimer iptables rules
- *
- * @param interface the interface name
- *
+ * Unset idletimer iptables rules
+ * @param  interface  the interface name
  * @return TRUE on success, FALSE on failure
- *
  */
 static gboolean
 icd_idle_timer_unset_rules (const gchar *interface)
@@ -69,12 +66,9 @@ icd_idle_timer_unset_rules (const gchar *interface)
 }
 
 /**
- * @brief  Unset idle timer for an IAP
- *
- * @param iap the IAP
- *
+ * Unset idle timer for an IAP
+ * @param  iap  the IAP
  * @return TRUE on success, FALSE on failure
- *
  */
 gboolean
 icd_idle_timer_unset(struct icd_iap *iap)
@@ -96,13 +90,13 @@ icd_idle_timer_unset(struct icd_iap *iap)
 }
 
 /**
- * @brief Set idletimer iptables rules
+ * Set idletimer iptables rules
  *
- * @param interface the interface name
- * @param timeout_str time in seconds to wait until interface is considered idle
+ * @param  interface    the interface name
+ * @param  timeout_str  time in seconds to wait until interface is considered
+ *                      idle
  *
  * @return TRUE on success, FALSE on failure
- *
  */
 static gboolean
 icd_idle_timer_set_rules (const gchar *interface, const gchar *timeout_str)
@@ -155,14 +149,14 @@ icd_idle_timer_set_rules (const gchar *interface, const gchar *timeout_str)
 }
 
 /**
- * @brief Idle timer callback function called when the idle timer has triggered
+ * Idle timer callback function called when the idle timer has triggered
  *
- * @param source the GIOChannel event source
- * @param condition the condition which has been satisfied
- * @param data user data set in g_io_add_watch() or g_io_add_watch_full()
+ * @param  source     the GIOChannel event source
+ * @param  condition  the condition which has been satisfied
+ * @param  data       user data set in g_io_add_watch() or
+ *                    g_io_add_watch_full()
  *
- * @return FALSE to continue watching idle timer, FALSE to stop
- *
+ * @return TRUE to continue watching idle timer, FALSE to stop
  */
 static gboolean
 icd_idle_timer_trigger(GIOChannel *source, GIOCondition condition,
@@ -195,13 +189,12 @@ icd_idle_timer_trigger(GIOChannel *source, GIOCondition condition,
 }
 
 /**
- * @brief Start idle timer
+ * Start idle timer
  *
- * @param iap the IAP
- * @param timeout timeout in seconds
+ * @param  iap      the IAP
+ * @param  timeout  timeout in seconds
  *
  * @return TRUE on successful starting of the idle timer; FALSE on error
- *
  */
 static gboolean
 icd_idle_timer_start(struct icd_iap *iap, guint timeout)
@@ -252,11 +245,11 @@ icd_idle_timer_start(struct icd_iap *iap, guint timeout)
 }
 
 /**
- * @brief Go through each IAP and see if the changed idle timer entry applies to
- * the type of this IAP
+ * Go through each IAP and see if the changed idle timer entry applies to the
+ * type of this IAP
  *
- * @param iap the IAP
- * @param user_data the changed GConfEntry
+ * @param  iap        the IAP
+ * @param  user_data  the changed GConfEntry
  *
  * @return TRUE to go through all IAPs
  */
@@ -321,12 +314,12 @@ out:
 }
 
 /**
- * @brief Callback for GConf entry change
+ * Callback for GConf entry change
  *
- * @param client GConf client
- * @param cnxn_id connection id
- * @param entry the changed GConfEntry
- * @param user_data user data
+ * @param client     GConf client
+ * @param cnxn_id    connection id
+ * @param entry      the changed GConfEntry
+ * @param user_data  user data
  */
 static void
 icd_idle_timer_gconf_changed(GConfClient *client, guint cnxn_id,
@@ -337,13 +330,11 @@ icd_idle_timer_gconf_changed(GConfClient *client, guint cnxn_id,
 }
 
 /**
- * @brief Clear all OUTPUT chain rules and add notification function for idle
- * timer gconf values
+ * Clear all OUTPUT chain rules and add notification function for idle timer
+ * gconf values
  *
- * @param icd_ctx icd context
- *
+ * @param  icd_ctx  icd context
  * @return TRUE on success, FALSE on failure
- *
  */
 gboolean
 icd_idle_timer_init (struct icd_context *icd_ctx)
@@ -363,12 +354,9 @@ icd_idle_timer_init (struct icd_context *icd_ctx)
 }
 
 /**
- * @brief Set idle timer for IAP
- *
- * @param iap the IAP
- *
+ * Set idle timer for IAP
+ * @param  iap  the IAP
  * @return TRUE on success, FALSE on failure
- *
  */
 gboolean
 icd_idle_timer_set(struct icd_iap *iap)
@@ -425,10 +413,8 @@ icd_idle_timer_set(struct icd_iap *iap)
 }
 
 /**
- * @brief Remove gconf idle timer notification
- *
- * @param icd_ctx icd context
- *
+ * Remove gconf idle timer notification
+ * @param icd_ctx  icd context
  */
 void
 icd_idle_timer_remove(struct icd_context *icd_ctx)

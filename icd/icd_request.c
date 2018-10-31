@@ -31,14 +31,13 @@ static const gchar *icd_request_status_names[ICD_REQUEST_MAX] = {
 };
 
 /**
- * @brief Helper function for comparing two strings where a NULL string is equal
- * to another NULL string
+ * Helper function for comparing two strings where a NULL string is equal to
+ * another NULL string
  *
- * @param a string A
- * @param b string B
+ * @param  a  string A
+ * @param  b  string B
  *
  * @return TRUE if equal, FALSE if unequal
- *
  */
 inline static gboolean
 icd_request_string_equal(const char *a, const char *b)
@@ -53,14 +52,13 @@ icd_request_string_equal(const char *a, const char *b)
 }
 
 /**
- * @brief Foreach function for network finding
+ * Foreach function for network finding
  *
- * @param request the request
- * @param user_data the network to search for
+ * @param  request    the request
+ * @param  user_data  the network to search for
  *
  * @return the request that has a matching network connection or NULL if none
- *
-*/
+ */
 static gpointer
 icd_request_find_foreach(struct icd_request *request, gpointer user_data)
 {
@@ -84,14 +82,13 @@ icd_request_find_foreach(struct icd_request *request, gpointer user_data)
 }
 
 /**
- * @brief Iterate over all requests and call the user given function for each
- * of them
+ * Iterate over all requests and call the user given function for each of
+ * them
  *
- * @param fn the function
- * @param user_data user data to pass to the function
+ * @param  fn         the function
+ * @param  user_data  user data to pass to the function
  *
  * @return the pointer returned from the user function
- *
  */
 gpointer
 icd_request_foreach(icd_request_foreach_fn fn, gpointer user_data)
@@ -122,14 +119,13 @@ icd_request_foreach(icd_request_foreach_fn fn, gpointer user_data)
 }
 
 /**
- * @brief Find a request
+ * Find a request
  *
- * @param network_type requested network type
- * @param network_attrs requested network attributes
- * @param network_id requested (meta) IAP name
+ * @param  network_type   requested network type
+ * @param  network_attrs  requested network attributes
+ * @param  network_id     requested (meta) IAP name
  *
  * @return the first (and only) request found or NULL
- *
  */
 struct icd_request *
 icd_request_find(const gchar *network_type, const guint network_attrs,
@@ -149,13 +145,13 @@ icd_request_find(const gchar *network_type, const guint network_attrs,
 }
 
 /**
- * @brief Iterator function for removal by D-Bus sender id
+ * Iterator function for removal by D-Bus sender id
  *
- * @param request the request
- * @param user_data user data passed to #icd_request_tracking_info_delete().
+ * @param  request    the request
+ * @param  user_data  user data passed to
+ *                    #icd_request_tracking_info_delete().
  *
  * @return the request in which the sender id was found or NULL
- *
  */
 static gpointer
 icd_request_tracking_info_delete_foreach(struct icd_request *request,
@@ -187,12 +183,9 @@ icd_request_tracking_info_delete_foreach(struct icd_request *request,
 }
 
 /**
- * @brief Delete a tracked user by D-Bus id
- *
- * @param sender the D-Bus sender
- *
+ * Delete a tracked user by D-Bus id
+ * @param  sender  the D-Bus sender
  * @return TRUE if the sender was deleted; FALSE on error or sender not found
- *
  */
 gboolean
 icd_request_tracking_info_delete(const gchar *sender)

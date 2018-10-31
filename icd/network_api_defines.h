@@ -46,38 +46,38 @@ This file contains general network API definitions.
 
  * @{ */
 
-/** status of the icd_nw_api function call returned in respective
- * callbacks*/
+/** status of the #icd_nw_api function call returned in respective callbacks */
 enum icd_nw_status {
   /** function call succeeded; ICd will now call the next non-NULL
-   * icd_nw_api '_up' function on the same layer from any other module that has
-   * the same type but greater priority number */
+   * #icd_nw_api '_up' function on the same layer from any other module that
+   * has the same type but greater priority number */
   ICD_NW_SUCCESS = 0,
   /** function call succeeded; ICd will now call the next non-NULL
-   * icd_nw_api '_up' function from the layer above. This status code is
+   * #icd_nw_api '_up' function from the layer above. This status code is
    * ignored on disconnect. */
   ICD_NW_SUCCESS_NEXT_LAYER = 1,
-  /** restart this IAP; ICd will first call the all icd_nw_api '_down'
+  /** restart this IAP; ICd will first call the all #icd_nw_api '_down'
    * functions starting with the one for this level and then restart from
    * link_up. This status code is ignored on disconnect. */
   ICD_NW_RESTART = 2,
   /** generic error condition; the network will be closed down and the
-   * corresponding 'err_str' should contain more information on the error. The
-   * 'err_str' is currently formatted as a D-Bus error, e.g.
+   * corresponding 'err_str' should contain more information on the error.
+   * The 'err_str' is currently formatted as a D-Bus error, e.g.
    * "com.nokia.icd.error.somedescriptivestring". This status code is ignored
    * on disconnect. */
   ICD_NW_ERROR = 3,
-  /** network module is already in use by another connection. This status code
-   * is ignored on disconnect. */
+  /** network module is already in use by another connection. This status
+   * code is ignored on disconnect. */
   ICD_NW_TOO_MANY_CONNECTIONS = 4,
-  /** network module has done all the needed user interaction, no need to show
-   * retry dialogs or similar. This status code is ignored on disconnect. */
+  /** network module has done all the needed user interaction, no need to
+   * show retry dialogs or similar. This status code is ignored on
+   * disconnect. */
   ICD_NW_ERROR_USER_ACTION_DONE = 5,
   /** Restart the IP layer of this IAP; ICd will first call the
    * icd_srv_disconnect_fn if needed and then call any required
    * icd_nw_ip_down_fn functions. When done, any required icd_nw_ip_up and
-   * icd_srv_connect_fn functions will be called normally. This status code is
-   * ignored on disconnection. */
+   * icd_srv_connect_fn functions will be called normally. This status code
+   * is ignored on disconnection. */
   ICD_NW_RESTART_IP = 6,
   /** Restart up to link post layer of this IAP; works similarly to
    * #ICD_NW_RESTART_IP. This status code is ignored on disconnect. */
@@ -130,14 +130,14 @@ enum icd_nw_levels {
 /** Whether we have all required credentials to authenticate ourselves to the
  * network automatically without any user interaction */
 #define ICD_NW_ATTR_AUTOCONNECT    0x04000000
-/** Whether this network always needs service provider support in order to get
- * connected */
+/** Whether this network always needs service provider support in order to
+ * get connected */
 #define ICD_NW_ATTR_SRV_PROVIDER   0x10000000
 /** Whether the connection attempt is done because of always online policy,
  * manual connection attempts do not set this */
 #define ICD_NW_ATTR_ALWAYS_ONLINE  0x20000000
-/** Mask for network attribute local values, e.g. security settings, WLAN mode,
- * etc. These values might be evaluated by relevant UI components */
+/** Mask for network attribute local values, e.g. security settings, WLAN
+ * mode, etc. These values might be evaluated by relevant UI components */
 #define ICD_NW_ATTR_LOCALMASK      0x00FFFFFF
 
 
@@ -148,8 +148,8 @@ enum icd_network_search_status {
   /** Search is completed or the module cannot continue due to some error;
    * the search callback values are ignored */
   ICD_NW_SEARCH_COMPLETE = 1,
-  /** Search result is expired due to external reasons and needs to be removed
-   * immediately from the cache */
+  /** Search result is expired due to external reasons and needs to be
+   * removed immediately from the cache */
   ICD_NW_SEARCH_EXPIRE = 2
 };
 
@@ -166,7 +166,7 @@ enum icd_nw_layer {
   ICD_NW_LAYER_LINK = 1,
   /** Post-link or link authentication layer */
   ICD_NW_LAYER_LINK_POST = 2,
-  /** IP network layer*/
+  /** IP network layer */
   ICD_NW_LAYER_IP = 3,
   /** Service layer provided by a service module, see @ref srv_provider_api */
   ICD_NW_LAYER_SERVICE = 4,

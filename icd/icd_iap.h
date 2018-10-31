@@ -47,13 +47,15 @@ enum icd_iap_state {
   /** iap is disconnecting its pre link layer, i.e. link deauthenticating */
   ICD_IAP_STATE_LINK_PRE_DOWN,
 
-  /** iap is restarting at pre link layer and running post-down and pre-up scripts */
+  /** iap is restarting at pre link layer and running post-down and pre-up
+   * scripts */
   ICD_IAP_STATE_LINK_PRE_RESTART_SCRIPTS,
 
   /** iap is disconnecting its link layer */
   ICD_IAP_STATE_LINK_DOWN,
 
-  /** iap is restarting at link layer and running post-down and pre-up scripts */
+  /** iap is restarting at link layer and running post-down and pre-up
+   * scripts */
   ICD_IAP_STATE_LINK_RESTART_SCRIPTS,
 
   /** iap post-down script is being run */
@@ -82,12 +84,10 @@ const gchar* icd_iap_state_names[ICD_IAP_MAX_STATES];
 
 struct icd_iap;
 
-/**
- * @brief The IAP status callback function
- *
- * @param status the status from the IAP creation process
- * @param iap the IAP
- * @param user_data user data
+/** The IAP status callback function
+ * @param status     the status from the IAP creation process
+ * @param iap        the IAP
+ * @param user_data  user data
  */
 typedef void (*icd_iap_request_cb_fn) (enum icd_iap_status status,
                                        struct icd_iap *iap,
@@ -98,7 +98,7 @@ struct icd_iap_disconnect_data {
   /** the network module function to call */
   gpointer function;
 
-  /** gpointer * private */
+  /** the network module private data */
   gpointer *private;
 };
 
@@ -116,9 +116,10 @@ struct icd_iap {
   /** unique id of this IAP */
   gchar *id;
 
-  /**
-   * Wheter the id is local to icd2 only or a globally known one found in
+  /** Whether the id is local to icd2 only or a globally known one found in
    * gconf.
+   *
+   * @note this flag is no longer needed when we have a settings library
    */
   gboolean id_is_local;
 
@@ -136,10 +137,8 @@ struct icd_iap {
   /** name of the network displayable to user */
   gchar *network_name;
 
-  /**
-   * service and network indetification attributes compatible with the policy
-   * framework due to #ICD_NW_RESTART policy check
-   */
+  /** service and network indetification attributes compatible with the
+   * policy framework due to #ICD_NW_RESTART policy check */
   struct icd_policy_request connection;
 
   /** network interface */
@@ -162,9 +161,8 @@ struct icd_iap {
   /** list of icd_iap_disconnect ip down functions to call on disconnect */
   GSList *ip_down_list;
 
-  /**
-   * list of icd_iap_disconnect link pre down functions to call on disconnect
-   */
+  /** list of icd_iap_disconnect link pre down functions to call on
+   * disconnect */
   GSList *link_pre_down_list;
 
   /** list of link down functions to call on disconnect */
@@ -187,10 +185,8 @@ struct icd_iap {
   /** what layer to restart */
   enum icd_nw_layer restart_layer;
 
-  /**
-   * what state the restart came from; used to figure out wheter network scripts
-   * need to be run
-   */
+  /** what state the restart came from; used to figure out whether network
+   * scripts need to be run */
   enum icd_iap_state restart_state;
 
   /** monitor how many times the IAP has been restarted */
@@ -203,10 +199,8 @@ struct icd_iap {
   GSList *current_renew_module;
 
 
-  /**
-   * wheter the module did all the user prompting and retry dialogs are not
-   * needed
-   */
+  /** whether the module did all the user prompting and retry dialogs are not
+   * needed */
   gboolean user_interaction_done;
 
   /** error that caused iap to fail */
@@ -229,17 +223,14 @@ struct icd_iap {
   GSList *script_pids;
 };
 
-/**
- * @brief Iterator function called for each active IAP structure starting from
- * the structure associated with the newest request. Only active IAPs are
- * iterated through, not the ones in a request that will be tried if the current
- * one fails.
+/** Iterator function called for each active IAP structure starting from the
+ * structure associated with the newest request. Only active IAPs are
+ * iterated through, not the ones in a request that will be tried if the
+ * current one fails.
  *
- * @param iap the IAP struct
- * @param user_data user data
- *
+ * @param  iap        the IAP struct
+ * @param  user_data  user data
  * @return TRUE to continue, FALSE to stop iterating
- *
  */
 typedef gboolean (*icd_iap_foreach_fn) (struct icd_iap *iap,
                                         gpointer user_data);

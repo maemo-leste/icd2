@@ -9,11 +9,11 @@
 
 /** status of the request */
 enum icd_request_status {
-  /** 	the request is pending in the policy framework */
+  /** the request is pending in the policy framework */
   ICD_REQUEST_POLICY_PENDING = 0,
 
-  /** the request is waiting for an external event such as scan results,
-      UI dialog, etc; stops policy processing */
+  /** the request is waiting for an external event such as scan results, UI
+   * dialog, etc; stops policy processing */
   ICD_REQUEST_WAITING,
 
   /** change to this request when the other request has been closed */
@@ -32,7 +32,7 @@ enum icd_request_status {
   ICD_REQUEST_DENIED,
 
   /** the IAP and network connection mapping to the request was successfully
-      closed down */
+   * closed down */
   ICD_REQUEST_DISCONNECTED,
 
 
@@ -40,19 +40,15 @@ enum icd_request_status {
   ICD_REQUEST_MAX
 };
 
-/**
- * @brief The request status callback function
- *
- * @param status the outcome of the request
- * @param user_data user data
- *
+/** The request status callback function
+ * @param status     the outcome of the request
+ * @param user_data  user data
  */
 typedef void (*icd_request_cb_fn) (enum icd_request_status status,
                                    gpointer user_data);
 
 /** ICd connection request. An #icd_request exists while the IAP is being
- *  created and is deleted when the IAP has successfully connected.
- */
+ * created and is deleted when the IAP has successfully connected. */
 struct icd_request {
 
   /** current request state */
@@ -61,9 +57,8 @@ struct icd_request {
   /** list of requesting D-Bus clients */
   GSList *users;
 
-  /** wheter more than one iap is to be tried, used if none of the IAPs are
-      successfully connected
-  */
+  /** whether more than one iap is to be tried, used if none of the IAPs are
+   * successfully connected */
   gboolean multi_iaps;
 
   /** List of IAPs to try */
@@ -73,15 +68,11 @@ struct icd_request {
   struct icd_policy_request req;
 };
 
-/**
- * @brief Function called for each request structure
- *
- * @param request the request
- * @param user_data user data passed to #icd_request_foreach()
- *
- * @return NULL to continue iteration, non-NULL to stop the iteration and return
- * this pointer in #icd_request_foreach().
- *
+/** Function called for each request structure
+ * @param  request    the request
+ * @param  user_data  user data passed to #icd_request_foreach()
+ * @return NULL to continue iteration, non-NULL to stop the iteration and
+ *         return this pointer in #icd_request_foreach().
  */
 typedef gpointer (*icd_request_foreach_fn) (struct icd_request *request,
                                             gpointer user_data);

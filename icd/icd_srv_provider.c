@@ -22,7 +22,7 @@
 struct pid_notify {
   /** process id */
   pid_t pid;
-  /** exit value  */
+  /** exit value */
   gint exit_value;
 };
 
@@ -48,14 +48,13 @@ struct icd_srv_identify {
 };
 
 /**
- * @brief Helper function for comparing two strings where a NULL string is equal
- * to another NULL string
+ * Helper function for comparing two strings where a NULL string is equal to
+ * another NULL string
  *
- * @param a string A
- * @param b string B
+ * @param  a  string A
+ * @param  b  string B
  *
  * @return TRUE if equal, FALSE if unequal
- *
  */
 inline static gboolean
 string_equal(const char *a, const char *b)

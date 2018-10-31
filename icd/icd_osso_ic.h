@@ -4,13 +4,9 @@
 #include <glib.h>
 #include "icd_context.h"
 
-/**
- * @brief Callback function called when a UI retry or save request has
- * completed
- *
- * @param success TRUE on success, FALSE on failure
- * @param user_data user data passed to retry or save function
- *
+/** Callback function called when a UI retry or save request has completed
+ * @param success    TRUE on success, FALSE on failure
+ * @param user_data  user data passed to retry or save function
  */
 typedef void(* icd_osso_ui_cb_fn)(gboolean success, gpointer user_data) ;
 

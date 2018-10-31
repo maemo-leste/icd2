@@ -5,7 +5,7 @@
 #include "icd_network_priority.h"
 #include "network_api.h"
 
-/**  preferred service network priority */
+/** preferred service network priority */
 #define ICD_NW_PRIO_SRV_PREF   500
 
 /** WLAN network prefix */
@@ -32,7 +32,7 @@
 /** CDMA packet data network */
 #define ICD_NW_TYPE_DUN_CDMA_PSD   "DUN_CDMA_PSD"
 
-/**GSM/CDMA packet data priority */
+/** GSM/CDMA packet data priority */
 #define ICD_NW_PRIO_DUN_PS   40
 
 /** GSM circuit switched network */
@@ -65,10 +65,7 @@ static gchar *preferred_id = NULL;
 /** preferred service type */
 static gchar *preferred_type = NULL;
 
-/**
- * @brief (Re)set preferred service type and id
- *
- */
+/** (Re)set preferred service type and id */
 void
 icd_network_priority_pref_init (void)
 {

@@ -51,7 +51,7 @@ struct icd_dbus_api_listeners {
 
 /** Helper structure for starting a scan */
 struct icd_dbus_api_scan_helper {
-  /**  The reply message iterator */
+  /** The reply message iterator */
   DBusMessageIter *reply_str_iter;
 
   /** scan listener */
@@ -62,15 +62,11 @@ struct icd_dbus_api_scan_helper {
 };
 
 struct icd_dbus_api_foreach_data;
-/**
- * @brief Template for the D-Bus data sending function
- *
- * @param iap the IAP
- * @param foreach_data foreach data structure
- *
+/** Template for the D-Bus data sending function
+ * @param  iap           the IAP
+ * @param  foreach_data  foreach data structure
  * @return TRUE on success, FALSE on error
- *
-*/
+ */
 typedef gboolean(* icd_dbus_api_foreach_send_fn)(
     struct icd_iap *iap, struct icd_dbus_api_foreach_data *foreach_data);
 
@@ -82,7 +78,7 @@ struct icd_dbus_api_foreach_data {
   /** the D-Bus sender or NULL */
   const gchar *sender;
 
-  /** unction that sends data to D-Bus applications */
+  /** function that sends data to D-Bus applications */
   icd_dbus_api_foreach_send_fn send_fn;
 };
 
@@ -93,12 +89,11 @@ icd_dbus_api_foreach_iap_req(DBusMessage *message,
                              struct icd_dbus_api_foreach_data *foreach_data);
 
 /**
- * @brief Handle cancelling of scans
+ * Handle cancelling of scans
  *
- * @param conn D-Bus connection
- * @param msg D-Bus message
- * @param user_data not used
- *
+ * @param conn       D-Bus connection
+ * @param msg        D-Bus message
+ * @param user_data  not used
  */
 static DBusHandlerResult
 icd_dbus_api_scan_cancel(DBusConnection *conn, DBusMessage *msg,
@@ -747,10 +742,8 @@ icd_dbus_api_select_req(DBusConnection *conn, DBusMessage *msg, void *user_data)
 }
 
 /**
- * @brief Get the dbus api data structure
- *
+ * Get the dbus api data structure
  * @return the dbus api data structure
- *
  */
 static struct icd_dbus_api_listeners **
 icd_dbus_api_listeners_get(void)
@@ -764,15 +757,14 @@ icd_dbus_api_listeners_get(void)
 }
 
 /**
- * @brief Receive scan results and send them via D-Bus
+ * Receive scan results and send them via D-Bus
  *
- * @param status status of this network
- * @param srv_provider service provider entry; guaranteed to exist only for the
- * lifetime of this callback function
- * @param cache_entry scan results; guaranteed to exist only for the lifetime of
- * this callback function
- * @param user_data D-Bus app that requested the scan
- *
+ * @param status        status of this network
+ * @param srv_provider  service provider entry; guaranteed to exist only for
+ *                      the lifetime of this callback function
+ * @param cache_entry   scan results; guaranteed to exist only for the
+ *                      lifetime of this callback function
+ * @param user_data     D-Bus app that requested the scan
  */
 static void
 icd_dbus_api_scan_result(enum icd_scan_status status,
@@ -868,17 +860,15 @@ out:
 }
 
 /**
- * @brief Append a the network type of the successfully started network scan to
- * the iterator position
+ * Append the network type of the successfully started network scan to the
+ * iterator position
  *
- * @param network_type network type to start scan for
- * @param scan_start scan helper structure
+ * @param  network_type  network type to start scan for
+ * @param  str_iter      scan helper structure
  *
  * @return TRUE on success, FALSE if the scan was not started
- *
- * @todo UI designer does not want to have the "scanning" icon blinking in this
- * case
- *
+ * @todo   UI designer does not want to have the "scanning" icon blinking in
+ *         this case
  */
 static gboolean
 icd_dbus_api_scan_append(gchar *network_type,
@@ -1176,12 +1166,9 @@ static const struct icd_dbus_mcall_table icd_dbus_api_mcalls[] = {
 };
 
 /**
- * @brief Notify ICd2 D-Bus API when an app goes away
- *
- * @param dbus_dest D-Bus sender id
- *
- * @return if D-Bus sender was removed, FALSE otherwise
- *
+ * Notify ICd2 D-Bus API when an app goes away
+ * @param  dbus_dest  D-Bus sender id
+ * @return TRUE if D-Bus sender was removed, FALSE otherwise
  */
 gboolean
 icd_dbus_api_app_exit(const gchar *dbus_dest)
@@ -1216,10 +1203,7 @@ icd_dbus_api_app_exit(const gchar *dbus_dest)
   return rv;
 }
 
-/**
- @brief Unregister ICD2_DBUS_API
- *
- */
+/** Unregister ICD2_DBUS_API */
 void
 icd_dbus_api_deinit(void)
 {
@@ -1227,12 +1211,11 @@ icd_dbus_api_deinit(void)
 }
 
 /**
- * @brief Receive registered method calls and find a handler for them
+ * Receive registered method calls and find a handler for them
  *
- * @param connection D-Bus connection
- * @param message D-Bus message
- * @param user_data dbus api data structure
- *
+ * @param connection  D-Bus connection
+ * @param message     D-Bus message
+ * @param user_data   dbus api data structure
  */
 static DBusHandlerResult
 icd_dbus_api_request(DBusConnection *connection, DBusMessage *message,
@@ -1283,10 +1266,8 @@ icd_dbus_api_request(DBusConnection *connection, DBusMessage *message,
 }
 
 /**
- * @brief Register ICD2_DBUS_API
- *
+ * Register ICD2_DBUS_API
  * @return TRUE on success, FALSE on failure
- *
  */
 gboolean
 icd_dbus_api_init(void)
@@ -1302,14 +1283,13 @@ icd_dbus_api_init(void)
 }
 
 /**
- * @brief Send IAP state change signal
+ * Send IAP state change signal
  *
- * @param iap the IAP or NULL if no state
- * @param destination D-Bus destination or NULL if broadcasted to all
- * @param state the state to send
+ * @param  iap          the IAP or NULL if no state
+ * @param  destination  D-Bus destination or NULL if broadcasted to all
+ * @param  state        the state to send
  *
  * @return TRUE on success, FALSE on failure
- *
  */
 gboolean
 icd_dbus_api_update_state(struct icd_iap *iap, const gchar *destination,
@@ -1383,13 +1363,12 @@ icd_dbus_api_update_state(struct icd_iap *iap, const gchar *destination,
 }
 
 /**
- * @brief Function for sending state data to listeners
+ * Function for sending state data to listeners
  *
- * @param iap the IAP
- * @param foreach_data foreach data structure
+ * @param  iap           the IAP
+ * @param  foreach_data  foreach data structure
  *
  * @return TRUE on successful signal sending, FALSE on error
- *
  */
 static gboolean
 icd_dbus_api_state_send(struct icd_iap *iap,
@@ -1440,13 +1419,12 @@ icd_dbus_api_state_send(struct icd_iap *iap,
 }
 
 /**
- * @brief Network module callback function for scanning status
+ * Network module callback function for scanning status
  *
- * @param module the network module
- * @param user_data foreach data structure
+ * @param  module     the network module
+ * @param  user_data  foreach data structure
  *
  * @return TRUE
- *
  */
 static gboolean
 icd_dbus_api_state_scanning(struct icd_network_module *module,
@@ -1502,13 +1480,12 @@ icd_dbus_api_state_scanning(struct icd_network_module *module,
 }
 
 /**
- * @brief Iterator function calling the given send function
+ * Iterator function calling the given send function
  *
- * @param iap the IAP
- * @param user_data foreach data
+ * @param  iap        the IAP
+ * @param  user_data  foreach data
  *
  * @return TRUE to go through all IAPs
- *
  */
 static gboolean
 icd_dbus_api_foreach_iap_all(struct icd_iap *iap, gpointer user_data)
@@ -1585,12 +1562,11 @@ icd_dbus_api_foreach_iap_req(DBusMessage *message,
 }
 
 /**
- * @brief Handle state requests
+ * Handle state requests
  *
- * @param conn D-Bus connection
- * @param msg D-Bus message
- * @param user_data dbus client data
- *
+ * @param conn       D-Bus connection
+ * @param msg        D-Bus message
+ * @param user_data  dbus client data
  */
 static DBusHandlerResult
 icd_dbus_api_state_req(DBusConnection *conn, DBusMessage *msg, void *user_data)

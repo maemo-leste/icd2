@@ -5,15 +5,15 @@
 #include "icd_request.h"
 
 /**
- * @brief Update the D-Bus request message for an existing sender
+ * Update the D-Bus request message for an existing sender
  *
- * @param track tracking info
- * @param sender the new sender or NULL to leave unchanged
- * @param message the new message to send replies to or NULL to leave unchanged
+ * @param  track    tracking info
+ * @param  sender   the new sender or NULL to leave unchanged
+ * @param  message  the new message to send replies to or NULL to leave
+ *                  unchanged
  *
- * @return FALSE if the tracking information still contains a non-acked message,
- *         TRUE on success
- *
+ * @return FALSE if the tracking information still contains a non-acked
+ *         message, TRUE on success
  */
 gboolean
 icd_tracking_info_update(struct icd_tracking_info *track, const gchar *sender,
@@ -50,13 +50,12 @@ icd_tracking_info_update(struct icd_tracking_info *track, const gchar *sender,
 }
 
 /**
- * @brief Foreach function for finding a sender
+ * Foreach function for finding a sender
  *
- * @param request the request
- * @param user_data tracking info
+ * @param  request    the request
+ * @param  user_data  tracking info
  *
  * @return the request or NULL if not found
- *
  */
 static gpointer
 icd_tracking_info_foreach(struct icd_request *request, gpointer user_data)
@@ -76,12 +75,9 @@ icd_tracking_info_foreach(struct icd_request *request, gpointer user_data)
 }
 
 /**
- * @brief Find tracking info based on the sender
- *
- * @param sender the D-Bus sender
- *
+ * Find tracking info based on the sender
+ * @param  sender  the D-Bus sender
  * @return tracking info or NULL if not found
- *
  */
 struct icd_tracking_info *
 icd_tracking_info_find(const gchar *sender)
@@ -91,10 +87,8 @@ icd_tracking_info_find(const gchar *sender)
 }
 
 /**
- * @brief Free a tracking info structure
- *
- * @param track tracking info
- *
+ * Free a tracking info structure
+ * @param track  tracking info
  */
 void
 icd_tracking_info_free(struct icd_tracking_info *track)
@@ -111,15 +105,14 @@ icd_tracking_info_free(struct icd_tracking_info *track)
 }
 
 /**
- * @brief Create a new tracking info structure
+ * Create a new tracking info structure
  *
- * @param interface the D-Bus interface this sender is on
- * @param sender the D-Bus sender
- * @param message optional D-Bus message to send (n)acks to on connect and
- *        disconnect API calls
+ * @param  interface  the D-Bus interface this sender is on
+ * @param  sender     the D-Bus sender
+ * @param  message    optional D-Bus message to send (n)acks to on connect
+ *                    and disconnect API calls
  *
  * @return a newly allocated tracking info structure
- *
  */
 struct icd_tracking_info *
     icd_tracking_info_new(enum icd_tracking_info_api interface,

@@ -14,15 +14,14 @@
 #define ICD_NAME_OWNER_FILTER_STRING   "member='NameOwnerChanged',arg0='%s'"
 
 /**
- * @brief D-Bus filter function for NameOwnerChanged messages
+ * D-Bus filter function for NameOwnerChanged messages
  *
- * @param connection D-Bus system bus
- * @param message D-Bus message
- * @param user_data icd context
+ * @param  connection  D-Bus system bus
+ * @param  message     D-Bus message
+ * @param  user_data   icd context
  *
  * @return DBUS_HANDLER_RESULT_NOT_YET_HANDLED if error,
- * DBUS_HANDLER_RESULT_HANDLED otherwise
- *
+ *         DBUS_HANDLER_RESULT_HANDLED otherwise
  */
 static DBusHandlerResult
 icd_name_owner_filter(DBusConnection *connection, DBusMessage *message,
@@ -91,12 +90,9 @@ icd_name_owner_filter(DBusConnection *connection, DBusMessage *message,
 }
 
 /**
- * @brief Add a filter for NameOwnerChanged signals for a specific application
- *
- * @param application application D-Bus id
- *
- * @return the return status of #icd_dbus_connect_system_bcast_signal
- *
+ * Add a filter for NameOwnerChanged signals for a specific application
+ * @param  application  application D-Bus id
+ * @return the return status of icd_dbus_connect_system_bcast_signal
  */
 gboolean
 icd_name_owner_add_filter(const gchar *application)
@@ -114,13 +110,9 @@ icd_name_owner_add_filter(const gchar *application)
 }
 
 /**
- * @brief Remove a filter for NameOwnerChanged signals for a specific
- * application
- *
- * @param application application D-Bus id
- *
- * @return the return status of #icd_dbus_disconnect_system_bcast_signal
- *
+ * Remove a filter for NameOwnerChanged signals for a specific application
+ * @param  application  application D-Bus id
+ * @return the return status of icd_dbus_disconnect_system_bcast_signal
  */
 gboolean
 icd_name_owner_remove_filter(const gchar *application)
@@ -138,12 +130,9 @@ icd_name_owner_remove_filter(const gchar *application)
 }
 
 /**
- * @brief Initialize NameOwnerChanged filtering
- *
- * @param icd_ctx icd context
- *
+ * Initialize NameOwnerChanged filtering
+ * @param  icd_ctx  icd context
  * @return TRUE on success, FALSE on failure
- *
  */
 gboolean
 icd_name_owner_init(struct icd_context *icd_ctx)
