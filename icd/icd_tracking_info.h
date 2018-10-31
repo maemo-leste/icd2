@@ -1,6 +1,19 @@
 #ifndef ICD_TRACKING_INFO_H
 #define ICD_TRACKING_INFO_H
 
+/**
+@file icd_tracking_info.h
+
+@author patrik.flykt@nokia.com
+
+@copyright (C) 2007 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_tracking_info Tracking of D-Bus users for a request
+
+@ingroup internal
+
+ * @{ */
+
 #include <glib.h>
 #include <dbus/dbus.h>
 
@@ -34,6 +47,8 @@ icd_tracking_info_new (enum icd_tracking_info_api interface,
 gboolean icd_tracking_info_update (struct icd_tracking_info *track,
                                    const gchar *sender,
                                    DBusMessage *message);
+
+/** @} */
 
 #endif
 

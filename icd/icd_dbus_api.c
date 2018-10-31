@@ -1,3 +1,16 @@
+/**
+@file icd_dbus_api.c
+
+@author patrik.flykt@nokia.com
+
+@copyright (C) 2007 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_dbus_api ICd2 D-Bus API implementation
+
+@ingroup internal
+
+ * @{ */
+
 #include <string.h>
 #include <dbus/dbus.h>
 #include <osso-ic.h>
@@ -1944,3 +1957,5 @@ icd_dbus_api_update_search(const gchar *network_type, const gchar *destination,
 
   return FALSE;
 }
+
+/** @} */

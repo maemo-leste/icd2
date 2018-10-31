@@ -1,3 +1,19 @@
+/**
+@file icd_gconf.c
+
+@authors timo.teras@nokia.com
+         patrik.flykt@nokia.com
+         aapo.makela@nokia.com
+         jukka.rissanen@nokia.com
+
+@copyright (C) 2004-2008 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_gconf Compatibility functions for gconf settings
+
+@ingroup internal
+
+ * @{ */
+
 #include <string.h>
 #include <gconf/gconf-client.h>
 #include <osso-ic-gconf.h>
@@ -291,3 +307,5 @@ icd_gconf_del_notify(void)
   icd_ctx->iap_deletion_notify = 0;
   g_object_unref(gconf);
 }
+
+/** @} */

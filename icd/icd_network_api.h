@@ -1,6 +1,19 @@
 #ifndef ICD_NETWORK_API_H
 #define ICD_NETWORK_API_H
 
+/**
+@file icd_network_api.h
+
+@author patrik.flykt@nokia.com
+
+@copyright (C) 2007 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_network_api ICd network API handling
+
+@ingroup internal
+
+ * @{ */
+
 #include <glib.h>
 
 #include "network_api.h"
@@ -57,5 +70,7 @@ gboolean icd_network_api_notify_pid (struct icd_context *icd_ctx,
                                      const gint exit_value);
 gboolean icd_network_api_load_modules (struct icd_context *icd_ctx);
 void icd_network_api_unload_modules (struct icd_context *icd_ctx);
+
+/** @} */
 
 #endif

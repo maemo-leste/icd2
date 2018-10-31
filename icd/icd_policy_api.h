@@ -1,6 +1,50 @@
 #ifndef ICD_POLICY_API_H
 #define ICD_POLICY_API_H
 
+/**
+@file icd_policy_api.h
+
+@author patrik.flykt@nokia.com
+
+@copyright (C) 2007 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_policy_api ICd policy API implementation
+
+The data structure of the list of requests in #icd_context and the existing
+request list passed to #icd_policy_request_new_fn usable with e.g.
+icd_policy_merge_requests_fn looks like the following:
+<pre>
+ +-icd_context-+    +-GSList-------+
+ |             |---&gt;| request_list |
+ +-------------+    +--------------+
+                         |                    +-icd_policy_request-+
+                         +----&gt;icd_request---&gt;| req                |&lt;---+
+                         |                    +--------------------+    |
+                         |                                              |
+                         |                    +-icd_policy_request-+    |
+                         +----&gt;icd_request---&gt;| req                |&lt;---+
+                         |                    +--------------------+    |</pre>
+
+<pre>                        ...                                            ...</pre>
+
+<pre>                         |                    +-icd_policy_request-+    |
+                         +----&gt;icd_request---&gt;| req                |&lt;---+
+                                              +--------------------+    |
+                                                                        |
+                                                        +-GSList------------+
+                                                        | existing_requests |
+                                                        +-------------------+
+ </pre>
+A policy module can make a request to wait for an external event such as UI
+dialog appearing by returning ICD_POLICY_WAITING. Policy processing will
+stop, whereby a new request is needed to clean up the waiting request. On
+cancelling a request, the request_cancel will be called for all policy
+modules to clean up an pending calls or timers left behind.
+
+@ingroup internal
+
+ * @{ */
+
 #include <glib.h>
 
 #include "icd_context.h"
@@ -46,5 +90,7 @@ void icd_policy_api_scan_start_status (const gchar *network_type);
 
 gboolean icd_policy_api_load_modules (struct icd_context *icd_ctx);
 void icd_policy_api_unload_modules (struct icd_context *icd_ctx);
+
+/** @} */
 
 #endif

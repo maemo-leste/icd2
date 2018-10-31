@@ -1,3 +1,17 @@
+/**
+@file icd_plugin.c
+
+@authors timo.teras@nokia.com
+         patrik.flykt@nokia.com
+
+@copyright (C) 2006,2007 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_plugin Support functions for loadable plugins
+
+@ingroup internal
+
+ * @{ */
+
 #include <string.h>
 #include <dirent.h>
 #include <dlfcn.h>
@@ -179,3 +193,5 @@ icd_plugin_load_all(const char *plugindir, const char *prefix,
 
   return loaded;
 }
+
+/** @} */

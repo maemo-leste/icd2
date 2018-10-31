@@ -1,3 +1,17 @@
+/**
+@file icd_args.c
+
+@authors timo.teras@nokia.com
+         patrik.flykt@nokia.com
+
+@copyright (C) 2004-2006,2007 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_args Command line argument parsing
+
+@ingroup internal
+
+ * @{ */
+
 #include <unistd.h>
 #include <getopt.h>
 #include <stdio.h>
@@ -80,3 +94,5 @@ icd_args_decode(int argc, char *argv[], struct icd_context *context)
 
   return optind;
 }
+
+/** @} */

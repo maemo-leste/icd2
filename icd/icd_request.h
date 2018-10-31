@@ -1,6 +1,19 @@
 #ifndef ICD_REQUEST_H
 #define ICD_REQUEST_H
 
+/**
+@file icd_request.h
+
+@author patrik.flykt@nokia.com
+
+@copyright (C) 2007 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_request Connection request
+
+@ingroup internal
+
+ * @{ */
+
 #include <dbus/dbus.h>
 #include <glib.h>
 #include "policy_api.h"
@@ -117,5 +130,6 @@ gboolean icd_request_tracking_info_delete (const gchar *sender);
 void icd_request_tracking_info_add (struct icd_request *request,
                                     struct icd_tracking_info *track);
 
+/** @} */
 
 #endif

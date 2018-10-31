@@ -1,3 +1,18 @@
+/**
+@file icd_dbus.c
+
+@authors Patrik Flykt <patrik.flykt@nokia.com>
+         Aapo Mäkelä <aapo.makela@nokia.com>
+         Luciano Coelho <luciano.coelho@nokia.com>
+
+@copyright (C) 2004-2008, Nokia. All rights reserved.
+
+@addtogroup icd_dbus D-Bus helper functions
+
+@ingroup support_libraries
+
+ * @{ */
+
 #include "icd_dbus.h"
 #include "icd_log.h"
 
@@ -554,3 +569,5 @@ icd_dbus_cancel_unique_name(DBusPendingCall *pending)
     l = next;
   }
 }
+
+/** @} */

@@ -1,6 +1,17 @@
 #ifndef POLICY_API_H
 #define POLICY_API_H
 
+/**
+@file policy_api.h
+
+@author patrik.flykt@nokia.com
+
+@copyright (C) 2007 Nokia Corporation. All rights reserved.
+
+@addtogroup policy_api ICd policy API
+
+ * @{ */
+
 #include <glib.h>
 
 #include "network_api.h"
@@ -410,5 +421,7 @@ typedef void
                        icd_policy_nw_close_fn nw_close,
                        icd_policy_network_priority_fn priority,
                        icd_policy_service_module_check_fn srv_check);
+
+/** @} */
 
 #endif

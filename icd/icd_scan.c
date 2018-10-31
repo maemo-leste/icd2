@@ -1,3 +1,17 @@
+/**
+@file icd_scan.c
+
+@authors patrik.flykt@nokia.com
+         jukka.rissanen@nokia.com
+
+@copyright (C) 2007 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_scan Network scan and scan result handling
+
+@ingroup internal
+
+ * @{ */
+
 #include "icd_log.h"
 #include "icd_scan.h"
 #include "icd_status.h"
@@ -1062,3 +1076,5 @@ icd_scan_cache_entry_find(struct icd_scan_cache_list *scan_cache_list,
 
   return NULL;
 }
+
+/** @} */

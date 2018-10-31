@@ -1,6 +1,13 @@
 #ifndef ICD_LOG_H
 #define ICD_LOG_H
 
+/**
+@addtogroup icd_log Logging functions
+
+@ingroup support_libraries
+
+ * @{ */
+
 #include "config.h"
 
 #ifdef ICD_LOG_STDERR
@@ -59,5 +66,7 @@ enum icd_loglevel icd_log_set_level (enum icd_loglevel new_level);
 void icd_log_nextlevel (void);
 
 /* @} */
+
+/** @} */
 
 #endif

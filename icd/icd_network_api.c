@@ -1,3 +1,16 @@
+/**
+@file icd_network_api.c
+
+@author patrik.flykt@nokia.com
+
+@copyright (C) 2007 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_network_api ICd network API handling
+
+@ingroup internal
+
+ * @{ */
+
 #include <string.h>
 #include <gconf/gconf-client.h>
 #include <osso-ic-dbus.h>
@@ -666,3 +679,5 @@ icd_network_api_unload_modules(struct icd_context *icd_ctx)
   if (icd_ctx->type_to_module)
     g_hash_table_destroy(icd_ctx->type_to_module);
 }
+
+/** @} */

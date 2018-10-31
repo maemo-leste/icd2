@@ -1,3 +1,16 @@
+/**
+@file icd_request.c
+
+@author patrik.flykt@nokia.com
+
+@copyright (C) 2007 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_request Connection request
+
+@ingroup internal
+
+ * @{ */
+
 #include <string.h>
 #include <osso-ic.h>
 #include <osso-ic-dbus.h>
@@ -1060,3 +1073,5 @@ skip:
 
   return TRUE;
 }
+
+/** @} */

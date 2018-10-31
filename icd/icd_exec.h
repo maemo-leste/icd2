@@ -1,6 +1,19 @@
 #ifndef ICD_EXEC_H
 #define ICD_EXEC_H
 
+/**
+@file icd_exec.h
+
+@author patrik.flykt@nokia.com
+
+@copyright (C) 2007 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_exec ICd execution
+
+@ingroup internal
+
+ * @{ */
+
 /** exit status */
 enum icd_exit_status {
         EXIT_FORK_FAILED = 2,
@@ -17,5 +30,7 @@ enum icd_exit_status {
         EXIT_FAILED_TO_INIT,
         EXIT_PID_WRITE_FAILED            /* new in icd2 */
 };
+
+/** @} */
 
 #endif

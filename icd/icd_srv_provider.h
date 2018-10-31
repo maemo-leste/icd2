@@ -1,6 +1,17 @@
 #ifndef ICD_SRV_PROVIDER_H
 #define ICD_SRV_PROVIDER_H
 
+/**
+@addtogroup icd_srv_provider Service provider API implementation
+
+A service provider module is set up in gconf as follows:
+<pre>ICD_GCONF_SRV_PROVIDERS/&lt;srv_type&gt;/module	name of the module to load
+ICD_GCONF_SRV_PROVIDERS/&lt;srv_type&gt;/network_type	list of strings containing the network types supported</pre>
+
+@ingroup internal
+
+ * @{ */
+
 #include <glib.h>
 
 #include "icd_context.h"
@@ -79,5 +90,7 @@ gboolean icd_srv_provider_load_modules (struct icd_context *icd_ctx);
 void icd_srv_provider_unload_modules (struct icd_context *icd_ctx);
 
 gboolean icd_srv_provider_check (const gchar *network_type);
+
+/** @} */
 
 #endif

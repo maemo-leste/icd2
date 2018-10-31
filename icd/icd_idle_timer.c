@@ -1,3 +1,17 @@
+/**
+@file icd_idle_timer.c
+
+@authors timo.teras@nokia.com
+         patrik.flykt@nokia.com
+
+@copyright (C) 2004-2006,2007 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_idle_timer Iptables idle timer handling
+
+@ingroup internal
+
+ * @{ */
+
 #include <gconf/gconf-client.h>
 #include <osso-ic-gconf.h>
 
@@ -429,3 +443,5 @@ icd_idle_timer_remove(struct icd_context *icd_ctx)
 
   g_object_unref(gconf);
 }
+
+/** @} */

@@ -1,3 +1,16 @@
+/**
+@file icd_policy_api.c
+
+@author patrik.flykt@nokia.com
+
+@copyright (C) 2007 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_policy_api ICd policy API implementation
+
+@ingroup internal
+
+ * @{ */
+
 #include <gconf/gconf.h>
 #include "icd_policy_api.h"
 #include "policy_api.h"
@@ -963,3 +976,5 @@ icd_policy_api_unload_modules(struct icd_context *icd_ctx)
     l = next;
   }
 }
+
+/** @} */

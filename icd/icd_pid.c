@@ -1,3 +1,17 @@
+/**
+@file icd_pid.c
+
+@authors johan.hedberg@nokia.com
+         patrik.flykt@nokia.com
+
+@copyright (C) 2006,2007 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_pid Pid handling
+
+@ingroup internal
+
+ * @{ */
+
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/types.h>
@@ -99,3 +113,5 @@ icd_pid_check(const char *pidfile)
 
   return pid;
 }
+
+/** @} */

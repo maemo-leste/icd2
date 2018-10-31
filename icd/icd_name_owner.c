@@ -1,3 +1,17 @@
+/**
+@file icd_name_owner.c
+
+@authors timo.teras@nokia.com
+         patrik.flykt@nokia.com
+
+@copyright (C) 2004-2006,2007 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_name_owner D-Bus NameOwnerChanged message handling
+
+@ingroup internal
+
+ * @{ */
+
 #include <dbus/dbus.h>
 #include <osso-ic-ui-dbus.h>
 #include <osso-ic.h>
@@ -139,3 +153,5 @@ icd_name_owner_init(struct icd_context *icd_ctx)
 {
   return icd_name_owner_add_filter(ICD_UI_DBUS_SERVICE);
 }
+
+/** @} */

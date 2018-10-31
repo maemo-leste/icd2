@@ -1,6 +1,20 @@
 #ifndef ICD_PLUGIN_H
 #define ICD_PLUGIN_H
 
+/**
+@file icd_plugin.h
+
+@authors timo.teras@nokia.com
+         patrik.flykt@nokia.com
+
+@copyright (C) 2006,2007 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_plugin Support functions for loadable plugins
+
+@ingroup internal
+
+ * @{ */
+
 #include <glib.h>
 
 /** Plugin initialization callback function
@@ -34,5 +48,7 @@ gboolean icd_plugin_load_list (const char *plugindir,
                                gpointer cb_data);
 
 void icd_plugin_unload_module (void *handle);
+
+/** @} */
 
 #endif

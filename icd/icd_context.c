@@ -1,3 +1,16 @@
+/**
+@file icd_context.c
+
+@author patrik.flykt@nokia.com
+
+@copyright (C) 2007 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_context ICd context
+
+@ingroup internal
+
+ * @{ */
+
 #include "icd_context.h"
 
 /** the global ICd context */
@@ -44,3 +57,5 @@ void
 icd_context_destroy(void)
 {
 }
+
+/** @} */

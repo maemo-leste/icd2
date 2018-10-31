@@ -1,3 +1,10 @@
+/**
+@addtogroup icd_status_changed ICD_STATUS_CHANGED_SIG signal sending
+
+@ingroup internal
+
+ * @{ */
+
 #include <osso-ic-dbus.h>
 #include "icd_iap.h"
 #include "icd_dbus_api.h"
@@ -207,3 +214,5 @@ icd_status_scan_start(const gchar *network_type)
   icd_status_send_signal(network_type, "[SCAN]", "SCAN_START", NULL, NULL);
   icd_dbus_api_update_search(network_type, NULL, ICD_STATE_SEARCH_START);
 }
+
+/** @} */

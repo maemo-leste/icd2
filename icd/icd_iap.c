@@ -1,3 +1,16 @@
+/**
+@file icd_iap.c
+
+@author patrik.flykt@nokia.com
+
+@copyright (C) 2007 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_iap IAP connection abstraction
+
+@ingroup internal
+
+ * @{ */
+
 #include <sys/types.h>
 #include <unistd.h>
 #include <glib.h>
@@ -2390,3 +2403,5 @@ icd_iap_id_create(struct icd_iap *iap, const gchar *new_name)
 
   return FALSE;
 }
+
+/** @} */

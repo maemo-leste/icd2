@@ -1,3 +1,16 @@
+/**
+@file icd_network_priority.c
+
+@author patrik.flykt@nokia.com
+
+@copyright (C) 2007 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_network_prio Network priority assignment
+
+@ingroup internal
+
+ * @{ */
+
 #include <string.h>
 #include <gconf/gconf-client.h>
 #include <osso-ic-gconf.h>
@@ -172,3 +185,5 @@ icd_network_priority(const gchar *srv_type, const gchar *srv_id,
 
   return priority < ICD_NW_PRIO_WLAN;
 }
+
+/** @} */

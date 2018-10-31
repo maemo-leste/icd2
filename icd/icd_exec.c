@@ -28,6 +28,28 @@
 #include "icd_srv_provider.h"
 #include "icd_network_priority.h"
 
+/**
+ * @defgroup internal  ICd internal functions
+ * @defgroup policy    Policy modules
+ * @defgroup testing   Testing componenets
+ * @defgroup support_libraries
+ *                     Support libraries
+ */
+
+/**
+@file icd_exec.c
+
+@authors timo.teras@nokia.com
+         patrik.flykt@nokia.com
+
+@copyright (C) 2004-2006,2007 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_exec ICd execution
+
+@ingroup internal
+
+@{ */
+
 
 /** the pid file identical to previous version of icd */
 #define PIDFILE "/var/run/icd2.pid"
@@ -229,3 +251,5 @@ main(int argc, char **argv)
 
   return rv;
 }
+
+/** @} */

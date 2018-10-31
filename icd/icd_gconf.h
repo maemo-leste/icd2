@@ -1,6 +1,20 @@
 #ifndef ICD_GCONF_H
 #define ICD_GCONF_H
 
+/**
+@file icd_gconf.h
+
+@authors timo.teras@nokia.com
+         patrik.flykt@nokia.com
+
+@copyright (C) 2004-2007 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_gconf Compatibility functions for gconf settings
+
+@ingroup internal
+
+ * @{ */
+
 #include <glib.h>
 
 /** The key holding the type of an IAP */
@@ -39,5 +53,7 @@ static inline gboolean icd_gconf_agressive_scanning()
                                       ICD_GCONF_AGGRESSIVE_SCANNING,
                                       FALSE);
 }
+
+/** @} */
 
 #endif

@@ -1,3 +1,16 @@
+/**
+@file icd_srv_provider.c
+
+@author patrik.flykt@nokia.com
+
+@copyright (C) 2007-2008 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_srv_provider Service provider API implementation
+
+@ingroup internal
+
+ * @{ */
+
 #include <string.h>
 #include <time.h>
 #include <gconf/gconf-client.h>
@@ -1002,3 +1015,5 @@ icd_srv_provider_connect(struct icd_iap *iap, icd_srv_provider_connect_cb_fn cb,
                       &module->srv.private);
   return TRUE;
 }
+
+/** @} */

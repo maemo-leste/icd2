@@ -1,3 +1,11 @@
+/**
+@file icd_version.c
+
+@author patrik.flykt@nokia.com
+
+@copyright (C) 2007 Nokia Corporation. All rights reserved.
+ */
+
 #include <stdlib.h>
 #include "icd_version.h"
 #include "icd_log.h"
@@ -43,3 +51,5 @@ icd_version_compare(const char *a, const char *b)
 
   return rv;
 }
+
+/** @} */

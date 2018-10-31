@@ -1,6 +1,19 @@
 #ifndef ICD_IAP_H
 #define ICD_IAP_H
 
+/**
+@file icd_iap.h
+
+@author patrik.flykt@nokia.com
+
+@copyright (C) 2007 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_iap IAP connection abstraction
+
+@ingroup internal
+
+ * @{ */
+
 #include "policy_api.h"
 
 /** State of an IAP */
@@ -266,5 +279,7 @@ struct icd_iap* icd_iap_find_by_id (const gchar *iap_id,
                                     const gboolean is_local);
 struct icd_iap *icd_iap_foreach (icd_iap_foreach_fn fn, gpointer user_data);
 gboolean icd_iap_rename (struct icd_iap *iap, const gchar *name);
+
+/** @} */
 
 #endif

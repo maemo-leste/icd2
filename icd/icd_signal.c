@@ -1,3 +1,17 @@
+/**
+@file icd_signal.c
+
+@authors timo.teras@nokia.com
+         patrik.flykt@nokia.com
+
+@copyright (C) 2004-2006,2007 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_signal Signal handling integration with glib main loop
+
+@ingroup internal
+
+ * @{ */
+
 #include <glib.h>
 #include <stdarg.h>
 #include <sys/types.h>
@@ -113,3 +127,5 @@ out:
   va_end(ap);
   return status;
 }
+
+/** @} */

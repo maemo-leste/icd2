@@ -1,3 +1,16 @@
+/**
+@file icd_tracking_info.c
+
+@author patrik.flykt@nokia.com
+
+@copyright (C) 2007 Nokia Corporation. All rights reserved.
+
+@addtogroup icd_tracking_info Tracking of D-Bus users for a request
+
+@ingroup internal
+
+ * @{ */
+
 #include <string.h>
 #include "icd_tracking_info.h"
 #include "icd_log.h"
@@ -135,3 +148,5 @@ struct icd_tracking_info *
 
   return track;
 }
+
+/** @} */
