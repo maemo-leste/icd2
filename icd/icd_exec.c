@@ -1,3 +1,93 @@
+/**
+ @mainpage Internet Connectivity daemon version 2
+
+ Responsibilities of the different components
+ --------------------------------------------
+ Responsibility of establishing a network connection is divided between
+ the connectivity library, ICd with its modules and the UI.
+ The connectivity library used by the application creates a D-Bus request
+ and sends it to ICd. ICd processes the request and invokes the UI when
+ necessary. After network connection establishment the connectivity
+ library is informed with the outcome of the network establishment.
+
+ The UI can also be invoked without interaction from the connectivity
+ library. In such cases the 'Select connection' dialog is requesting ICd
+ to provide it with and updated view of available networks. ICd will
+ provide the UI with an up to date view of the networks. It is up to the
+ UI design wheter service level ("hotspot") connections are shown with
+ the associated physical networks or wheter the service level connections
+ are collapsed into one entry only. From the displayed connections the
+ user selects one which the UI requests ICd to try to establish. The
+ connection request to ICd is done using the same methods as are
+ available for the connectivity library.
+
+ Internal structure
+ ------------------
+ ICd2 consists of the following components:
+
+ - A request for a connection to be established is represented by an
+   icd_request data structure. The request is created when the API calls
+   the icd_request_new() function. The parameters for this function call
+   are either taken from the scan results or by requesting one of the
+   "any IAPs" (TBD).
+
+   The request is passed to the policy API (TBD) that will add one or
+   more candidate IAPs to the request data structure. When the policy has
+   been satisfied, the candidate IAPs are tried one after another with
+   the first successfully established IAP getting selected and any other
+   IAPs removed from the candidate list.
+
+   When the IAP has been disconnected, the request data structure is
+   deleted.
+
+   See also @ref icd_request.
+
+ - The Internet Access Point (IAP) icd_iap data structure keeps state
+   information of the network connection being created. The request code
+   iterating through the list of candidate IAPs calls icd_iap_connect()
+   for each candidate IAP in order to create one of them.
+   The network connection creation attempt is started using the
+   icd_iap_module_next(). Connection creation goes through the link_up,
+   link_post_up and ip_up icd_nw_api functions in order.
+
+   The status callback functions for each icd_nw_api level can report
+   success in two ways, either with #ICD_NW_SUCCESS or
+   #ICD_NW_SUCCESS_NEXT_LAYER. #ICD_NW_SUCCESS allows ICd to search for
+   another network module with lower priority that also provides an *_up
+   function for the same layer as the callback. With
+   #ICD_NW_SUCCESS_NEXT_LAYER the module can force ICd to go directly to
+   the next layer above the one whose callback just got called. When
+   #ICD_NW_RESTART is reported, the IAP will close down and then
+   immediately created again.
+
+   Disconnecting an IAP happens when the status callback reports error or
+   when the network module spontaneously needs to bring down a connection
+   using icd_nw_close_fn(). The latter case is reserved for a connected
+   IAP; while the IAP is being connected the callback is the preferred
+   method for reporting an error event leading to disconnection. When
+   disconnecting, link_down, link_pre_down and link_down icd_nw_api
+   functions are called in reverse order for those modules whose
+   respective _up functions got called on connect. Has the module not yet
+   called the given callback when disconnect is started, the _down
+   function for the respective level and module will be called.
+
+   See also @ref icd_iap.
+
+   @todo draw the IAP state diagram and insert it here
+
+ - Any part of ICd interested in scan results registers a scan callback
+   with icd_scan_results_request(). Scanned elements that already are in
+   the cache will be received by the callback immediately. As new scan
+   results appear, they will be provided to the callback. Expiry and
+   updated results are also indicated, see the enum icd_scan_status.
+   Scanning will go on as long as there is any listeners registered, the
+   rescan interval and cache expiry are dictated by the corresponding
+   module. A rescan will not be performed if there are no listeners when
+   the rescan timer expires.
+
+ See also @ref icd_scan.
+*/
+
 #define _GNU_SOURCE
 
 #include <stdlib.h>
