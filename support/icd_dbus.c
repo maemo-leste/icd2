@@ -76,9 +76,7 @@ icd_dbus_mcall_send(DBusConnection *connection, DBusMessage *mcall,
   {
     dbus_message_set_no_reply(mcall, TRUE);
 
-    if (dbus_connection_send(connection, mcall, NULL))
-      return pending_return;
-    else
+    if (!dbus_connection_send(connection, mcall, NULL))
       ILOG_ERR("icd_dbus_mcall_send(): send without reply failed");
 
     return NULL;
