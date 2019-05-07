@@ -402,14 +402,17 @@ icd_scan_expire_network(gpointer key, gpointer value, gpointer user_data)
         icd_scan_listener_notify(
               expire_network_data->module, NULL, cache_entry, ICD_SCAN_EXPIRE);
         icd_scan_cache_entry_free(cache_entry);
-        ++expired;
+        scan_cache_list->cache_list =
+            g_slist_delete_link(scan_cache_list->cache_list, l);
+        expired++;
       }
     }
     else
+    {
       ILOG_ERR("NULL cache entry in network '%s'", network_id);
-
-    scan_cache_list->cache_list =
-        g_slist_delete_link(scan_cache_list->cache_list, l);
+      scan_cache_list->cache_list =
+          g_slist_delete_link(scan_cache_list->cache_list, l);
+    }
 
     l = next;
     entries++;
