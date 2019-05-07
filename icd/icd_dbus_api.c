@@ -860,7 +860,7 @@ icd_dbus_api_scan_result(enum icd_scan_status status,
 
   if (dbus_message_append_args(message,
                                DBUS_TYPE_UINT32,  &status,
-                               DBUS_TYPE_UINT32, cache_entry,
+                               DBUS_TYPE_UINT32, &cache_entry->last_seen,
                                DBUS_TYPE_STRING, service_type,
                                DBUS_TYPE_STRING, service_name,
                                DBUS_TYPE_UINT32, service_attrs,
