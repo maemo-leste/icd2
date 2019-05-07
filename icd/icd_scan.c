@@ -815,6 +815,8 @@ icd_scan_cb(enum icd_network_search_status status, gchar *network_name,
         }
       }
     }
+    else if (status == ICD_NW_SEARCH_EXPIRE)
+      return;
 
     if (!cache_entry)
     {
