@@ -1,3 +1,16 @@
+icd2 (0.95) unstable; urgency=medium
+
+  * Fix a couple of bugs introduced during RE
+
+ -- Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>  Tue, 06 May 2019 19:25:55 +0300
+
+icd2 (0.94) unstable; urgency=medium
+
+  * Export all the functions in the binary to be used by the plugins
+  * Fix invalid return value in icd_dbus_mcall_send
+
+ -- Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>  Sun, 05 May 2019 09:09:32 +0300
+
 icd2 (0.93) unstable; urgency=medium
 
   * Add functions according to API docs

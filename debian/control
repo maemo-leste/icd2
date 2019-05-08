@@ -12,6 +12,7 @@ Build-Depends: debhelper (>= 9),
                libdbus-glib-1-dev,
                icd2-osso-ic-dev,
                mce-dev,
+               doxygen
 Standards-Version: 3.7.2
 
 Package: icd2
