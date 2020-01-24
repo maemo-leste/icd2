@@ -1,3 +1,12 @@
+/**
+@file icd_network_api.c
+@copyright GNU GPLv2 or later
+
+@addtogroup icd_network_api ICd network API handling
+@ingroup internal
+
+ * @{ */
+
 #include <string.h>
 #include <gconf/gconf-client.h>
 #include <osso-ic-dbus.h>
@@ -20,15 +29,15 @@
 #define ICD_NW_INIT   "icd_nw_init"
 
 /**
- * @brief make icd_scan use the module iteration function
+ * Iterate over all network modules
  *
- * @param icd_ctx icd context
- * @param foreach_fn the function to call for each module
- * @param user_data user data to pass to the function
+ * @param icd_ctx     icd context
+ * @param foreach_fn  the function to call for each module
+ * @param user_data   user data to pass to the function
  *
- * @return a pointer to the module if the iteration function returns FALSE; NULL
- * otherwise
- *
+ * @return  a pointer to the module if the iteration function returns FALSE;
+ *          NULL otherwise
+ * @todo  make icd_scan use the module iteration function
  */
 struct icd_network_module *
 icd_network_api_foreach_module(struct icd_context *icd_ctx,
@@ -68,14 +77,13 @@ struct pid_notify {
 };
 
 /**
- * @brief Find the network module that is watching a child process exit
+ * Find the network module that is watching a child process exit
  *
- * @param module the network module to examine
- * @param user_data the #pid_notify structure
+ * @param module     the network module to examine
+ * @param user_data  the pid_notify structure
  *
- * @return TRUE to continue searching, FALSE to exit iteration and return a
- * pointer to the module
- *
+ * @return  TRUE to continue searching, FALSE to exit iteration and return a
+ *          pointer to the module
  */
 static gboolean
 icd_network_api_foreach_module_pid(struct icd_network_module *module,
@@ -114,14 +122,14 @@ icd_network_api_foreach_module_pid(struct icd_network_module *module,
 }
 
 /**
- * @brief Notify a network module that its child process has exited
+ * Notify a network module that its child process has exited
  *
- * @param icd_ctx the context
- * @param pid the process id
- * @param exit_value exit value
+ * @param icd_ctx     the context
+ * @param pid         the process id
+ * @param exit_value  exit value
  *
- * @return TRUE if the process id was in use by the network api; FALSE if not
- *
+ * @return  TRUE if the process id was in use by the network api; FALSE if
+ *          not
  */
 gboolean
 icd_network_api_notify_pid(struct icd_context *icd_ctx, const pid_t pid,
@@ -137,11 +145,9 @@ icd_network_api_notify_pid(struct icd_context *icd_ctx, const pid_t pid,
 }
 
 /**
- * @brief Set ICd to watch a child pid
- *
- * @param pid process id
- * @param watch_cb_token the watch callback token given on initialization
- *
+ * Set ICd to watch a child pid
+ * @param pid             process id
+ * @param watch_cb_token  the watch callback token given on initialization
  */
 static void
 icd_network_api_watch_pid(const pid_t pid, gpointer watch_cb_token)
@@ -164,13 +170,12 @@ icd_network_api_watch_pid(const pid_t pid, gpointer watch_cb_token)
 }
 
 /**
- * @brief  Status of the network has changed while the network has been
- * connected
+ * Status of the network has changed while the network has been connected
  *
- * @param network_type the type of the IAP returned
- * @param network_attrs attributes, such as type of network_id, security, etc.
- * @param network_id IAP name or local id, e.g. SSID
- *
+ * @param network_type   the type of the IAP returned
+ * @param network_attrs  attributes, such as type of network_id, security,
+ *                       etc.
+ * @param network_id     IAP name or local id, e.g. SSID
  */
 static void
 icd_network_api_status_update(gchar *network_type, guint network_attrs,
@@ -199,18 +204,19 @@ icd_network_api_status_update(gchar *network_type, guint network_attrs,
 }
 
 /**
- * @brief Function for closing down a connection by request of a network module
+ * Function for closing down a connection by request of a network module
  *
- * @param status reason for closing; ICD_NW_RESTART if the IAP needs to be
- * restarted, success or error will both close the network connection
- * @param err_str NULL if the network was disconnected normally or any
- * ICD_DBUS_ERROR_* from osso-ic-dbus.h on error
- * @param network_type the type of the IAP returned
- * @param network_attrs attributes, such as type of network_id, security, etc.
- * @param network_id IAP name or local id, e.g. SSID
- *
+ * @param status         reason for closing; #ICD_NW_RESTART if the IAP needs
+ *                       to be restarted, success or error will both close
+ *                       the network connection
+ * @param err_str        NULL if the network was disconnected normally or any
+ *                       ICD_DBUS_ERROR_* from osso-ic-dbus.h on error
+ * @param network_type   the type of the IAP returned
+ * @param network_attrs  attributes, such as type of network_id, security,
+ *                       etc.
+ * @param network_id     IAP name or local id, e.g. SSID
  */
-void
+static void
 icd_network_api_close(enum icd_nw_status status, const gchar *err_str,
                       const gchar *network_type, const guint network_attrs,
                       const gchar *network_id)
@@ -265,6 +271,17 @@ icd_network_api_close(enum icd_nw_status status, const gchar *err_str,
   }
 }
 
+/**
+ * Request a network module layer to be renewed
+ *
+ * @param renew_layer    the network module layer to renew
+ * @param network_type   network type
+ * @param network_attrs  network_attrs
+ * @param network_id     network_id
+ *
+ * @todo  when saving, the dialog might try to save a name for a failed
+ *        iap...
+ */
 static void
 icd_network_api_renew(enum icd_nw_layer renew_layer, const gchar *network_type,
                       const guint network_attrs, const gchar *network_id)
@@ -340,6 +357,14 @@ icd_network_api_renew(enum icd_nw_layer renew_layer, const gchar *network_type,
              icd_iap_state_names[iap->state]);
 }
 
+/**
+ * Function for checking whether a modules supports a given type
+ *
+ * @param module  the module
+ * @param type    the type to check for
+ *
+ * @return        TRUE if the module supports the given type, FALSE otherwise
+ */
 gboolean
 icd_network_api_has_type(struct icd_network_module *module, const gchar *type)
 {
@@ -366,6 +391,16 @@ icd_network_api_has_type(struct icd_network_module *module, const gchar *type)
   return FALSE;
 }
 
+/**
+ * Initialize the loaded module
+ *
+ * @param module_name    module filename without path
+ * @param handle         module handle; used for unloading
+ * @param init_function  module init function
+ * @param data           icd context
+ *
+ * @return  TRUE on success, FALSE on failure
+ */
 static gboolean
 icd_network_api_init_cb(const gchar *module_name, void *handle,
                         gpointer init_function, gpointer data)
@@ -457,6 +492,11 @@ err_init:
   return FALSE;
 }
 
+/**
+ * Find a network module by its name
+ * @param module_name  module name
+ * @return  the module structure or NULL if not found
+ */
 static struct icd_network_module*
 icd_network_api_find_module(gchar *module_name)
 {
@@ -476,6 +516,11 @@ icd_network_api_find_module(gchar *module_name)
   return NULL;
 }
 
+/**
+ * Load all network API modules
+ * @param icd_ctx  icd context
+ * @return  the status from icd_plugin_load_all
+ */
 gboolean
 icd_network_api_load_modules(struct icd_context *icd_ctx)
 {
@@ -594,6 +639,10 @@ err_out:
   return FALSE;
 }
 
+/**
+ * Unload all network modules
+ * @param icd_ctx  icd context
+ */
 void
 icd_network_api_unload_modules(struct icd_context *icd_ctx)
 {
@@ -641,3 +690,5 @@ icd_network_api_unload_modules(struct icd_context *icd_ctx)
   if (icd_ctx->type_to_module)
     g_hash_table_destroy(icd_ctx->type_to_module);
 }
+
+/** @} */

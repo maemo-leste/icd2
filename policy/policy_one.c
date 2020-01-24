@@ -1,6 +1,23 @@
+/**
+@file policy_one.c
+@copyright GNU GPLv2 or later
+
+@addtogroup policy_one One connection only
+@ingroup policy
+
+ * @{ */
+
 #include "policy_api.h"
 #include "icd_log.h"
 
+
+/**
+ * Informational policy called when a network has been successfully connected
+ *
+ * @param network               the network to connect
+ * @param existing_connections  existing network connections
+ * @param private               private data for the module
+ */
 static void
 policy_one_connected(struct icd_policy_request *network,
                      GSList *existing_connections, gpointer *private)
@@ -24,6 +41,16 @@ policy_one_connected(struct icd_policy_request *network,
   }
 }
 
+/**
+ * Policy module initialization function.
+ *
+ * @param policy_api      policy API structure to be filled in by the module
+ * @param add_network     function to add a network in response to a policy
+ * @param merge_requests  function to merge requests
+ * @param make_request    function for creating a new request
+ * @param scan_networks   function for scanning networks
+ * @param nw_close        function to disconnect a network
+ */
 void
 icd_policy_init(struct icd_policy_api *policy_api,
                 icd_policy_nw_add_fn add_network,
@@ -38,3 +65,5 @@ icd_policy_init(struct icd_policy_api *policy_api,
   policy_api->private = nw_close;
   policy_api->connected = policy_one_connected;
 }
+
+/** @} */

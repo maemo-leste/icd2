@@ -34,7 +34,6 @@ icd_backend_gconf_get_by_network(const gchar *network_type,
   return NULL;
 }
 
-
 void
 icd_backend_gconf_delete(icd_settings_handle handle)
 {

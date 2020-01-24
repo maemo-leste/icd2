@@ -3,9 +3,10 @@
 
 #include "icd_settings_backend.h"
 
-void icd_backend_gconf_init (struct icd_settings *settings);
 
-void icd_backend_gconf_delete (icd_settings_handle handle);
+void icd_backend_gconf_init      (struct icd_settings *settings);
+
+void icd_backend_gconf_delete    (icd_settings_handle handle);
 
 icd_settings_handle
 icd_backend_gconf_get_by_network (const gchar *network_type,

@@ -1,3 +1,12 @@
+/**
+@file icd_gconf.c
+@copyright GNU GPLv2 or later
+
+@addtogroup icd_gconf Compatibility functions for gconf settings
+@ingroup internal
+
+ * @{ */
+
 #include <string.h>
 #include <gconf/gconf-client.h>
 #include <osso-ic-gconf.h>
@@ -6,6 +15,10 @@
 #include "icd_context.h"
 #include "icd_scan.h"
 
+/**
+ * Print out a gconf error
+ * @param error  reference to the GError
+ */
 static void
 icd_gconf_check_error(GError **error)
 {
@@ -17,6 +30,15 @@ icd_gconf_check_error(GError **error)
   }
 }
 
+/**
+ * Get a boolean value from gconf
+ *
+ * @param iap_name  unescaped gconf IAP name
+ * @param key_name  key name
+ * @param def       the default expected value
+ *
+ * @return  the value of the key
+ */
 gboolean
 icd_gconf_get_iap_bool(const char *iap_name, const char *key_name, gboolean def)
 {
@@ -52,6 +74,11 @@ icd_gconf_get_iap_bool(const char *iap_name, const char *key_name, gboolean def)
   return rv;
 }
 
+/**
+ * Check whether the setting is temporary
+ * @param settings_name  name of the IAP
+ * @return  TRUE if yes, FALSE if not
+ */
 gboolean
 icd_gconf_is_temporary(const gchar *settings_name)
 {
@@ -71,6 +98,11 @@ icd_gconf_is_temporary(const gchar *settings_name)
   return TRUE;
 }
 
+/**
+ * Remove a gconf directory if it is a temporary IAP
+ * @param settings_name  escaped IAP name
+ * @return  TRUE if the gconf directory got removed, FALSE otherwise
+ */
 static gboolean
 icd_gconf_remove_dir(const gchar *settings_name)
 {
@@ -103,6 +135,11 @@ icd_gconf_remove_dir(const gchar *settings_name)
   return rv;
 }
 
+/**
+ * Remove temporary IAPs from gconf
+ * @param settings_name  name of temporary IAP to remove or NULL for all
+ * @return  TRUE if at least one IAP was removed, FALSE otherwise
+ */
 gboolean
 icd_gconf_remove_temporary(const gchar *settings_name)
 {
@@ -148,6 +185,9 @@ icd_gconf_remove_temporary(const gchar *settings_name)
   return rv;
 }
 
+/**
+ * Notice if IAP is removed in gconf.
+ */
 static void
 icd_gconf_notify(GConfClient *gconf_client, guint connection_id,
                  GConfEntry *entry, gpointer user_data)
@@ -167,6 +207,10 @@ icd_gconf_notify(GConfClient *gconf_client, guint connection_id,
   }
 }
 
+/**
+ * Set notification func for gconf changes
+ * @return  TRUE on success, FALSE on failure
+ */
 gboolean
 icd_gconf_add_notify(void)
 {
@@ -181,6 +225,14 @@ icd_gconf_add_notify(void)
   return icd_ctx->iap_deletion_notify != 0;
 }
 
+/**
+ * Rename settings
+ *
+ * @param settings_name  current IAP settings name
+ * @param name           new name of the settings
+ *
+ * @return  TRUE on success, FALSE on failure
+ */
 gboolean
 icd_gconf_rename(const gchar *settings_name, const gchar *name)
 {
@@ -212,6 +264,15 @@ icd_gconf_rename(const gchar *settings_name, const gchar *name)
   return FALSE;
 }
 
+/**
+ * Get a string from gconf
+ *
+ * @param iap_name  unescaped gconf IAP name
+ * @param key_name  key name
+ *
+ * @return  the key value which is to be freed by the caller or NULL if the
+ *          value does not exist
+ */
 gchar *
 icd_gconf_get_iap_string(const char *iap_name, const char *key_name)
 {
@@ -230,6 +291,9 @@ icd_gconf_get_iap_string(const char *iap_name, const char *key_name)
   return rv;
 }
 
+/**
+ * Remove notification func for gconf changes
+ */
 void
 icd_gconf_del_notify(void)
 {
@@ -240,3 +304,5 @@ icd_gconf_del_notify(void)
   icd_ctx->iap_deletion_notify = 0;
   g_object_unref(gconf);
 }
+
+/** @} */

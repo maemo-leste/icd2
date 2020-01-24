@@ -1,3 +1,12 @@
+/**
+@file icd_script.c
+@copyright GNU GPLv2 or later
+
+@addtogroup icd_script Network script support
+@ingroup internal
+
+ * @{ */
+
 #include <stdlib.h>
 #include <signal.h>
 #include <string.h>
@@ -6,25 +15,59 @@
 #include "icd_log.h"
 #include "icd_script.h"
 
+/** min time in seconds that a script can be run */
 #define ICD_SCRIPT_MIN_TIMEOUT   1
+
+/** default time in seconds that a script can be run */
 #define ICD_SCRIPT_DEFAULT_TIMEOUT   15
+
+/** max time in seconds that a script can be run */
 #define ICD_SCRIPT_MAX_TIMEOUT   120
+
+/** gconf location for timeout value */
 #define ICD_SCRIPT_GCONF_PATH   ICD_GCONF_SETTINGS "/network_scripts/timeout"
+
+/** physical name of the interface being processed */
 #define SCRIPT_IFACE   "IFACE"
+
+/** logical name of the interface being processed */
 #define SCRIPT_LOGICAL   "LOGICAL"
+
+/** address family of the interface */
 #define SCRIPT_ADDRFAM   "ADDRFAM"
+
+/** method of the interface */
 #define SCRIPT_METHOD   "METHOD"
+
+/** 'start' if going up, 'stop' if going down */
 #define SCRIPT_MODE   "MODE"
+
+/** as per MODE, but with finer granularity, distinguishing the pre-up,
+ * post-up, pre-down and post-down phases */
 #define SCRIPT_PHASE   "PHASE"
+
+/** verbosity */
 #define SCRIPT_VERBOSITY   "VERBOSITY"
+
+/** script verbosity value */
 #define SCRIPT_VERBOSITY_VALUE   "0"
+
+/** the command search path */
 #define SCRIPT_PATH   "PATH"
+
+/** script search path value */
 #define SCRIPT_PATH_VALUE
+
+/** ICd IAP identifier; for now escaped gconf name */
 #define SCRIPT_IAP_ID   "ICD_CONNECTION_ID"
+
+/** ICd IAP type */
 #define SCRIPT_IAP_TYPE   "ICD_CONNECTION_TYPE"
+
+/** Unset proxies */
 #define SCRIPT_PROXY_UNSET   "ICD_PROXY_UNSET"
 
-const gchar const* reserved_env_vars[] = {
+static const gchar const* reserved_env_vars[] = {
   SCRIPT_ADDRFAM,
   SCRIPT_IFACE,
   SCRIPT_LOGICAL,
@@ -46,13 +89,26 @@ do {\
   ILOG_DEBUG(e"=%s", v); \
 } while (0)
 
+/** structure to keep track of running scripts */
 struct icd_script_data {
+
+  /** pid */
   pid_t pid;
+
+  /** timeout id */
   guint timeout_id;
+
+  /** callback */
   icd_script_cb_fn cb;
+
+  /** callback user data */
   gpointer user_data;
 };
 
+/**
+ * Get the list of running scripts
+ * @return  the list
+ */
 static GSList **
 icd_script_get()
 {
@@ -60,11 +116,10 @@ icd_script_get()
 }
 
 /**
- * @brief Read the script timeout value from gconf
+ * Read the script timeout value from gconf
  *
- * @return script timeout value between #ICD_SCRIPT_MIN_TIMEOUT and
- * #ICD_SCRIPT_MAX_TIMEOUT.
- *
+ * @return  script timeout value between #ICD_SCRIPT_MIN_TIMEOUT and
+ *          #ICD_SCRIPT_MAX_TIMEOUT.
  */
 static gint
 icd_script_timeout_secs (void)
@@ -103,12 +158,9 @@ icd_script_timeout_secs (void)
 }
 
 /**
- * @brief Script timeout function
- *
- * @param data pointer to pid of the script that timed out
- *
- * @return FALSE in order not to run again
- *
+ * Script timeout function
+ * @param data  pointer to pid of the script that timed out
+ * @return      FALSE in order not to run again
  */
 static gboolean
 icd_script_timeout(gpointer data)
@@ -123,19 +175,22 @@ icd_script_timeout(gpointer data)
 }
 
 /**
- * @brief Forks and execs the network script
+ * Forks and execs the network script
  *
- * @param script the script, i.e. 'pre-up', 'post-up', 'pre-down', 'post-down'
- * @param iface interface name
- * @param mode either 'start' or 'stop'
- * @param phase script phase, i.e. 'pre-up', 'post-up', 'pre-down', 'post-down'
- * @param iap_id Unique IAP identifier, currently the escaped iap name
- * @param iap_type IAP type
- * @param remove_proxies TRUE to set ICD_PROXY_UNSET=1
- * @param env rest of the environment variables
+ * @param script          the script, i.e. 'pre-up', 'post-up', 'pre-down',
+ *                        'post-down'
+ * @param iface           interface name
+ * @param method          address configuration method, i.e. 'static',
+ *                        'manual', 'dhcp', 'ppp', etc.
+ * @param mode            either 'start' or 'stop'
+ * @param phase           script phase, i.e. 'pre-up', 'post-up', 'pre-down',
+ *                        'post-down'
+ * @param iap_id          Unique IAP identifier, currently the escaped iap
+ *                        name
+ * @param iap_type        IAP type
+ * @param remove_proxies  TRUE to set ICD_PROXY_UNSET=1
  *
- * @return pid of the child process or -1 on error
- *
+ * @return  pid of child process or -1 on error
  */
 static pid_t
 icd_script_exec (const gchar * script, const gchar *iface, const gchar *mode,
@@ -210,21 +265,22 @@ icd_script_exec (const gchar * script, const gchar *iface, const gchar *mode,
 }
 
 /**
- * @brief Run network script and start waiting for the result
+ * Run network script and start waiting for the result
  *
- * @param script the script
- * @param iface interface name
- * @param mode mode
- * @param phase script phase, i.e. 'pre-up', 'post-up', 'pre-down', 'post-down'
- * @param iap_id Unique IAP identifier, currently the escaped iap name
- * @param iap_type IAP type
- * @param remove_proxies wheter to remove http, etc. proxies
- * @param env rest of the environment variables
- * @param cb callback function
- * @param user_data 	user data for callback function
+ * @param script          the script
+ * @param iface           interface name
+ * @param mode            mode
+ * @param phase           script phase, i.e. 'pre-up', 'post-up', 'pre-down',
+ *                        'post-down'
+ * @param cb              callback function
+ * @param user_data       user data for callback function
+ * @param iap_id          Unique IAP identifier, currently the escaped iap
+ *                        name
+ * @param iap_type        IAP type
+ * @param remove_proxies  whether to remove http, etc. proxies
+ * @param env             rest of the environment variables
  *
- * @return pid of child process or -1 on error
- *
+ * @return  pid of child process or -1 on error
  */
 static pid_t
 icd_script_run (const gchar *script, const gchar *iface, const gchar *mode,
@@ -260,17 +316,16 @@ icd_script_run (const gchar *script, const gchar *iface, const gchar *mode,
 }
 
 /**
- * @brief Run pre-up scripts
+ * Run pre-up scripts
  *
- * @param iap_id Unique IAP identifier, currently the escaped iap name
- * @param iap_type IAP type
- * @param env script environment variables
- * @param cb callback
- * @param user_data user data for the callback
+ * @param iap_id     Unique IAP identifier, currently the escaped iap name
+ * @param iap_type   IAP type
+ * @param env        script environment variables
+ * @param cb         callback
+ * @param user_data  user data for the callback
  *
- * @return the process id of the running script, -1 on error whereby the
- * callback will not be called
- *
+ * @return  the process id of the running script, -1 on error whereby the
+ *          callback will not be called
  */
 pid_t
 icd_script_pre_up(const gchar *iap_id, const gchar *iap_type,
@@ -282,18 +337,17 @@ icd_script_pre_up(const gchar *iap_id, const gchar *iap_type,
 }
 
 /**
- * @brief Run post-up scripts
+ * Run post-up scripts
  *
- * @param iface interface name
- * @param iap_id Unique IAP identifier, currently the escaped iap name
- * @param iap_type IAP type
- * @param env script environment variables
- * @param cb callback
- * @param user_data user data for the callback
+ * @param iface      interface name
+ * @param iap_id     Unique IAP identifier, currently the escaped iap name
+ * @param iap_type   IAP type
+ * @param env        script environment variables
+ * @param cb         callback
+ * @param user_data  user data for the callback
  *
- * @return the process id of the running script, -1 on error whereby the
- * callback will not be called
- *
+ * @return  the process id of the running script, -1 on error whereby the
+ *          callback will not be called
  */
 pid_t
 icd_script_post_up(const gchar *iface, const gchar *iap_id,
@@ -305,19 +359,19 @@ icd_script_post_up(const gchar *iface, const gchar *iap_id,
 }
 
 /**
- * @brief Run pre-down scripts
+ * Run pre-down scripts
  *
- * @param iface interface name
- * @param iap_id Unique IAP identifier, currently the escaped iap name
- * @param iap_type IAP type
- * @param remove_proxies remove http, etc. proxies if TRUE
- * @param env script environment variables
- * @param cb callback
- * @param user_data user data for the callback
+ * @param iface           interface name
+ * @param iap_id          Unique IAP identifier, currently the escaped iap
+ *                        name
+ * @param iap_type        IAP type
+ * @param remove_proxies  remove http, etc. proxies if TRUE
+ * @param env             script environment variables
+ * @param cb              callback
+ * @param user_data       user data for the callback
  *
- * @return the process id of the running script, -1 on error whereby the
- * callback will not be called
- *
+ * @return  the process id of the running script, -1 on error whereby the
+ *          callback will not be called
  */
 pid_t
 icd_script_pre_down(const gchar *iface, const gchar *iap_id,
@@ -330,18 +384,17 @@ icd_script_pre_down(const gchar *iface, const gchar *iap_id,
 }
 
 /**
- * @brief Run post-down scripts
+ * Run post-down scripts
  *
- * @param iface interface name
- * @param iap_id Unique IAP identifier, currently the escaped iap name
- * @param iap_type IAP type
- * @param env script environment variables
- * @param cb callback
- * @param user_data user data for the callback
+ * @param iface      interface name
+ * @param iap_id     Unique IAP identifier, currently the escaped iap name
+ * @param iap_type   IAP type
+ * @param env        script environment variables
+ * @param cb         callback
+ * @param user_data  user data for the callback
  *
- * @return the process id of the running script, -1 on error whereby the
- * callback will not be called
- *
+ * @return  the process id of the running script, -1 on error whereby the
+ *          callback will not be called
  */
 pid_t
 icd_script_post_down(const gchar *iface, const gchar *iap_id,
@@ -353,10 +406,8 @@ icd_script_post_down(const gchar *iface, const gchar *iap_id,
 }
 
 /**
- * @brief Cancel a running script
- *
- * @param pid script process id
- *
+ * Cancel a running script
+ * @param pid  script process id
  */
 void
 icd_script_cancel(const pid_t pid)
@@ -385,6 +436,14 @@ icd_script_cancel(const pid_t pid)
   }
 }
 
+/**
+ * Notification of an exited script process
+ *
+ * @param pid         the process id
+ * @param exit_value  exit value
+ *
+ * @return  TRUE if the pid was for a script, FALSE if the pid is unknown
+ */
 gboolean
 icd_script_notify_pid(const pid_t pid, const gint exit_value)
 {
@@ -482,7 +541,6 @@ icd_script_add_reserved_env_vars(gchar **env_vars, GSList **script_vars)
 void
 icd_script_add_env_vars(struct icd_iap *iap, gchar **env_vars)
 {
-
   GSList *l;
   gboolean updated = FALSE;
   struct icd_iap_env *env;
@@ -519,3 +577,5 @@ icd_script_add_env_vars(struct icd_iap *iap, gchar **env_vars)
   ILOG_DEBUG("address family '%s' added to env", env->addrfam);
   iap->script_env = g_slist_prepend(iap->script_env, env);
 }
+
+/** @} */

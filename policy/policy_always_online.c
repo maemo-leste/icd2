@@ -1,3 +1,12 @@
+/**
+@file policy_always_online.c
+@copyright GNU GPLv2 or later
+
+@addtogroup policy_always_online Always online policy
+@ingroup policy
+
+ * @{ */
+
 #include <gconf/gconf-client.h>
 #include <osso-ic-gconf.h>
 #include <osso-ic.h>
@@ -10,39 +19,78 @@
 #include "icd_dbus.h"
 #include "icd_log.h"
 
+
 #define CHANGE_WHILE_CONNECTED_KEY ICD_GCONF_NETWORK_MAPPING \
                                                 "/change_while_connected"
-#define AUTO_CONNECT_KEY ICD_GCONF_NETWORK_MAPPING "/auto_connect"
+
+#define AUTO_CONNECT_KEY ICD_GCONF_NETWORK_MAPPING    "/auto_connect"
+
 #define SEARCH_INTERVAL_KEY ICD_GCONF_NETWORK_MAPPING "/search_interval"
 
+/** how long to wait befor counting IAPs after gconf has changed */
 #define POLICY_ALWAYS_ONLINE_IAP_TIMEOUT   500
+
+/** extra filter for mce signals */
 #define POLICY_ALWAYS_ONLINE_MCE_FILTER   "member='" MCE_DEVICE_MODE_SIG "'"
+
+/** timeout for MCE method call */
 #define POLICY_ALWAYS_ONLINE_MCE_TIMEOUT   5000
 
-struct always_online_data
-{
+
+/** private data for the always online policy */
+struct always_online_data {
+  /** number of connections ongoing */
   guint connection_count;
+  /** timeout callback id for IAP counting */
   guint count_iaps_id;
+  /** number of IAPs in GConf */
   guint iap_count;
+
+  /** timeout value in minutes */
   gint timeout;
+  /** timer id */
   guint timeout_id;
+
+  /** whether connect automatically has a decent value */
   gboolean auto_conn;
+  /** whether to make a connection attempt even when connected */
   gboolean always_change;
+  /** whether any always online settings values got changed */
   gboolean always_online_value_changed;
+
+  /** GConf notification id for network parameters */
   guint notify_nw_params;
+  /** GConf notification id for connections */
   guint notify_connections;
+
+  /** TRUE if in flight mode, FALSE if in online mode */
   gboolean flight_mode;
+  /** flight mode pending call */
   DBusPendingCall *pending_flightmode;
+  /** TRUE if broadcast signals have been connected */
   gboolean flightmode_signals;
+
+  /** function to request OSSO_IAP_ANY */
   icd_policy_request_make_new_fn make_request;
+  /** function to request network priority information */
   icd_policy_network_priority_fn priority;
+  /** function to check if there is a service module for a given network type */
   icd_policy_service_module_check_fn srv_check;
+
+  /** Highest priority network currently connected (this acts as a boolean
+   * flag but for debug purposes we want to know the actual priority). If set
+   * to 0 then this is not the highest, otherwise the highest priority value */
   gint highest_network_priority;
 };
+
 
 static void policy_always_online_run(struct always_online_data *data,
                                      gboolean immediately);
 
+/**
+ * Count how many IAPs there are in GConf
+ * @return  number of IAPs
+ */
 static guint
 policy_always_online_count_iaps()
 {
@@ -68,6 +116,10 @@ policy_always_online_count_iaps()
   return count;
 }
 
+/**
+ * Cancel pending call to MCE
+ * @param data  always online policy data
+ */
 static void
 policy_always_online_cancel_pending(struct always_online_data *data)
 {
@@ -79,6 +131,10 @@ policy_always_online_cancel_pending(struct always_online_data *data)
   }
 }
 
+/**
+ * Cancel always online timer
+ * @param data  always online policy data
+ */
 static void
 policy_always_online_cancel_timer(struct always_online_data *data)
 {
@@ -91,6 +147,10 @@ policy_always_online_cancel_timer(struct always_online_data *data)
   }
 }
 
+/**
+ * Make a request for OSSO_IAP_ANY, no user prompting
+ * @param data  always online policy data
+ */
 static void
 policy_always_online_make_request(struct always_online_data *data)
 {
@@ -105,6 +165,11 @@ policy_always_online_make_request(struct always_online_data *data)
   data->make_request(policy_attrs, NULL, 0, NULL, NULL, 0, OSSO_IAP_ANY);
 }
 
+/**
+ * Timeout callback for a new request
+ * @param user_data  always online policy data
+ * @return  TRUE to run again
+ */
 static gboolean
 policy_always_online_make_request_cb(gpointer user_data)
 {
@@ -117,6 +182,11 @@ policy_always_online_make_request_cb(gpointer user_data)
   return TRUE;
 }
 
+/**
+ * Parse flight mode message
+ * @param message  the D-Bus message
+ * @param data     always online policy data
+ */
 static void
 policy_always_online_flightmode(DBusMessage *message,
                                 struct always_online_data *data)
@@ -166,6 +236,18 @@ policy_always_online_flightmode(DBusMessage *message,
     ILOG_ERR("always online could not parse flight mode message");
 }
 
+/**
+ * Flight mode signal handling function; used also by
+ * policy_always_online_flightmode_cb()
+ *
+ * @param connection  D-Bus connection or NULL if called from
+ *                    policy_always_online_flightmode_cb()
+ * @param message     D-Bus flight mode status message
+ * @param user_data   always online policy data
+ *
+ * @return  DBUS_HANDLER_RESULT_NOT_YET_HANDLED as some other part of this
+ *          program might also be interested in the signal
+ */
 static DBusHandlerResult
 policy_always_online_flightmode_sig(DBusConnection *connection,
                                     DBusMessage *message,
@@ -180,6 +262,11 @@ policy_always_online_flightmode_sig(DBusConnection *connection,
   return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 }
 
+/**
+ * Flight mode status pending call callback
+ * @param pending    the pending call
+ * @param user_data  always online policy data
+ */
 static void
 policy_always_online_flightmode_cb(DBusPendingCall *pending, void *user_data)
 {
@@ -193,6 +280,13 @@ policy_always_online_flightmode_cb(DBusPendingCall *pending, void *user_data)
   dbus_message_unref(message);
 }
 
+/**
+ * Check if always online is set and run either immediately or set a timeout
+ * according to settings
+ *
+ * @param data         always online policy data
+ * @param immediately  whether to start immediately or after a timeout
+ */
 static void
 policy_always_online_run(struct always_online_data *data,
                          gboolean immediately)
@@ -239,6 +333,13 @@ policy_always_online_run(struct always_online_data *data,
   ILOG_INFO("always online timer id %d added", data->timeout_id);
 }
 
+/**
+ * Check the number of IAPs in gconf and whether always online gconf settings
+ * were changed. Connect automatically when needed
+ *
+ * @param user_data  always_online_policy_data
+ * @return           FALSE;
+ */
 static gboolean
 policy_always_online_check(gpointer user_data)
 {
@@ -271,6 +372,14 @@ policy_always_online_check(gpointer user_data)
   return FALSE;
 }
 
+/**
+ * Notice a changed value in gconf
+ *
+ * @param client     GConf client
+ * @param cnxn_id    connection id
+ * @param entry      GConf entry
+ * @param user_data  always online policy data
+ */
 static void
 policy_always_online_nw_params_changed(GConfClient *client,
                                        guint cnxn_id,
@@ -329,6 +438,14 @@ policy_always_online_nw_params_changed(GConfClient *client,
   }
 }
 
+/**
+ * Notice a changed value in gconf
+ *
+ * @param client     GConf client
+ * @param cnxn_id    connection id
+ * @param entry      GConf entry
+ * @param user_data  always online policy data
+ */
 static void
 policy_always_online_connections_changed(GConfClient *client,
                                          guint cnxn_id,
@@ -347,6 +464,12 @@ policy_always_online_connections_changed(GConfClient *client,
   }
 }
 
+/**
+ * Policy module destruction function. Will be called before unloading the
+ * module.
+ *
+ * @param private  a reference to the private data
+ */
 static void
 policy_always_online_destruct(gpointer *private)
 {
@@ -390,6 +513,16 @@ policy_always_online_destruct(gpointer *private)
   *private = NULL;
 }
 
+/**
+ * Informational policy called when a network has been disconnected
+ *
+ * @param network               the network to connect
+ * @param err_str               NULL if the network was disconnected
+ *                              normally, any ICD_DBUS_ERROR_* from
+ *                              osso-ic-dbus.h on error
+ * @param existing_connections  existing network connections
+ * @param private               private data
+ */
 static void
 policy_always_online_disconnected(struct icd_policy_request *network,
                                   const gchar *err_str,
@@ -415,6 +548,13 @@ policy_always_online_disconnected(struct icd_policy_request *network,
     ILOG_DEBUG("always online sees network disconnected, but none connected");
 }
 
+/**
+ * Informational policy called when a network has been successfully connected
+ *
+ * @param network               the network to connect
+ * @param existing_connections  existing network connections
+ * @param private               private data
+ */
 static void
 policy_always_online_connected(struct icd_policy_request *network,
                                GSList *existing_connections,
@@ -449,6 +589,11 @@ policy_always_online_connected(struct icd_policy_request *network,
     policy_always_online_cancel_timer(data);
 }
 
+/**
+ * Initialize flight mode information fetching from MCE
+ * @param data  always online policy data
+ * @return      TRUE on success, FALSE on failure
+ */
 static gboolean
 policy_always_online_flightmode_init(struct always_online_data *data)
 {
@@ -475,6 +620,11 @@ policy_always_online_flightmode_init(struct always_online_data *data)
   return TRUE;
 }
 
+/**
+ * Initialize GConf notifications
+ * @param data  always online policy data
+ * @return      TRUE on success, FALSE on failure
+ */
 static gboolean
 policy_always_online_gconf_init(struct always_online_data *data)
 {
@@ -586,3 +736,5 @@ icd_policy_init(struct icd_policy_api *policy_api,
   policy_api->destruct = policy_always_online_destruct;
   policy_api->priority = priority;
 }
+
+/** @} */

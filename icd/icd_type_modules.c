@@ -1,24 +1,32 @@
+/**
+@file icd_type_modules.c
+@copyright GNU GPLv2 or later
+
+@addtogroup type_modules Network type to network module mapping
+
+The network type to module name mapping is stored as a list of strings in
+gconf at
+\c /system/osso/connectivity/IAP/network_type/<type_name>/network_modules
+
+@ingroup internal
+
+ * @{ */
+
 #include <gconf/gconf-client.h>
 
 #include "icd_type_modules.h"
 #include "icd_log.h"
 
-/** The network type to module name mapping is stored as a list of strings
- * in gconf at /system/osso/connectivity/IAP/network_type/<type  name>/network_modules
- */
-
 /** Policy module order in gconf */
 #define ICD_GCONF_POLICY_ORDER ICD_GCONF_SETTINGS "/policy/modules"
 
 /**
- * @brief Get the names of the network modules used for a particular network
- *        type
+ * Get the names of the network modules used for a particular network type
  *
- * @param network_type type of network
+ * @param network_type  type of network
  *
- * @return a list of network module names that the caller has to free or NULL if
- *         the network type is not recognised
- *
+ * @return              a list of network module names that the caller has to
+ *                      free or NULL if the network type is not recognised
  */
 GSList *
 icd_network_modules_get(const gchar *network_type)
@@ -45,11 +53,10 @@ icd_network_modules_get(const gchar *network_type)
 }
 
 /**
- * @brief Get the policy module order
+ * Get the policy module order
  *
- * @return a list of network module names that the caller has to free or NULL
- * on error
- *
+ * @return  a list of network module names that the caller has to free or
+ *          NULL on error
  */
 GSList *
 icd_policy_modules_get(void)
@@ -71,3 +78,5 @@ icd_policy_modules_get(void)
 
   return l;
 }
+
+/** @} */

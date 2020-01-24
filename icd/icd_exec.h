@@ -1,6 +1,16 @@
 #ifndef ICD_EXEC_H
 #define ICD_EXEC_H
 
+/**
+@file icd_exec.h
+@copyright GNU GPLv2 or later
+
+@addtogroup icd_exec ICd execution
+@ingroup internal
+
+ * @{ */
+
+/** exit status */
 enum icd_exit_status {
         EXIT_FORK_FAILED = 2,
         EXIT_SETSID_FAILED,
@@ -16,5 +26,7 @@ enum icd_exit_status {
         EXIT_FAILED_TO_INIT,
         EXIT_PID_WRITE_FAILED            /* new in icd2 */
 };
+
+/** @} */
 
 #endif

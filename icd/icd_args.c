@@ -1,3 +1,12 @@
+/**
+@file icd_args.c
+@copyright GNU GPLv2 or later
+
+@addtogroup icd_args Command line argument parsing
+@ingroup internal
+
+ * @{ */
+
 #include <unistd.h>
 #include <getopt.h>
 #include <stdio.h>
@@ -9,6 +18,7 @@
 
 #include "config.h"
 
+/** icd command line options */
 static struct option const long_options[] =
 {
   {"deamon",   no_argument,       0, 'd'},
@@ -19,10 +29,9 @@ static struct option const long_options[] =
 };
 
 /**
- *  @brief      Print usage information.
- *
- *  @param      program_name name of the executable
- *  @param      status exit with status
+ * Print usage information
+ * @param program_name  name of the executable
+ * @param status        exit with status
  */
 static void
 icd_args_usage(const char *program_name, int status)
@@ -41,13 +50,13 @@ icd_args_usage(const char *program_name, int status)
 }
 
 /**
- *  @brief      Process commandline options.
+ * Process commandline options.
  *
- *  @param      argc Parameter given to main()
- *  @param      argv Parameter given to main()
- *  @param      context ICd context
+ * @param argc     Parameter given to main()
+ * @param argv     Parameter given to main()
+ * @param context  ICd context
  *
- *  @return     Index of first non-option argument
+ * @return         Index of first non-option argument
  */
 gint
 icd_args_decode(int argc, char *argv[], struct icd_context *context)
@@ -79,3 +88,5 @@ icd_args_decode(int argc, char *argv[], struct icd_context *context)
 
   return optind;
 }
+
+/** @} */

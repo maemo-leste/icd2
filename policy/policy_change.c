@@ -1,3 +1,12 @@
+/**
+@file policy_change.c
+@copyright GNU GPLv2 or later
+
+@addtogroup policy_change Change to another connection
+@ingroup policy
+
+ * @{ */
+
 #include <osso-ic-dbus.h>
 #include <osso-ic-ui-dbus.h>
 #include <osso-ic.h>
@@ -8,20 +17,39 @@
 #include "policy_api.h"
 #include "icd_log.h"
 
+
+/** D-Bus timeout for the change UI dialog */
 #define POLICY_CHANGE_CALL_TIMEOUT 10 * 1000
+
+/** Extra D-Bus signal filter string */
 #define POLICY_CHANGE_EXTRA_FILTER "member='" ICD_UI_CHANGE_SIG "'"
 
-struct policy_change_data
-{
+
+/** data for the policy change module */
+struct policy_change_data {
+  /** pending call to UI */
   DBusPendingCall *change_call;
+  /** the iap to change from */
   gchar *change_from;
+  /** the iap to change to */
   gchar *change_to;
+  /** whether the change has been performed */
   gboolean is_changing;
+  /** new request callback */
   icd_policy_request_new_cb_fn done_cb;
+  /** the request to accept or reject */
   struct icd_policy_request *new_request;
+  /** new request callback token */
   gpointer done_token;
 };
 
+
+/**
+ * Free allocated data structure members and cancel ongoing pending call;
+ * leave data needed for calling the callback
+ *
+ * @param data  policy change data
+ */
 static void
 policy_change_delete_data(struct policy_change_data *data)
 {
@@ -37,6 +65,11 @@ policy_change_delete_data(struct policy_change_data *data)
   data->change_to = NULL;
 }
 
+/**
+ * Call new request callback and release allocated data
+ * @param status  status
+ * @param data    module data
+ */
 static void
 policy_change_do_cb(enum icd_policy_status status,
                     struct policy_change_data *data)
@@ -56,6 +89,15 @@ policy_change_do_cb(enum icd_policy_status status,
   data->done_token = NULL;
 }
 
+/**
+ * Handle UI changed signal
+ *
+ * @param connection  D-Bus connection
+ * @param message     D-Bus message
+ * @param user_data   policy change data structure
+ *
+ * @return  DBUS_HANDLER_RESULT_NOT_YET_HANDLED
+ */
 static DBusHandlerResult
 policy_change_done(DBusConnection *connection,
                    DBusMessage *message,
@@ -99,6 +141,10 @@ policy_change_done(DBusConnection *connection,
   return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 }
 
+/**
+ * Policy module destruction function.
+ * @param private  a reference to the private data
+ */
 static void
 policy_change_destruct(gpointer *private)
 {
@@ -112,6 +158,14 @@ policy_change_destruct(gpointer *private)
   *private = NULL;
 }
 
+/**
+ * Callback for the disconnect confirmation method call
+ *
+ * @param pending    pending D-Bus method call
+ * @param user_data  module data
+ *
+ * @todo  make a compile-time define for this, as UI is/has been buggy?
+ */
 static void
 policy_change_confirm_cb(DBusPendingCall *pending, void *user_data)
 {
@@ -134,6 +188,13 @@ policy_change_confirm_cb(DBusPendingCall *pending, void *user_data)
   dbus_message_unref(message);
 }
 
+/**
+ * Request a change connection dialog which the UI does not anymore/currently
+ * support...
+ *
+ * @param data  module data
+ * @return      TRUE if the D-Bus method call was sent, FALSE on error
+ */
 static gboolean
 policy_change_confirm(struct policy_change_data *data)
 {
@@ -162,6 +223,16 @@ policy_change_confirm(struct policy_change_data *data)
   return result;
 }
 
+/**
+ * Allow one connection at a time; request a change dialog if one exists
+ *
+ * @param new_request        the new connection request
+ * @param existing_requests  currently existing requests
+ * @param policy_done_cb     callback to call when policy has been decided
+ * @param policy_token       the policy token to return in the callback
+ * @param private            the private member of the icd_request_api
+ *                           structure
+ */
 static void
 policy_change_new_request(struct icd_policy_request *new_request,
                           const GSList *existing_requests,
@@ -232,6 +303,15 @@ policy_change_new_request(struct icd_policy_request *new_request,
     policy_done_cb(ICD_POLICY_ACCEPTED, new_request, policy_token);
 }
 
+/**
+ * Policy module initialization function.
+ *
+ * @param policy_api      policy API structure to be filled in by the module
+ * @param add_network     function to add a network in response to a policy
+ * @param merge_requests  function to merge requests
+ * @param make_request    function for creating a new request
+ * @param scan_networks   function for scanning networks
+ */
 void
 icd_policy_init(struct icd_policy_api *policy_api,
                 icd_policy_nw_add_fn add_network,
@@ -252,3 +332,5 @@ icd_policy_init(struct icd_policy_api *policy_api,
                                        policy_change_done, data,
                                        POLICY_CHANGE_EXTRA_FILTER);
 }
+
+/** @} */

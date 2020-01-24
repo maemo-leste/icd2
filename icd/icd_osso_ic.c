@@ -1,3 +1,12 @@
+/**
+@file icd_osso_ic.c
+@copyright GNU GPLv2 or later
+
+@addtogroup icd_osso_ic Compatibility functions providing OSSO IC D-Bus API
+@ingroup internal
+
+ * @{ */
+
 #include <string.h>
 #include <dbus/dbus.h>
 #include <gconf/gconf.h>
@@ -19,8 +28,7 @@
 #include "icd_wlan_defs.h"
 
 /** milliseconds to wait for UI to respond to requests; used only for log
- * message printing for now
- */
+ * message printing for now */
 #define ICD_OSSO_UI_REQUEST_TIMEOUT   4 * 1000
 
 /** ip data structure */
@@ -81,22 +89,20 @@ struct icd_osso_ic_mcall_data {
 };
 
 /**
- * @brief Function that handles an incoming OSSO IC API request
+ * Function that handles an incoming OSSO IC API request
  *
- * @param request the D-Bus message
- * @param user_data user data
+ * @param request    the D-Bus message
+ * @param user_data  user data
  *
- * @return the D-Bus reply or NULL if a reply is sent later
- *
+ * @return  the D-Bus reply or NULL if a reply is sent later
  */
 typedef DBusMessage* (*icd_osso_ic_message_handler) (DBusMessage *request,
                                                      void *user_data);
 
-/** Structure containing information to match a D-Bus message with the correct
- * handler function
- */
+/** Structure containing information to match a D-Bus message with the
+ * correct handler function */
 struct icd_osso_ic_handler {
-  /**  D-Bus interface */
+  /** D-Bus interface */
   const char *interface;
 
   /** D-Bus method */
@@ -115,12 +121,28 @@ struct icd_osso_ic_get_state_data
   guint connections;
 };
 
+/**
+ * Helper function for fetching the IAP type from gconf
+ * @param iap_name  name of the IAP
+ * @return  IAP type that is to be freed by the caller
+ */
 static gchar *
 icd_osso_ic_get_type(const gchar *iap_name)
 {
   return icd_gconf_get_iap_string(iap_name, ICD_GCONF_IAP_TYPE);
 }
 
+/**
+ * Make a new request
+ *
+ * @param merge_request  request to merge with this one or NULL
+ * @param track          new tracking info or NULL
+ * @param message        the D-Bus request message to send errors to
+ * @param requested_iap  the requested IAP name
+ * @param flags          ICD_POLICY_ATTRIBUTE_* flags to add to the request
+ *
+ * @return  a D-Bus error on failure, NULL on success
+ */
 static DBusMessage *
 icd_osso_ic_make_request(struct icd_request *merge_request,
                          struct icd_tracking_info *track, DBusMessage *message,
@@ -161,6 +183,14 @@ icd_osso_ic_make_request(struct icd_request *merge_request,
   return NULL;
 }
 
+/**
+ * IAP activation via connectivity libraries.
+ *
+ * @param method_call  the D-Bus request message
+ * @param user_data    user data
+ *
+ * @return  a D-Bus reply to the request
+ */
 static DBusMessage *
 icd_osso_ic_connect(DBusMessage *method_call, void *user_data)
 {
@@ -204,6 +234,14 @@ icd_osso_ic_connect(DBusMessage *method_call, void *user_data)
   return msg;
 }
 
+/**
+ * Desktop background killing application
+ *
+ * @param method_call  the D-Bus request message
+ * @param user_data    user data
+ *
+ * @return  a D-Bus reply to the request
+ */
 static DBusMessage *
 icd_osso_ic_bg_killed(DBusMessage *method_call, void *user_data)
 {
@@ -237,6 +275,14 @@ icd_osso_ic_bg_killed(DBusMessage *method_call, void *user_data)
   return dbus_message_new_method_return(method_call);
 }
 
+/**
+ * Report state for all connections
+ *
+ * @param request    request to examine
+ * @param user_data  get state data structure
+ *
+ * @return  NULL
+ */
 static gpointer
 icd_osso_ic_get_state_foreach(struct icd_request *request, gpointer user_data)
 {
@@ -296,6 +342,14 @@ icd_osso_ic_get_state_foreach(struct icd_request *request, gpointer user_data)
   return NULL;
 }
 
+/**
+ * Get state for all connections
+ *
+ * @param method_call  the D-Bus request message
+ * @param user_data    user data
+ *
+ * @return  an D-Bus reply to the request
+ */
 static DBusMessage *
 icd_osso_ic_get_state(DBusMessage *method_call, void *user_data)
 {
@@ -318,6 +372,15 @@ icd_osso_ic_get_state(DBusMessage *method_call, void *user_data)
   return msg;
 }
 
+/**
+ * Find the first connected request which has an iap that can give us ip
+ * address information
+ *
+ * @param request    request to examine
+ * @param user_data  ip data structure
+ *
+ * @return  iap which returned ip data, NULL otherwise
+ */
 static gpointer
 icd_osso_ic_ipinfo_get_first(struct icd_request *request, gpointer user_data)
 {
@@ -337,6 +400,10 @@ icd_osso_ic_ipinfo_get_first(struct icd_request *request, gpointer user_data)
   return NULL;
 }
 
+/**
+ * Send connection statistics error
+ * @param method_call  the method call to reply to
+ */
 static void
 icd_osso_ic_connstats_error(DBusMessage *method_call)
 {
@@ -347,6 +414,32 @@ icd_osso_ic_connstats_error(DBusMessage *method_call)
   icd_dbus_send_system_msg(msg);
   dbus_message_unref(msg);
 }
+
+/**
+ * Receive IP address configuration information based on network type,
+ * attributes and id.
+ *
+ * @param addr_info_cb_token  token passed to the request function
+ * @param network_type        network type
+ * @param network_attrs       attributes, such as type of network_id,
+ *                            security, etc.
+ * @param network_id          IAP name or local id, e.g. SSID
+ * @param private             a reference to the icd_nw_api private member
+ * @param ip_address          IP address string or NULL if no such value
+ * @param ip_netmask          IP netmask string which or NULL if no such
+ *                            value
+ * @param ip_gateway          IP gateway string which or NULL if no such
+ *                            value
+ * @param ip_dns1             DNS server IP address string or NULL if no such
+ *                            value
+ * @param ip_dns2             DNS server IP address string or NULL if no such
+ *                            value
+ * @param ip_dns3             DNS server IP address string or NULL if no such
+ *                            value
+ *
+ * @return  TRUE if some of the values are returned, FALSE if no values
+ *          assigned
+ */
 static void
 icd_osso_ic_ipinfo_cb(gpointer addr_info_cb_token, const gchar *network_type,
                       const guint network_attrs, const gchar *network_id,
@@ -449,6 +542,14 @@ icd_osso_ic_ipinfo_cb(gpointer addr_info_cb_token, const gchar *network_type,
   }
 }
 
+/**
+ * Get IPv4 address info for the latest connection
+ *
+ * @param method_call  the D-Bus request message
+ * @param user_data    user data
+ *
+ * @return  an D-Bus reply to the request
+ */
 static DBusMessage *
 icd_osso_ic_ipinfo(DBusMessage *method_call, void *user_data)
 {
@@ -495,6 +596,14 @@ icd_osso_ic_ipinfo(DBusMessage *method_call, void *user_data)
   return NULL;
 }
 
+/**
+ * Disconnection requested by application
+ *
+ * @param method_call  the D-Bus request message
+ * @param user_data    user data
+ *
+ * @return  an D-Bus reply to the request
+ */
 static DBusMessage *
 icd_osso_ic_disconnect(DBusMessage *method_call, void *user_data)
 {
@@ -556,6 +665,17 @@ icd_osso_ic_disconnect(DBusMessage *method_call, void *user_data)
   return message;
 }
 
+/**
+ * IAP activation requested by the 'Select connection' UI dialog or
+ * Connection Manager, i.e. a connection request from connectivity components
+ * without any reference counting
+ *
+ * @param method_call  the D-Bus request message
+ * @param user_data    user data
+ *
+ * @return  a D-Bus reply to the request
+ * @todo  OSSO_IAP_ASK merging should be done somewhere else
+ */
 static DBusMessage *
 icd_osso_ic_activate(DBusMessage *method_call, void *user_data)
 {
@@ -603,6 +723,13 @@ icd_osso_ic_activate(DBusMessage *method_call, void *user_data)
                                 "Message is not a method call");
 }
 
+/**
+ * Generic pending call callback that prints out whether the UI D-Bus request
+ * succeeded or not
+ *
+ * @param pending    the pending call
+ * @param user_data  the requested UI D-Bus method call
+ */
 static void
 icd_osso_ic_ui_pending(DBusPendingCall *pending, void *user_data)
 {
@@ -642,6 +769,15 @@ icd_osso_ic_ui_pending(DBusPendingCall *pending, void *user_data)
   g_free(data);
 }
 
+/**
+ * Connection disconnection requested by Connectivity UIs; request disconnect
+ * confirmation
+ *
+ * @param request    the D-Bus request message
+ * @param user_data  user data
+ *
+ * @return  an D-Bus reply to the request
+ */
 static DBusMessage *
 icd_osso_ic_shutdown(DBusMessage *request, void *user_data)
 {
@@ -687,6 +823,15 @@ icd_osso_ic_shutdown(DBusMessage *request, void *user_data)
   return message;
 }
 
+/**
+ * Find the first connected request that has an iap which can return
+ * statistics
+ *
+ * @param request    request to examine
+ * @param user_data  connection statistics data structure
+ *
+ * @return  iap which returned ip statistics, NULL otherwise
+ */
 static gpointer
 icd_osso_ic_connstats_get_first(struct icd_request *request, gpointer user_data)
 {
@@ -709,6 +854,25 @@ icd_osso_ic_connstats_get_first(struct icd_request *request, gpointer user_data)
   return iap;
 }
 
+/**
+ * Receive ip statistics based on network type, attributes and id. Values are
+ * set to zero or NULL if statistics are not available or applicable
+ *
+ * @param ip_stats_cb_token  token passed to the request function
+ * @param network_type       network type
+ * @param network_attrs      attributes, such as type of network_id,
+ *                           security, etc.
+ * @param network_id         network id
+ * @param time_active        time active, if applicable
+ * @param signal             signal level
+ * @param station_id         base station id, e.g. WLAN access point MAC
+ *                           address
+ * @param dB                 raw signal strength; depends on the type of
+ *                           network
+ * @param rx_bytes           bytes received on the link, if applicable
+ * @param tx_bytes           bytes sent on the link, if applicable
+ * @param private            a reference to the icd_nw_api private member
+ */
 static void
 icd_osso_ic_connstats_ip_cb(const gpointer ip_stats_cb_token,
                             const gchar *network_type,
@@ -789,6 +953,27 @@ icd_osso_ic_connstats_ip_cb(const gpointer ip_stats_cb_token,
   }
 }
 
+/**
+ * Receive link post up statistics based on network type, attributes and id.
+ * Values are set to zero or NULL if statistics are not available or
+ * applicable
+ *
+ * @param link_post_stats_cb_token  token passed to the request function
+ * @param network_type              network type
+ * @param network_attrs             attributes, such as type of network_id,
+ *                                  security, etc.
+ * @param network_id                network id
+ * @param time_active               time active, if applicable
+ * @param signal                    signal level
+ * @param station_id                base station id, e.g. WLAN access point
+ *                                  MAC address
+ * @param dB                        raw signal strength; depends on the type
+ *                                  of network
+ * @param rx_bytes                  bytes received on the link, if applicable
+ * @param tx_bytes                  bytes sent on the link, if applicable
+ * @param private                   a reference to the icd_nw_api private
+ *                                  member
+ */
 static void
 icd_osso_ic_connstats_link_post_cb(const gpointer link_post_stats_cb_token,
                                    const gchar *network_type,
@@ -833,6 +1018,25 @@ icd_osso_ic_connstats_link_post_cb(const gpointer link_post_stats_cb_token,
   }
 }
 
+/**
+ * Receive link statistics based on network type, attributes and id. Values
+ * are set to zero or NULL if statistics are not available or applicable
+ *
+ * @param link_stats_cb_token  token passed to the request function
+ * @param network_type         network type
+ * @param network_attrs        attributes, such as type of network_id,
+ *                             security, etc.
+ * @param network_id           network id
+ * @param time_active          time active, if applicable
+ * @param signal               signal level
+ * @param station_id           base station id, e.g. WLAN access point MAC
+ *                             address
+ * @param dB                   raw signal strength; depends on the type of
+ *                             network
+ * @param rx_bytes             bytes received on the link, if applicable
+ * @param tx_bytes             bytes sent on the link, if applicable
+ * @param private              a reference to the icd_nw_api private member
+ */
 static void
 icd_osso_ic_connstats_link_cb(gpointer link_stats_cb_token,
                               const gchar *network_type,
@@ -876,6 +1080,11 @@ icd_osso_ic_connstats_link_cb(gpointer link_stats_cb_token,
   }
 }
 
+/**
+ * Get connection statistics for an IAP
+ * @param iap          IAP
+ * @param method_call  the method call requesting statistics
+ */
 static void
 icd_osso_ic_connstats_link_get(struct icd_iap *iap,
                                DBusMessage *method_call)
@@ -888,6 +1097,14 @@ icd_osso_ic_connstats_link_get(struct icd_iap *iap,
   icd_iap_get_link_stats(iap, icd_osso_ic_connstats_link_cb, stats_data);
 }
 
+/**
+ * Get connection statistics info for the latest connection
+ *
+ * @param method_call  the D-Bus request message
+ * @param user_data    user data
+ *
+ * @return  an D-Bus reply to the request
+ */
 static DBusMessage *
 icd_osso_ic_connstats(DBusMessage *method_call, void *user_data)
 {
@@ -940,6 +1157,15 @@ static struct icd_osso_ic_handler icd_osso_ic_htable[] = {
   {NULL}
 };
 
+/**
+ * Disconnect received from UI; disconnect the last request as this way we
+ * can cancel a new connecting connection
+ *
+ * @param signal     the D-Bus request message
+ * @param user_data  not used
+ *
+ * @return  NULL, as there received signal does not need a reply
+ */
 static DBusMessage *
 icd_osso_ui_disconnect(DBusMessage *signal, void *user_data)
 {
@@ -987,6 +1213,14 @@ icd_osso_ui_disconnect(DBusMessage *signal, void *user_data)
   return NULL;
 }
 
+/**
+ * Save connection received from the UI
+ *
+ * @param signal     the D-Bus request message
+ * @param user_data  not used
+ *
+ * @return  NULL, as there received signal does not need a reply
+ */
 static DBusMessage *
 icd_osso_ui_save(DBusMessage *signal, void *user_data)
 {
@@ -1020,6 +1254,14 @@ icd_osso_ui_save(DBusMessage *signal, void *user_data)
   return NULL;
 }
 
+/**
+ * Retry signal received from UI
+ *
+ * @param signal     the D-Bus request message
+ * @param user_data  not used
+ *
+ * @return  NULL, as there received signal does not need a reply
+ */
 static DBusMessage *
 icd_osso_ui_retry(DBusMessage *signal, void *user_data)
 {
@@ -1125,6 +1367,15 @@ static struct icd_osso_ic_handler icd_osso_ui_htable[] = {
   {NULL}
 };
 
+/**
+ * Search a handler function for given D-BUS message.
+ *
+ * @param msg       D-BUS message that needs handler.
+ * @param handlers  Pointer to list of handler functions and method
+ *                  descriptions.
+ *
+ * @return  Pointer to handler function or NULL on error.
+ */
 static icd_osso_ic_message_handler
 icd_osso_ic_find_handler(DBusMessage *msg, struct icd_osso_ic_handler *handlers)
 {
@@ -1147,6 +1398,15 @@ icd_osso_ic_find_handler(DBusMessage *msg, struct icd_osso_ic_handler *handlers)
   return NULL;
 }
 
+/**
+ * Callback function for OSSO IC API requests
+ *
+ * @param connection  the D-Bus connection
+ * @param message     the D-Bus message
+ * @param user_data   user data
+ *
+ * @return  DBUS_HANDLER_RESULT_HANDLED
+ */
 static DBusHandlerResult
 icd_osso_ic_request(DBusConnection *connection, DBusMessage *message,
                     void *user_data)
@@ -1184,6 +1444,13 @@ icd_osso_ic_request(DBusConnection *connection, DBusMessage *message,
   return DBUS_HANDLER_RESULT_HANDLED;
 }
 
+/**
+ * UI signal handler
+ *
+ * @param connection  The D-Bus connection
+ * @param message     D-Bus message
+ * @param user_data   user data
+ */
 static DBusHandlerResult
 icd_osso_ui_signal(DBusConnection *connection, DBusMessage *message,
                    void *user_data)
@@ -1217,6 +1484,11 @@ icd_osso_ui_signal(DBusConnection *connection, DBusMessage *message,
   return DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
 }
 
+/**
+ * Initialize the OSSO IC API
+ * @param icd_ctx  icd context
+ * @return  TRUE on success, FALSE on failure
+ */
 gboolean
 icd_osso_ic_init(struct icd_context *icd_ctx)
 {
@@ -1248,6 +1520,9 @@ icd_osso_ic_init(struct icd_context *icd_ctx)
   return TRUE;
 }
 
+/**
+ * Deinitialize OSSO IC API
+ */
 void
 icd_osso_ic_deinit(void)
 {
@@ -1256,6 +1531,12 @@ icd_osso_ic_deinit(void)
                                           icd_osso_ui_signal, NULL, NULL);
 }
 
+/**
+ * Cancel save dialog pending call
+ *
+ * @param send_save_token  the opaque token returned from
+ *                         icd_osso_ui_send_save()
+ */
 void
 icd_osso_ui_send_save_cancel(gpointer send_save_token)
 {
@@ -1268,6 +1549,10 @@ icd_osso_ui_send_save_cancel(gpointer send_save_token)
   }
 }
 
+/**
+ * Send nacks for connect and disconnect requests; free tracking info
+ * @param tracking_list  list of applications to track
+ */
 void
 icd_osso_ic_send_nack(GSList *tracking_list)
 {
@@ -1310,6 +1595,14 @@ icd_osso_ic_send_nack(GSList *tracking_list)
   }
 }
 
+/**
+ * Request UI to show a retry dialog
+ *
+ * @param iap_name   name of the IAP to retry
+ * @param error      ICD_DBUS_ERROR_* error string
+ * @param cb         callback function
+ * @param user_data  callback user data
+ */
 void
 icd_osso_ui_send_retry(const gchar *iap_name, const gchar *error,
                        icd_osso_ui_cb_fn cb, gpointer user_data)
@@ -1359,6 +1652,11 @@ icd_osso_ui_send_retry(const gchar *iap_name, const gchar *error,
   g_free(mcall_data);
 }
 
+/**
+ * Send acks for connect and disconnect requests
+ * @param tracking_list  list of applications to track
+ * @param iap_name       iap name to return to the application
+ */
 void
 icd_osso_ic_send_ack(GSList *tracking_list, const gchar *iap_name)
 {
@@ -1406,6 +1704,15 @@ icd_osso_ic_send_ack(GSList *tracking_list, const gchar *iap_name)
   }
 }
 
+/**
+ * Request the UI to show a save dialog
+ *
+ * @param iap_name   name of the IAP to save
+ * @param cb         callback function
+ * @param user_data  callback user data
+ *
+ * @return  opaque token that can be used to cancel the save dialog request
+ */
 gpointer
 icd_osso_ui_send_save(const gchar *iap_name, icd_osso_ui_cb_fn cb,
                       gpointer user_data)
@@ -1458,3 +1765,5 @@ icd_osso_ui_send_save(const gchar *iap_name, icd_osso_ui_cb_fn cb,
 
   return NULL;
 }
+
+/** @} */

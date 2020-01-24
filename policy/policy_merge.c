@@ -1,3 +1,12 @@
+/**
+@file policy_merge.c
+@copyright GNU GPLv2 or later
+
+@addtogroup policy_merge Merge a new request with an already existing one
+@ingroup policy
+
+ * @{ */
+
 #include <osso-ic.h>
 
 #include <string.h>
@@ -5,6 +14,16 @@
 #include "policy_api.h"
 #include "icd_log.h"
 
+
+/**
+ * Helper function for comparing two strings where a NULL string is equal to
+ * another NULL string
+ *
+ * @param a  string A
+ * @param b  string B
+ *
+ * @return   TRUE if equal, FALSE if unequal
+ */
 static gboolean
 policy_merge_string_equal(const gchar *a, const gchar *b)
 {
@@ -17,6 +36,16 @@ policy_merge_string_equal(const gchar *a, const gchar *b)
   return FALSE;
 }
 
+/**
+ * Merge a new request with an already existing one
+ *
+ * @param new_request        the new connection request
+ * @param existing_requests  currently existing requests
+ * @param policy_done_cb     callback to call when policy has been decided
+ * @param policy_token       token to pass to the callback
+ * @param private            the private member of the icd_request_api
+ *                           structure
+ */
 static void
 policy_merge_request(struct icd_policy_request *new_request,
                      const GSList *existing_requests,
@@ -81,6 +110,13 @@ policy_merge_request(struct icd_policy_request *new_request,
   }
 }
 
+/**
+ * Policy module initialization function.
+ *
+ * @param policy_api      policy API structure to be filled in by the module
+ * @param add_network     function to add a network in response to a policy
+ * @param merge_requests  function to merge requests
+ */
 void
 icd_policy_init(struct icd_policy_api *policy_api,
                 icd_policy_nw_add_fn add_network,
@@ -95,3 +131,5 @@ icd_policy_init(struct icd_policy_api *policy_api,
   policy_api->private = merge_requests;
   policy_api->new_request = policy_merge_request;
 }
+
+/** @} */

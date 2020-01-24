@@ -1,12 +1,19 @@
+/**
+@file icd_context.c
+@copyright GNU GPLv2 or later
+
+@addtogroup icd_context ICd context
+@ingroup internal
+
+ * @{ */
+
 #include "icd_context.h"
 
-/**
- * @brief the global ICd context
- */
+/** the global ICd context */
 static struct icd_context icd_ctx;
 
 /**
- * @brief Initialize context
+ * Initialize context
  */
 gboolean
 icd_context_init(void)
@@ -20,8 +27,8 @@ icd_context_init(void)
 }
 
 /**
- * @brief return the global context
- * @return pointer to #icd_ctx
+ * return the global context
+ * @return  pointer to #icd_ctx
  */
 struct icd_context *
 icd_context_get(void)
@@ -30,7 +37,7 @@ icd_context_get(void)
 }
 
 /**
- * @brief start the main loop
+ * start the main loop
  */
 void
 icd_context_run(void)
@@ -39,7 +46,7 @@ icd_context_run(void)
 }
 
 /**
- * @brief stop running the main loop
+ * stop running the main loop
  */
 void
 icd_context_stop(void)
@@ -48,9 +55,11 @@ icd_context_stop(void)
 }
 
 /**
- * @brief destroy context
+ * destroy context
  */
 void
 icd_context_destroy(void)
 {
 }
+
+/** @} */

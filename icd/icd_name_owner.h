@@ -7,8 +7,8 @@
 
 gboolean icd_name_owner_remove_filter (const gchar *application);
 
-gboolean icd_name_owner_add_filter (const gchar *application);
+gboolean icd_name_owner_add_filter    (const gchar *application);
 
-gboolean icd_name_owner_init (struct icd_context *icd_ctx);
+gboolean icd_name_owner_init          (struct icd_context *icd_ctx);
 
 #endif

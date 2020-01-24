@@ -1,7 +1,21 @@
+/**
+@file icd_wlan_defs.c
+@copyright GNU GPLv2 or later
+
+@addtogroup icd_wlan_defs Defines for WLAN attribute bits
+@ingroup internal
+
+ * @{ */
+
 #include <string.h>
 #include "icd_wlan_defs.h"
 #include "icd_gconf.h"
 
+/**
+ * Get wlan security attributes for an IAP
+ * @param iap_name  IAP name
+ * @return  wlan security network attributes
+ */
 guint
 icd_wlan_defs_get_secmode(const gchar *iap_name)
 {
@@ -21,6 +35,11 @@ icd_wlan_defs_get_secmode(const gchar *iap_name)
   return rv;
 }
 
+/**
+ * Check whether the network type is wlan
+ * @param network_type  network type
+ * @return  TRUE if wlan, FALSE otherwise
+ */
 gboolean
 icd_wlan_defs_is_wlan(const gchar *network_type)
 {
@@ -35,3 +54,5 @@ icd_wlan_defs_is_wlan(const gchar *network_type)
 
   return FALSE;
 }
+
+/** @} */

@@ -38,7 +38,7 @@ set_auto_connect () {
 	-t list --list-type string "$*"
 }
 
-# check wheter there was something backed up or force run if no arguments
+# check whether there was something backed up or force run if no arguments
 if test x"$1" != x
 then
     grep $icd_entry "$1" &>/dev/null || exit 0

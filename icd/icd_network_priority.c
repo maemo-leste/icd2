@@ -1,3 +1,12 @@
+/**
+@file icd_network_priority.c
+@copyright GNU GPLv2 or later
+
+@addtogroup icd_network_prio Network priority assignment
+@ingroup internal
+
+ * @{ */
+
 #include <string.h>
 #include <gconf/gconf-client.h>
 #include <osso-ic-gconf.h>
@@ -5,7 +14,7 @@
 #include "icd_network_priority.h"
 #include "network_api.h"
 
-/**  preferred service network priority */
+/** preferred service network priority */
 #define ICD_NW_PRIO_SRV_PREF   500
 
 /** WLAN network prefix */
@@ -32,7 +41,7 @@
 /** CDMA packet data network */
 #define ICD_NW_TYPE_DUN_CDMA_PSD   "DUN_CDMA_PSD"
 
-/**GSM/CDMA packet data priority */
+/** GSM/CDMA packet data priority */
 #define ICD_NW_PRIO_DUN_PS   40
 
 /** GSM circuit switched network */
@@ -66,8 +75,7 @@ static gchar *preferred_id = NULL;
 static gchar *preferred_type = NULL;
 
 /**
- * @brief (Re)set preferred service type and id
- *
+ * (Re)set preferred service type and id
  */
 void
 icd_network_priority_pref_init (void)
@@ -85,6 +93,16 @@ icd_network_priority_pref_init (void)
              preferred_id);
 }
 
+/**
+ * Set static network priority for the cahce entry
+ *
+ * @param srv_type       service type or NULL if none
+ * @param srv_id         service id or NULL if none
+ * @param network_type   network type
+ * @param network_attrs  network attrs
+ *
+ * @return  the network priority
+ */
 gint
 icd_network_priority_get(const gchar *srv_type, const gchar *srv_id,
                          const gchar *network_type, const guint network_attrs)
@@ -120,6 +138,19 @@ icd_network_priority_get(const gchar *srv_type, const gchar *srv_id,
   return priority;
 }
 
+/**
+ * Check if there are more higher priority networks available. Return also
+ * the priority if the return pointer is set. This function can be called
+ * from policy modules (policy_always_online.so calls this func)
+ *
+ * @param srv_type       service type or NULL if none
+ * @param srv_id         service id or NULL if none
+ * @param network_type   network type
+ * @param network_attrs  network attrs
+ * @param the            network priority (returned to caller)
+ *
+ * @return  TRUE if found higher priority network types, FALSE if not found
+ */
 gboolean
 icd_network_priority(const gchar *srv_type, const gchar *srv_id,
                      const gchar *network_type, const guint network_attrs,
@@ -152,3 +183,5 @@ icd_network_priority(const gchar *srv_type, const gchar *srv_id,
 
   return priority < ICD_NW_PRIO_WLAN;
 }
+
+/** @} */

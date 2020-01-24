@@ -46,7 +46,8 @@ extern "C" {
 
 This is an internal API and considered alpha quality. It may change without
 further notice.
-@{ */
+
+ * @{ */
 
 /** D-Bus API interface */
 #define ICD_DBUS_API_INTERFACE   "com.nokia.icd2"
@@ -75,7 +76,7 @@ enum icd_scan_request_flags {
  * array of DBUS_TYPE_STRING      network types to scan; no array or empty
  *                                array to scan all network types</pre>
  * Return arguments:
- * <pre>
+ *<pre>
  * array of DBUS_TYPE_STRING      network types which are going to be scanned</pre>
  */
 #define ICD_DBUS_API_SCAN_REQ     "scan_req"
@@ -83,7 +84,7 @@ enum icd_scan_request_flags {
 /** Cancel a scan.
  *
  * Arguments:
- * <pre>
+ *<pre>
  * none</pre>
  * Return arguments:
  *<pre>
@@ -145,7 +146,7 @@ enum icd_connection_flags {
   ICD_CONNECTION_FLAG_UI_EVENT = 0x8000
 };
 
-/** Request a network connection
+/** Request a network connection.<br>
  * Make ICd2 select a suitable connection; normally this should be used.
  *
  * Arguments:
@@ -200,7 +201,7 @@ enum icd_connect_status {
  * #ICD_DBUS_API_SELECT_REQ requests.
  *
  * Arguments:
- * <pre>
+ *<pre>
  * DBUS_TYPE_STRING              service type or empty string
  * DBUS_TYPE_UINT32              service attributes, see @ref srv_provider_api
  * DBUS_TYPE_STRING              service id or empty string
@@ -330,13 +331,13 @@ enum icd_connection_state {
  * DBUS_TYPE_STRING              network type
  * DBUS_TYPE_UINT32              network attributes, see @ref network_module_api
  * DBUS_TYPE_ARRAY (BYTE)        network id</pre>
- * 
+ *
  * Request statistics for all connections.
  *
  * Arguments:
  *<pre>
  * none</pre>
- * 
+ *
  * Return arguments:
  *<pre>
  * DBUS_TYPE_UINT32              number of #ICD_DBUS_API_STATISTICS_SIG sent,
@@ -356,15 +357,15 @@ enum icd_connection_state {
  * DBUS_TYPE_UINT32              network attributes, see @ref network_module_api
  * DBUS_TYPE_ARRAY (BYTE)        network id or empty string
  * DBUS_TYPE_UINT32              time active, measured in seconds
- * DBUS_TYPE_INT32               signal strength/quality, see @ref icd_nw_levels
+ * DBUS_TYPE_INT32               signal strength/quality, see #icd_nw_levels
  * DBUS_TYPE_UINT32              bytes sent
  * DBUS_TYPE_UINT32              bytes received</pre>
  */
 #define ICD_DBUS_API_STATISTICS_SIG "statistics_sig"
 
-/** Request specific connection address info. Note that the address information
- * returned is what was assigned to the connection, any VPNs or tunnels set up
- * later will not get reported.
+/** Request specific connection address info. Note that the address
+ * information returned is what was assigned to the connection, any VPNs or
+ * tunnels set up later will not get reported.
  *
  * Arguments:
  *<pre>
@@ -374,18 +375,18 @@ enum icd_connection_state {
  * DBUS_TYPE_STRING              network type
  * DBUS_TYPE_UINT32              network attributes, see @ref network_module_api
  * DBUS_TYPE_ARRAY (BYTE)        network id</pre>
- * 
+ *
  * Request address info for all connections.
  *
  * Arguments:
  *<pre>
  * none</pre>
- * 
+ *
  * Return arguments:
  *<pre>
  * DBUS_TYPE_UINT32              number of #ICD_DBUS_API_ADDRINFO_SIG sent,
  *                               zero if no connections are ongoing</pre>
- * 
+ *
  * Note that the address information returned is what was assigned to the
  * connection, any VPNs or tunnels set up later will not get reported.
  */
