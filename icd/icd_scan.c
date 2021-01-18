@@ -351,12 +351,15 @@ icd_scan_listener_notify(struct icd_network_module *module,
                          struct icd_scan_cache *cache_entry,
                          enum icd_scan_status status)
 {
-  GSList *l;
+  GSList *l = module->scan_listener_list;
 
-  for (l = module->scan_listener_list; l; l = l->next)
+  while (l)
   {
+    GSList *next = l->next;
+
     icd_scan_listener_send_entry(srv_provider, cache_entry,
                                  (struct icd_scan_listener *)l->data, status);
+    l = next;
   }
 }
 
