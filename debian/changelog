@@ -1,3 +1,10 @@
+icd2 (0.96) unstable; urgency=medium
+
+  * Fix use after free in icd_scan_listener_notify()
+  * use upstream version for $PACKAGE_VERSION, not debian
+
+ -- Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>  Mon, 18 Jan 2021 21:02:32 +0200
+
 icd2 (0.95) unstable; urgency=medium
 
   * Fix a couple of bugs introduced during RE
