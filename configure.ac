@@ -1,4 +1,4 @@
-AC_INIT([Internet Connectivity daemon 2], patsubst(esyscmd([dpkg-parsechangelog | sed -n '/^Version: \(.*\)$/ {s//\1/;p}']), [
+AC_INIT([Internet Connectivity daemon 2], patsubst(esyscmd([dpkg-parsechangelog -SVersion | sed -n '/^\([^-+]*\).*$/ {s//\1/;p}']), [
 ]), [], [icd2])
 AM_CONFIG_HEADER(config.h)
 
