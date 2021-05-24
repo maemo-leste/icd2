@@ -1,3 +1,9 @@
+icd2 (0.97) unstable; urgency=medium
+
+  * Fix wrong service_type used for service provider modules
+
+ -- Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>  Mon, 24 May 2021 18:37:44 +0300
+
 icd2 (0.96) unstable; urgency=medium
 
   * Fix use after free in icd_scan_listener_notify()
