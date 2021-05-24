@@ -581,6 +581,9 @@ icd_srv_provider_load_modules(struct icd_context *icd_ctx)
       gchar *filename;
       gchar *service_type = g_strrstr(dir, "/");
 
+      if (service_type)
+        service_type++;
+
       cb_data.service_type = service_type;
       key = g_strconcat(dir, ICD_SRV_PROVIDER_MODULE_NAME, NULL);
       name = gconf_client_get_string(gconf, key, &err);
