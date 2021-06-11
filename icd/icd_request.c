@@ -954,6 +954,23 @@ icd_request_tracking_info_remove(struct icd_request *request,
     request->users = g_slist_remove_all(request->users, track);
 }
 
+static inline guint
+merge_attrs(guint existing, guint merge)
+{
+  guint attrs = existing | merge;
+
+  attrs &=
+      ICD_POLICY_ATTRIBUTE_CONN_UI |
+      ICD_POLICY_ATTRIBUTE_CONNECTIONS_FAILED |
+      ICD_POLICY_ATTRIBUTE_ALWAYS_ONLINE_CHANGE;
+  attrs |= (existing & merge &
+            (ICD_POLICY_ATTRIBUTE_NO_INTERACTION |
+             ICD_POLICY_ATTRIBUTE_BACKGROUND));
+  attrs |= (existing & ICD_POLICY_ATTRIBUTE_HAS_CONNECTIONS);
+
+  return attrs;
+}
+
 /**
  * Merge two requets
  *
@@ -990,7 +1007,7 @@ icd_request_merge(struct icd_request *merge_request,
     return FALSE;
   }
 
-  if (merge_request->try_iaps )
+  if (merge_request->try_iaps)
   {
     ILOG_WARN("Request %p to merge has IAPs in ICD_REQUEST_POLICY_PENDING_STATE, freeing them. Check policy module order",
               merge_request);
@@ -1034,17 +1051,9 @@ skip:
     l = next;
   }
 
-  /* FIXME - simplify me */
   existing->req.attrs =
-      (merge_request->req.attrs |
-       (existing->req.attrs &
-        (ICD_POLICY_ATTRIBUTE_CONN_UI |
-         ICD_POLICY_ATTRIBUTE_CONNECTIONS_FAILED |
-         ICD_POLICY_ATTRIBUTE_ALWAYS_ONLINE_CHANGE))) |
-      (existing->req.attrs & (merge_request->req.attrs &
-                              (ICD_POLICY_ATTRIBUTE_NO_INTERACTION |
-                               ICD_POLICY_ATTRIBUTE_BACKGROUND))) |
-      (existing->req.attrs & ICD_POLICY_ATTRIBUTE_HAS_CONNECTIONS);
+      merge_attrs(existing->req.attrs, merge_request->req.attrs);
+
   icd_policy_api_request_cancel(&merge_request->req);
   icd_request_update_status(ICD_REQUEST_MERGED, merge_request);
   ILOG_DEBUG("Request %p, attrs %0x merged with %p, resulting attrs %0x",
