@@ -1,3 +1,10 @@
+icd2 (0.98) unstable; urgency=medium
+
+  * Fix bug introduced with REing, resulting on "No saved connections available"
+    error if first connect attempt fails and user tries to reconnect
+
+ -- Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>  Fri, 11 Jun 2021 12:51:15 +0300
+
 icd2 (0.97) unstable; urgency=medium
 
   * Fix wrong service_type used for service provider modules
