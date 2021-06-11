@@ -799,14 +799,7 @@ icd_dbus_api_disconnect_req(DBusConnection *conn, DBusMessage *msg,
       dbus_message_iter_recurse(&iter, &sub);
       dbus_message_iter_get_fixed_array(&sub, &network_id, &len);
 
-      if (len > 0)
-      {
-        if (network_id[len])
-        {
-          network_id = (gchar *)g_realloc(network_id, len + 1);
-          network_id[len] = 0;
-        }
-      }
+      network_id = g_strndup(network_id, len);
     }
 
     dbus_message_iter_next(&iter);
@@ -842,6 +835,7 @@ icd_dbus_api_disconnect_req(DBusConnection *conn, DBusMessage *msg,
               network_attrs, network_id);
   }
 
+  g_free(network_id);
   message = dbus_message_new_method_return(msg);
 
   if (message)
@@ -1780,16 +1774,12 @@ icd_dbus_api_foreach_iap_req(DBusMessage *message,
 
       dbus_message_iter_recurse(&iter, &sub);
       dbus_message_iter_get_fixed_array(&sub, &network_id, &len);
-
-      if (len > 0 && network_id[len])
-      {
-        network_id = (gchar *)g_realloc(network_id, len + 1);
-        network_id[len] = 0;
-      }
+      network_id = g_strndup(network_id, len);
     }
 
     dbus_message_iter_next(&iter);
     iap = icd_iap_find(network_type, network_attrs, network_id);
+    g_free(network_id);
 
     if (iap && foreach_data->send_fn)
     {
