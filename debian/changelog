@@ -1,3 +1,9 @@
+icd2 (0.99) unstable; urgency=medium
+
+  * Yet another RE bug fixed
+
+ -- Ivaylo Dimitrov <ivo.g.dimitrov.75@gmail.com>  Sat, 17 Sep 2022 20:57:52 +0300
+
 icd2 (0.98) unstable; urgency=medium
 
   * Fix bug introduced with REing, resulting on "No saved connections available"
