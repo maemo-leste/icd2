@@ -789,7 +789,7 @@ icd_policy_api_scan_find(icd_policy_scan_cb_fn cb, gpointer user_data)
   for (l = *icd_policy_api_scan_list_get(); l; l = l->next)
   {
     struct icd_policy_scan_data *data =
-        (struct icd_policy_scan_data *)scan_list->data;
+        (struct icd_policy_scan_data *)l->data;
 
     if (data)
     {
