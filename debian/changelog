@@ -1,3 +1,9 @@
+icd2 (0.99.1) unstable; urgency=medium
+
+  * Fix compilation problem for multiple definitions of icd_iap_state_names
+
+ -- Merlijn Wajer <merlijn@wizzup.org>  Tue, 29 Nov 2022 14:50:06 +0100
+
 icd2 (0.99) unstable; urgency=medium
 
   * Yet another RE bug fixed
