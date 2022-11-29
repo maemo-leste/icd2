@@ -68,7 +68,7 @@ enum icd_iap_status {
   ICD_IAP_FAILED
 };
 
-const gchar* icd_iap_state_names[ICD_IAP_MAX_STATES];
+extern const gchar* icd_iap_state_names[ICD_IAP_MAX_STATES];
 
 struct icd_iap;
 
